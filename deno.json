@@ -3,7 +3,7 @@
     "dev": "deno run -A --node-modules-dir npm:vite",
     "build": "deno run -A --node-modules-dir npm:vite build",
     "preview": "deno run -A --node-modules-dir npm:vite preview",
-    "serve": "deno run --allow-net jsr:@std/http@1/file-server dist/"
+    "serve": "deno run -A build/index.js"
   },
   "compilerOptions": {
     "lib": ["ES2020", "DOM", "DOM.Iterable"]
