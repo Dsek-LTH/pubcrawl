@@ -1,0 +1,23 @@
+{
+  "tasks": {
+    "dev": "deno run -A --node-modules-dir npm:vite",
+    "build": "deno run -A --node-modules-dir npm:vite build",
+    "preview": "deno run -A --node-modules-dir npm:vite preview",
+    "serve": "deno run --allow-net jsr:@std/http@1/file-server dist/"
+  },
+  "compilerOptions": {
+    "lib": ["ES2020", "DOM", "DOM.Iterable"]
+  },
+  "imports": {
+    "@deno/vite-plugin": "npm:@deno/vite-plugin@^1.0.4",
+    "@std/assert": "jsr:@std/assert@1",
+    "@sveltejs/kit": "npm:@sveltejs/kit@^2.20.0",
+    "@sveltejs/vite-plugin-svelte": "npm:@sveltejs/vite-plugin-svelte@^5.0.3",
+    "autoprefixer": "npm:autoprefixer@^10.4.21",
+    "postcss": "npm:postcss@^8.5.3",
+    "svelte-adapter-deno": "npm:svelte-adapter-deno@^0.9.1",
+    "tailwindcss": "npm:tailwindcss@^4.0.14",
+    "vite": "npm:vite@^6.2.2",
+    "$app/*": "./.svelte-kit/deno/generated/client/app/*"
+  }
+}
