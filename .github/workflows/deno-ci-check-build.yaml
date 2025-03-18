@@ -1,4 +1,4 @@
-name: "Deno CI - Cech and Build"
+name: "Deno CI - Check and Build"
 
 on:
   push:
@@ -10,6 +10,7 @@ on:
 
 jobs:
   build:
+    name: Check and Build
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
