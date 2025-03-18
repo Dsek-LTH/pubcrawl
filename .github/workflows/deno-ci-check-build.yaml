@@ -22,7 +22,7 @@ jobs:
 
       - name: Check code
         run: deno check .
-      
+
       - name: Check code formatting
         run: deno fmt --check
 
