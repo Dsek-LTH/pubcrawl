@@ -7,10 +7,10 @@ export interface Theme {
 export type ThemeKey = string;
 
 export enum QueueStatus {
-    EMPTY,
-    SHORT,
-    MEDIUM,
-    LONG
+  EMPTY,
+  SHORT,
+  MEDIUM,
+  LONG,
 }
 
 export interface Pub {
