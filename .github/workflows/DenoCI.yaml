@@ -2,9 +2,9 @@ name: Check code
 
 on:
   push:
-    branches: ["*"]
+    branches: ["main"]
   pull_request:
-    branches: ["*"]
+    branches: ["main"]
 
 jobs:
   build:
@@ -23,3 +23,6 @@ jobs:
 
       - name: Lint code
         run: deno lint
+
+      - name: Build
+        run: deno task build
