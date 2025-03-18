@@ -14,6 +14,7 @@
     "postcss": "npm:postcss@^8.5.3",
     "svelte-adapter-deno": "npm:svelte-adapter-deno@^0.9.1",
     "vite": "npm:vite@^6.2.2",
-    "$app/*": "./.svelte-kit/deno/generated/client/app/*"
+    "$app/*": "./.svelte-kit/deno/generated/client/app/*",
+    "$lib/": "./src/lib/"
   }
 }
