@@ -4,7 +4,7 @@ import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 export default {
   kit: {
     adapter: adapter({ precompress: false }),
-    alias: { $lib: "./src/lib" }
+    alias: { $lib: "./src/lib" },
   },
-  preprocess: vitePreprocess()
+  preprocess: vitePreprocess(),
 };
