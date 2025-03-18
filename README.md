@@ -1,5 +1,5 @@
 <div align="center">
-  <!-- Logo NEEDS to be changed -->>
+  <!-- Logo NEEDS to be changed -->
   <img src="./static/favicon-256x256.png" alt="Fancy logo">
   <h3>Pubcrawl</h3>
   <p>
