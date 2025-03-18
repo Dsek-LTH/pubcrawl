@@ -10,7 +10,6 @@
     "npm:autoprefixer@^10.4.21": "10.4.21_postcss@8.5.3",
     "npm:postcss@^8.5.3": "8.5.3",
     "npm:svelte-adapter-deno@~0.9.1": "0.9.1_@sveltejs+kit@2.20.0__@sveltejs+vite-plugin-svelte@5.0.3___svelte@5.23.1____acorn@8.14.1___vite@6.2.2__svelte@5.23.1___acorn@8.14.1__vite@6.2.2_rollup@3.29.5",
-    "npm:tailwindcss@^4.0.14": "4.0.14",
     "npm:vite@*": "6.2.2",
     "npm:vite@^6.2.2": "6.2.2"
   },
@@ -626,9 +625,6 @@
         "zimmerframe"
       ]
     },
-    "tailwindcss@4.0.14": {
-      "integrity": "sha512-92YT2dpt671tFiHH/e1ok9D987N9fHD5VWoly1CdPD/Cd1HMglvZwP3nx2yTj2lbXDAHt8QssZkxTLCCTNL+xw=="
-    },
     "totalist@3.0.1": {
       "integrity": "sha512-sf4i37nQ2LBx4m3wB74y+ubopq6W/dIzXg0FDGjsYnZHVa1Da8FH853wlL2gtUhg+xJXjfk3kUZS3BRoQeoQBQ=="
     },
@@ -762,7 +758,6 @@
       "npm:autoprefixer@^10.4.21",
       "npm:postcss@^8.5.3",
       "npm:svelte-adapter-deno@~0.9.1",
-      "npm:tailwindcss@^4.0.14",
       "npm:vite@^6.2.2"
     ]
   }
