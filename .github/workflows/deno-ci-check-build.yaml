@@ -1,16 +1,13 @@
 name: "Deno CI - Check and Build"
 
 on:
-  push:
-    branches:
-      - "**"
   pull_request:
     branches:
-      - "**"
+      - main
 
 jobs:
   build:
-    name: Check and Build
+    name: Check and Build # This name is used in gihub rules
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
