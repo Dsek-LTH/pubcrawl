@@ -20,5 +20,5 @@ export interface Pub {
   intending: Map<string, Date>;
   queueStatus: QueueStatus;
   isActive: boolean;
-  themeKey: Theme;
+  themeKey: ThemeKey;
 }
