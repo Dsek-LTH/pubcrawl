@@ -12,13 +12,11 @@ export async function setTheme(
 export async function getTheme(themeKey: ThemeKey): Promise<Theme> {
   const res = await kv.get(["themes", themeKey]);
 
-  const theme = res.value as Theme | null;
-
-  if (theme === null) {
+  if (res.versionstamp === null) {
     throw new Error(`Theme with themeKey "${themeKey}" not found`);
   }
 
-  return theme;
+  return res.value as Theme;
 }
 
 export async function setPub(pubKey: PubKey, pub: Pub): Promise<void> {
@@ -28,13 +26,11 @@ export async function setPub(pubKey: PubKey, pub: Pub): Promise<void> {
 export async function getPub(pubKey: PubKey): Promise<Pub> {
   const res = await kv.get(["pubs", pubKey]);
 
-  const pub = res.value as Pub | null;
-
-  if (pub === null) {
+  if (res.versionstamp === null) {
     throw new Error(`Pub with pubKey "${pubKey}" not found`);
   }
 
-  return pub;
+  return res.value as Pub;
 }
 
 export async function updatePubKey(
