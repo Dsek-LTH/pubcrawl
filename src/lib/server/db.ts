@@ -1,15 +1,15 @@
 import { Pub, PubKey, QueueStatus, Theme, ThemeKey } from "$lib/types.ts";
 
+const kv = await Deno.openKv();
+
 export async function setTheme(
   themeKey: ThemeKey,
   theme: Theme,
 ): Promise<void> {
-  const kv = await Deno.openKv();
   await kv.set(["themes", themeKey], theme);
 }
 
 export async function getTheme(themeKey: ThemeKey): Promise<Theme> {
-  const kv = await Deno.openKv();
   const res = await kv.get(["themes", themeKey]);
 
   const theme = res.value as Theme | null;
@@ -22,12 +22,10 @@ export async function getTheme(themeKey: ThemeKey): Promise<Theme> {
 }
 
 export async function setPub(pubKey: PubKey, pub: Pub): Promise<void> {
-  const kv = await Deno.openKv();
   await kv.set(["pubs", pubKey], pub);
 }
 
 export async function getPub(pubKey: PubKey): Promise<Pub> {
-  const kv = await Deno.openKv();
   const res = await kv.get(["pubs", pubKey]);
 
   const pub = res.value as Pub | null;
@@ -45,13 +43,11 @@ export async function updatePubKey(
 ): Promise<void> {
   const pub: Pub = await getPub(oldPubKey);
 
-  const kv = await Deno.openKv();
   await kv.delete(["pubs", oldPubKey]);
   await kv.set(["pubs", newPubKey], pub);
 }
 
 export async function getActivePubs(): Promise<Pub[]> {
-  const kv = await Deno.openKv();
   const iter = kv.list({ prefix: ["pubs"] });
 
   const activePubs: Pub[] = [];
