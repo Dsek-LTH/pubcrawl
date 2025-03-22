@@ -31,7 +31,7 @@ export async function getPub(pubKey: PubKey): Promise<Pub> {
   const pub = res.value as Pub | null;
 
   if (pub === null) {
-    throw new Error(`Pub with counterKey "${pubKey}" not found`);
+    throw new Error(`Pub with pubKey "${pubKey}" not found`);
   }
 
   return pub;
@@ -43,8 +43,11 @@ export async function updatePubKey(
 ): Promise<void> {
   const pub: Pub = await getPub(oldPubKey);
 
-  await kv.delete(["pubs", oldPubKey]);
-  await kv.set(["pubs", newPubKey], pub);
+  // Atomic to avoid race conditions
+  await kv.atomic()
+    .delete(["pubs", oldPubKey])
+    .set(["pubs", newPubKey], pub)
+    .commit();
 }
 
 export async function getActivePubs(): Promise<Pub[]> {
@@ -75,7 +78,7 @@ export async function setPubOccupancy(
 
   if (occupancy > pub.capacity) {
     throw new Error(
-      `occupancy (${occupancy}) cannot exeed capacity (${pub.capacity})`,
+      `occupancy (${occupancy}) cannot exceed capacity (${pub.capacity})`,
     );
   }
 
