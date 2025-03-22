@@ -44,7 +44,7 @@ export async function updatePubKey(
   const pub: Pub = await getPub(oldPubKey);
 
   await kv.delete(["pubs", oldPubKey]);
-  kv.set(["pubs", newPubKey], pub);
+  await kv.set(["pubs", newPubKey], pub);
 }
 
 export async function getActivePubs(): Promise<Pub[]> {
