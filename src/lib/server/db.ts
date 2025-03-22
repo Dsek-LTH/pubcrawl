@@ -44,7 +44,7 @@ export async function updatePubKey(
   const pub: Pub = await getPub(oldPubKey);
 
   await kv.delete(["pubs", oldPubKey]);
-  await kv.set(["pubs", newPubKey], pub);
+  kv.set(["pubs", newPubKey], pub);
 }
 
 export async function getActivePubs(): Promise<Pub[]> {
@@ -81,7 +81,7 @@ export async function setPubOccupancy(
 
   pub.occupancy = occupancy;
 
-  setPub(pubKey, pub);
+  await setPub(pubKey, pub);
 }
 
 export async function updatePubOccupancy(
@@ -91,7 +91,7 @@ export async function updatePubOccupancy(
   const pub: Pub = await getPub(pubKey);
   const newOccupancy = pub.occupancy + delta;
 
-  setPubOccupancy(pubKey, newOccupancy);
+  await setPubOccupancy(pubKey, newOccupancy);
 }
 
 export async function setPubCapacity(
@@ -112,7 +112,7 @@ export async function setPubCapacity(
 
   pub.capacity = capacity;
 
-  setPub(pubKey, pub);
+  await setPub(pubKey, pub);
 }
 
 export async function setPubQueueStatus(
@@ -122,7 +122,7 @@ export async function setPubQueueStatus(
   const pub: Pub = await getPub(pubKey);
   pub.queueStatus = queueStatus;
 
-  setPub(pubKey, pub);
+  await setPub(pubKey, pub);
 }
 
 export async function setPubTheme(
@@ -132,5 +132,5 @@ export async function setPubTheme(
   const pub: Pub = await getPub(pubKey);
   pub.themeKey = themeKey;
 
-  setPub(pubKey, pub);
+  await setPub(pubKey, pub);
 }
