@@ -16,7 +16,7 @@ export enum QueueStatus {
 export interface Pub {
   occupancy: number;
   capacity: number;
-  intending: Map<string, Date>;  // Is to be implemented later
+  intending: Map<string, Date>; // Is to be implemented later
   queueStatus: QueueStatus;
   isActive: boolean;
   themeKey: ThemeKey;

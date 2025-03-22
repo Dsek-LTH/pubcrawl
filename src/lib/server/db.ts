@@ -1,6 +1,9 @@
-import { Pub, PubKey, Theme, ThemeKey, QueueStatus } from "$lib/types.ts";
+import { Pub, PubKey, QueueStatus, Theme, ThemeKey } from "$lib/types.ts";
 
-export async function setTheme(themeKey: ThemeKey, theme: Theme): Promise<void> {
+export async function setTheme(
+  themeKey: ThemeKey,
+  theme: Theme,
+): Promise<void> {
   const kv = await Deno.openKv();
   await kv.set(["themes", themeKey], theme);
 }
@@ -36,80 +39,102 @@ export async function getPub(pubKey: PubKey): Promise<Pub> {
   return pub;
 }
 
-export async function updatePubKey(oldPubKey: PubKey, newPubKey: PubKey): Promise<void> {
-    const pub: Pub = await getPub(oldPubKey);
-    
-    const kv = await Deno.openKv();
-    await kv.delete(["pubs", oldPubKey])
-    await kv.set(["pubs", newPubKey], pub);
+export async function updatePubKey(
+  oldPubKey: PubKey,
+  newPubKey: PubKey,
+): Promise<void> {
+  const pub: Pub = await getPub(oldPubKey);
+
+  const kv = await Deno.openKv();
+  await kv.delete(["pubs", oldPubKey]);
+  await kv.set(["pubs", newPubKey], pub);
 }
 
 export async function getActivePubs(): Promise<Pub[]> {
-    const kv = await Deno.openKv();
-    const iter = kv.list({ prefix: ["pubs"] });
+  const kv = await Deno.openKv();
+  const iter = kv.list({ prefix: ["pubs"] });
 
-    const activePubs: Pub[] = [];
+  const activePubs: Pub[] = [];
 
-    for await (const entry of iter) {
-      const pub = entry.value as Pub;
-        
-      if (pub.isActive) {
-        activePubs.push(pub);
-      }
+  for await (const entry of iter) {
+    const pub = entry.value as Pub;
+
+    if (pub.isActive) {
+      activePubs.push(pub);
     }
-
-    return activePubs;
   }
 
-export async function setPubOccupancy(pubKey: PubKey, occupancy: number): Promise<void> {
-    const pub: Pub = await getPub(pubKey);
-    
-    if (occupancy < 0) {
-        throw new Error(`occupancy (${occupancy}) must be non-negative`);
-    }
-
-    if (occupancy > pub.capacity) {
-        throw new Error(`occupancy (${occupancy}) cannot exeed capacity (${pub.capacity})`);
-    }
-
-    pub.occupancy = occupancy;
-    
-    setPub(pubKey, pub);
+  return activePubs;
 }
 
-export async function updatePubOccupancy(pubKey: PubKey, delta: number): Promise<void> {
-    const pub: Pub = await getPub(pubKey);
-    const newOccupancy = pub.occupancy + delta;
+export async function setPubOccupancy(
+  pubKey: PubKey,
+  occupancy: number,
+): Promise<void> {
+  const pub: Pub = await getPub(pubKey);
 
-    setPubOccupancy(pubKey, newOccupancy);
+  if (occupancy < 0) {
+    throw new Error(`occupancy (${occupancy}) must be non-negative`);
+  }
+
+  if (occupancy > pub.capacity) {
+    throw new Error(
+      `occupancy (${occupancy}) cannot exeed capacity (${pub.capacity})`,
+    );
+  }
+
+  pub.occupancy = occupancy;
+
+  setPub(pubKey, pub);
 }
 
-export async function setPubCapacity(pubKey: PubKey, capacity: number): Promise<void> {
-    if (capacity < 0) {
-        throw new Error(`capacity (${capacity}) must be non-negative`);
-    }
+export async function updatePubOccupancy(
+  pubKey: PubKey,
+  delta: number,
+): Promise<void> {
+  const pub: Pub = await getPub(pubKey);
+  const newOccupancy = pub.occupancy + delta;
 
-    const pub: Pub = await getPub(pubKey);
-    
-    if (capacity < pub.occupancy) {
-        throw new Error(`capacity (${capacity}) must be greater than or equal to occupancy (${pub.occupancy}))`);
-    }
-
-    pub.capacity = capacity;
-    
-    setPub(pubKey, pub);
+  setPubOccupancy(pubKey, newOccupancy);
 }
 
-export async function setPubQueueStatus(pubKey: PubKey, queueStatus: QueueStatus): Promise<void> {
-    const pub: Pub = await getPub(pubKey);
-    pub.queueStatus = queueStatus;
-    
-    setPub(pubKey, pub);
+export async function setPubCapacity(
+  pubKey: PubKey,
+  capacity: number,
+): Promise<void> {
+  if (capacity < 0) {
+    throw new Error(`capacity (${capacity}) must be non-negative`);
+  }
+
+  const pub: Pub = await getPub(pubKey);
+
+  if (capacity < pub.occupancy) {
+    throw new Error(
+      `capacity (${capacity}) must be greater than or equal to occupancy (${pub.occupancy}))`,
+    );
+  }
+
+  pub.capacity = capacity;
+
+  setPub(pubKey, pub);
 }
 
-export async function setPubTheme(pubKey: PubKey, themeKey: ThemeKey): Promise<void> {
-    const pub: Pub = await getPub(pubKey);
-    pub.themeKey = themeKey;
-    
-    setPub(pubKey, pub);
+export async function setPubQueueStatus(
+  pubKey: PubKey,
+  queueStatus: QueueStatus,
+): Promise<void> {
+  const pub: Pub = await getPub(pubKey);
+  pub.queueStatus = queueStatus;
+
+  setPub(pubKey, pub);
+}
+
+export async function setPubTheme(
+  pubKey: PubKey,
+  themeKey: ThemeKey,
+): Promise<void> {
+  const pub: Pub = await getPub(pubKey);
+  pub.themeKey = themeKey;
+
+  setPub(pubKey, pub);
 }
