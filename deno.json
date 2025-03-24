@@ -1,7 +1,7 @@
 {
   "tasks": {
-    "dev": "deno run -A --node-modules-dir npm:vite",
-    "build": "deno run -A --node-modules-dir npm:vite build",
+    "dev": "deno run -A --node-modules-dir --unstable-kv npm:vite",
+    "build": "deno run -A --node-modules-dir --unstable-kv npm:vite build",
     "preview": "deno run -A --node-modules-dir npm:vite preview",
     "serve": "deno run -A build/index.js"
   },
@@ -13,6 +13,7 @@
     "autoprefixer": "npm:autoprefixer@^10.4.21",
     "postcss": "npm:postcss@^8.5.3",
     "svelte-adapter-deno": "npm:svelte-adapter-deno@^0.9.1",
+    "sveltekit-sse": "npm:sveltekit-sse@^0.13.16",
     "vite": "npm:vite@^6.2.2",
     "$app/*": "./.svelte-kit/deno/generated/client/app/*",
     "$lib/": "./src/lib/"

@@ -6,6 +6,8 @@ export interface Theme {
 
 export type ThemeKey = string;
 
+export type Themes = Map<ThemeKey, Theme>;
+
 export enum QueueStatus {
   EMPTY,
   SHORT,
@@ -24,3 +26,5 @@ export interface Pub {
 
 // Can this be restricted to onlu five char strings and no whitespace?
 export type PubKey = string;
+
+export type Pubs = Map<PubKey, Pub>;

@@ -1,63 +1,98 @@
-import { Pub, PubKey, QueueStatus, Theme, ThemeKey } from "$lib/types.ts";
+import {
+  Pub,
+  PubKey,
+  Pubs,
+  QueueStatus,
+  Theme,
+  ThemeKey,
+  Themes,
+} from "$lib/types.ts";
 
-const kv = await Deno.openKv();
+export const kv = await Deno.openKv("db.sqlite");
+
+export async function getThemes(): Promise<Themes> {
+  const res = await kv.get(["themes"]);
+
+  if (res.versionstamp === null) {
+    throw new Error(`There are no themes?!?!??!?!`);
+  }
+
+  return res.value as Themes;
+}
+
+export async function getTheme(themeKey: ThemeKey): Promise<Theme> {
+  const themes: Themes = await getThemes();
+
+  if (!themes.has(themeKey)) {
+    throw new Error(`Theme with themeKey "${themeKey}" not found`);
+  }
+
+  return themes.get(themeKey);
+}
 
 export async function setTheme(
   themeKey: ThemeKey,
   theme: Theme,
 ): Promise<void> {
-  await kv.set(["themes", themeKey], theme);
+  const themes: Themes = await getThemes();
+  themes.set(themeKey, theme);
+  await kv.set(["themes"], themes);
 }
 
-export async function getTheme(themeKey: ThemeKey): Promise<Theme> {
-  const res = await kv.get(["themes", themeKey]);
+export async function getPubs(): Promise<Pubs> {
+  const res = await kv.get(["pubs"]);
 
   if (res.versionstamp === null) {
-    throw new Error(`Theme with themeKey "${themeKey}" not found`);
+    return {} as Pubs;
   }
 
-  return res.value as Theme;
+  return new Map(Object.entries(JSON.parse(res.value))) as Pubs;
+}
+
+export async function setPubs(pubs: Pubs): Promise<void> {
+  await kv.set(["pubs"], JSON.stringify(Object.fromEntries(pubs)));
 }
 
 export async function setPub(pubKey: PubKey, pub: Pub): Promise<void> {
-  await kv.set(["pubs", pubKey], pub);
+  const pubs: Pubs = await getPubs();
+  pubs.set(pubKey, pub);
+  await setPubs(pubs);
 }
 
 export async function getPub(pubKey: PubKey): Promise<Pub> {
-  const res = await kv.get(["pubs", pubKey]);
+  const pubs: Pubs = await getPubs();
 
-  if (res.versionstamp === null) {
+  if (!pubs.has(pubKey)) {
     throw new Error(`Pub with pubKey "${pubKey}" not found`);
   }
 
-  return res.value as Pub;
+  return pubs.get(pubKey) as Pub;
 }
 
+// Might be a datarace here. Consult Melker or Simon for details.
 export async function updatePubKey(
   oldPubKey: PubKey,
   newPubKey: PubKey,
 ): Promise<void> {
   const pub: Pub = await getPub(oldPubKey);
+  const pubs: Pubs = await getPubs();
 
-  // Atomic to avoid race conditions
-  await kv.atomic()
-    .delete(["pubs", oldPubKey])
-    .set(["pubs", newPubKey], pub)
-    .commit();
+  pubs.delete(oldPubKey);
+  pubs.set(newPubKey, pub);
+
+  await setPubs(pubs);
 }
 
 export async function getActivePubs(): Promise<Pub[]> {
-  const iter = kv.list({ prefix: ["pubs"] });
+  const pubs: Pubs = await getPubs();
 
   const activePubs: Pub[] = [];
 
-  for await (const entry of iter) {
-    const pub = entry.value as Pub;
-
+  pubs.forEach((pub) => {
     if (pub.isActive) {
       activePubs.push(pub);
     }
-  }
+  });
 
   return activePubs;
 }
@@ -80,6 +115,7 @@ export async function setPubOccupancy(
 
   pub.occupancy = occupancy;
 
+  console.log(pub);
   await setPub(pubKey, pub);
 }
 

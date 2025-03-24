@@ -1,1 +1,8 @@
-<h1>Hello from Deno!</h1>
+<script lang="ts">
+    import { source } from "sveltekit-sse";
+    
+    const value  = source("/events").select("pub_update_count");
+</script>
+
+{$value}
+

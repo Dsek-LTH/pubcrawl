@@ -10,6 +10,7 @@
     "npm:autoprefixer@^10.4.21": "10.4.21_postcss@8.5.3",
     "npm:postcss@^8.5.3": "8.5.3",
     "npm:svelte-adapter-deno@~0.9.1": "0.9.1_@sveltejs+kit@2.20.0__@sveltejs+vite-plugin-svelte@5.0.3___svelte@5.23.1____acorn@8.14.1___vite@6.2.2__svelte@5.23.1___acorn@8.14.1__vite@6.2.2_rollup@3.29.5",
+    "npm:sveltekit-sse@~0.13.16": "0.13.16_@microsoft+fetch-event-source@2.0.1_@sveltejs+kit@2.20.0__@sveltejs+vite-plugin-svelte@5.0.3___svelte@5.23.1____acorn@8.14.1___vite@6.2.2__svelte@5.23.1___acorn@8.14.1__vite@6.2.2_svelte@5.23.1__acorn@8.14.1_@sveltejs+vite-plugin-svelte@5.0.3__svelte@5.23.1___acorn@8.14.1__vite@6.2.2_vite@6.2.2",
     "npm:vite@*": "6.2.2",
     "npm:vite@^6.2.2": "6.2.2"
   },
@@ -136,6 +137,9 @@
         "@jridgewell/resolve-uri",
         "@jridgewell/sourcemap-codec"
       ]
+    },
+    "@microsoft/fetch-event-source@2.0.1": {
+      "integrity": "sha512-W6CLUJ2eBMw3Rec70qrsEW0jOm/3twwJv21mrmj2yORiaVmVYGS4sSS5yUwvQc1ZlDLYGPnClVWmUUMagKNsfA=="
     },
     "@polka/url@1.0.0-next.28": {
       "integrity": "sha512-8LduaNlMZGwdZ6qWrKlfa+2M4gahzFkprZiAt2TF8uS0qQgBizKXpXURqvTJ4WtmupWxaLqjRb2UCTe72mu+Aw=="
@@ -625,6 +629,14 @@
         "zimmerframe"
       ]
     },
+    "sveltekit-sse@0.13.16_@microsoft+fetch-event-source@2.0.1_@sveltejs+kit@2.20.0__@sveltejs+vite-plugin-svelte@5.0.3___svelte@5.23.1____acorn@8.14.1___vite@6.2.2__svelte@5.23.1___acorn@8.14.1__vite@6.2.2_svelte@5.23.1__acorn@8.14.1_@sveltejs+vite-plugin-svelte@5.0.3__svelte@5.23.1___acorn@8.14.1__vite@6.2.2_vite@6.2.2": {
+      "integrity": "sha512-+ORJ5SDeNTYJrEJOQz2Wevsr0OgrZwI5VMT3lhr5vbn7NbClcm+CyXmqtPMtd0dk4B1OCzch34TNmRXoejHK9g==",
+      "dependencies": [
+        "@microsoft/fetch-event-source",
+        "@sveltejs/kit",
+        "svelte"
+      ]
+    },
     "totalist@3.0.1": {
       "integrity": "sha512-sf4i37nQ2LBx4m3wB74y+ubopq6W/dIzXg0FDGjsYnZHVa1Da8FH853wlL2gtUhg+xJXjfk3kUZS3BRoQeoQBQ=="
     },
@@ -758,6 +770,7 @@
       "npm:autoprefixer@^10.4.21",
       "npm:postcss@^8.5.3",
       "npm:svelte-adapter-deno@~0.9.1",
+      "npm:sveltekit-sse@~0.13.16",
       "npm:vite@^6.2.2"
     ]
   }

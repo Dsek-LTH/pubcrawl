@@ -1,1 +1,3 @@
-<p>admin</p>
+<form method="POST">
+    <button>button</button>
+</form>
