@@ -1,72 +1,45 @@
 import {
   Pub,
+  PubId,
   PubKey,
+  PubKeys,
   Pubs,
   QueueStatus,
   Theme,
-  ThemeKey,
+  ThemeId,
   Themes,
 } from "$lib/types.ts";
 
 export const kv = await Deno.openKv("db.sqlite");
 
-export async function getThemes(): Promise<Themes> {
-  const res = await kv.get(["themes"]);
+async function getPubKeys(): Promise<PubKeys> {
+    const res = await kv.get(["PubKeys"]);
+    
+    if (res.versionstamp === null) {
+        return new Map() as PubKeys;
+    }
 
-  if (res.versionstamp === null) {
-    throw new Error(`There are no themes?!?!??!?!`);
-  }
-
-  return res.value as Themes;
+    return res.value as PubKeys;
 }
 
-export async function getTheme(themeKey: ThemeKey): Promise<Theme> {
-  const themes: Themes = await getThemes();
-
-  if (!themes.has(themeKey)) {
-    throw new Error(`Theme with themeKey "${themeKey}" not found`);
-  }
-
-  return themes.get(themeKey);
+async function setPubKeys(pubKeys: PubKeys): Promise<void> {
+    await kv.set(["PubKeys"], pubKeys);
 }
 
-export async function setTheme(
-  themeKey: ThemeKey,
-  theme: Theme,
-): Promise<void> {
-  const themes: Themes = await getThemes();
-  themes.set(themeKey, theme);
-  await kv.set(["themes"], themes);
+export async function getPubId(pubKey: PubKey): Promise<PubId> {
+    const pubKeys: PubKeys = await getPubKeys();
+    
+    if (!pubKeys.has(pubKey)) {
+        throw new Error(`pubKey ${pubKey} does not exist`);
+    }
+    
+    return pubKeys.get(pubKey) as PubKey;
 }
 
-export async function getPubs(): Promise<Pubs> {
-  const res = await kv.get(["pubs"]);
-
-  if (res.versionstamp === null) {
-    return {} as Pubs;
-  }
-
-  return new Map(Object.entries(JSON.parse(res.value))) as Pubs;
-}
-
-export async function setPubs(pubs: Pubs): Promise<void> {
-  await kv.set(["pubs"], JSON.stringify(Object.fromEntries(pubs)));
-}
-
-export async function setPub(pubKey: PubKey, pub: Pub): Promise<void> {
-  const pubs: Pubs = await getPubs();
-  pubs.set(pubKey, pub);
-  await setPubs(pubs);
-}
-
-export async function getPub(pubKey: PubKey): Promise<Pub> {
-  const pubs: Pubs = await getPubs();
-
-  if (!pubs.has(pubKey)) {
-    throw new Error(`Pub with pubKey "${pubKey}" not found`);
-  }
-
-  return pubs.get(pubKey) as Pub;
+export async function setPubKeyIdPair(pubKey: PubKey, pubId: PubId): Promise<void> {
+    const pubKeys: PubKeys = await getPubKeys();
+    pubKeys.set(pubKey, pubId);
+    await setPubKeys(pubKeys);
 }
 
 // Might be a datarace here. Consult Melker or Simon for details.
@@ -74,23 +47,87 @@ export async function updatePubKey(
   oldPubKey: PubKey,
   newPubKey: PubKey,
 ): Promise<void> {
-  const pub: Pub = await getPub(oldPubKey);
+  const pubKeys: PubKeys = await getPubKeys();
+  const pubId: PubId = await getPubId(oldPubKey);
+
+  pubKeys.delete(oldPubKey);
+  pubKeys.set(newPubKey, pubId);
+
+  await setPubKeys(pubKeys);
+}
+
+export async function getThemes(): Promise<Themes> {
+  const res = await kv.get(["themes"]);
+
+  if (res.versionstamp === null) {
+        return new Map() as Themes;
+  }
+
+  return res.value as Themes;
+}
+
+export async function setThemes(themes: Themes): Promise<void> {
+    await kv.set(["themes"], themes);
+}
+
+export async function getTheme(themeId: ThemeId): Promise<Theme> {
+  const themes: Themes = await getThemes();
+
+  if (!themes.has(themeId)) {
+    throw new Error(`Theme with themeId "${themeId}" not found`);
+  }
+
+  return themes.get(themeId) as Theme;
+}
+
+export async function setTheme(
+  themeId: ThemeId,
+  theme: Theme,
+): Promise<void> {
+  const themes: Themes = await getThemes();
+  themes.set(themeId, theme);
+  await kv.set(["themes"], themes);
+}
+
+export async function getPubs(): Promise<Pubs> {
+  const res = await kv.get(["pubs"]);
+
+  if (res.versionstamp === null) {
+    return new Map() as Pubs;
+  }
+
+  return res.value as Pubs;
+}
+
+export async function setPubs(pubs: Pubs): Promise<void> {
+  await kv.set(["pubs"], pubs);
+}
+
+export async function setPub(pubId: PubId, pub: Pub): Promise<void> {
   const pubs: Pubs = await getPubs();
-
-  pubs.delete(oldPubKey);
-  pubs.set(newPubKey, pub);
-
+  pubs.set(pubId, pub);
   await setPubs(pubs);
 }
 
-export async function getActivePubs(): Promise<Pub[]> {
+export async function getPub(pubId: PubId): Promise<Pub> {
   const pubs: Pubs = await getPubs();
 
-  const activePubs: Pub[] = [];
+  if (!pubs.has(pubId)) {
+    throw new Error(`Pub with pubId "${pubId}" not found`);
+  }
 
-  pubs.forEach((pub) => {
+  return pubs.get(pubId) as Pub;
+}
+
+
+export async function getActivePubs(): Promise<Pubs> {
+  const pubs: Pubs = await getPubs();
+    console.log(pubs);
+  const activePubs: Pubs = {} as Pubs;
+
+  pubs.forEach((pub: Pub, pubId: PubId) => {
     if (pub.isActive) {
-      activePubs.push(pub);
+      activePubs.set(pubId, pub);
     }
   });
 
@@ -98,10 +135,10 @@ export async function getActivePubs(): Promise<Pub[]> {
 }
 
 export async function setPubOccupancy(
-  pubKey: PubKey,
+  pubId: PubId,
   occupancy: number,
 ): Promise<void> {
-  const pub: Pub = await getPub(pubKey);
+  const pub: Pub = await getPub(pubId);
 
   if (occupancy < 0) {
     throw new Error(`occupancy (${occupancy}) must be non-negative`);
@@ -116,28 +153,28 @@ export async function setPubOccupancy(
   pub.occupancy = occupancy;
 
   console.log(pub);
-  await setPub(pubKey, pub);
+  await setPub(pubId, pub);
 }
 
 export async function updatePubOccupancy(
-  pubKey: PubKey,
+  pubId: PubId,
   delta: number,
 ): Promise<void> {
-  const pub: Pub = await getPub(pubKey);
+  const pub: Pub = await getPub(pubId);
   const newOccupancy = pub.occupancy + delta;
 
-  await setPubOccupancy(pubKey, newOccupancy);
+  await setPubOccupancy(pubId, newOccupancy);
 }
 
 export async function setPubCapacity(
-  pubKey: PubKey,
+  pubId: PubId,
   capacity: number,
 ): Promise<void> {
   if (capacity < 0) {
     throw new Error(`capacity (${capacity}) must be non-negative`);
   }
 
-  const pub: Pub = await getPub(pubKey);
+  const pub: Pub = await getPub(pubId);
 
   if (capacity < pub.occupancy) {
     throw new Error(
@@ -147,25 +184,25 @@ export async function setPubCapacity(
 
   pub.capacity = capacity;
 
-  await setPub(pubKey, pub);
+  await setPub(pubId, pub);
 }
 
 export async function setPubQueueStatus(
-  pubKey: PubKey,
+  pubId: PubId,
   queueStatus: QueueStatus,
 ): Promise<void> {
-  const pub: Pub = await getPub(pubKey);
+  const pub: Pub = await getPub(pubId);
   pub.queueStatus = queueStatus;
 
-  await setPub(pubKey, pub);
+  await setPub(pubId, pub);
 }
 
 export async function setPubTheme(
-  pubKey: PubKey,
-  themeKey: ThemeKey,
+  pubId: PubId,
+  themeId: ThemeId,
 ): Promise<void> {
-  const pub: Pub = await getPub(pubKey);
-  pub.themeKey = themeKey;
+  const pub: Pub = await getPub(pubId);
+  pub.themeId = themeId;
 
-  await setPub(pubKey, pub);
+  await setPub(pubId, pub);
 }
