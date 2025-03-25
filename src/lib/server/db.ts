@@ -13,33 +13,36 @@ import {
 export const kv = await Deno.openKv("db.sqlite");
 
 async function getPubKeys(): Promise<PubKeys> {
-    const res = await kv.get(["PubKeys"]);
-    
-    if (res.versionstamp === null) {
-        return new Map() as PubKeys;
-    }
+  const res = await kv.get(["PubKeys"]);
 
-    return res.value as PubKeys;
+  if (res.versionstamp === null) {
+    return new Map() as PubKeys;
+  }
+
+  return res.value as PubKeys;
 }
 
 async function setPubKeys(pubKeys: PubKeys): Promise<void> {
-    await kv.set(["PubKeys"], pubKeys);
+  await kv.set(["PubKeys"], pubKeys);
 }
 
 export async function getPubId(pubKey: PubKey): Promise<PubId> {
-    const pubKeys: PubKeys = await getPubKeys();
-    
-    if (!pubKeys.has(pubKey)) {
-        throw new Error(`pubKey ${pubKey} does not exist`);
-    }
-    
-    return pubKeys.get(pubKey) as PubKey;
+  const pubKeys: PubKeys = await getPubKeys();
+
+  if (!pubKeys.has(pubKey)) {
+    throw new Error(`pubKey ${pubKey} does not exist`);
+  }
+
+  return pubKeys.get(pubKey) as PubKey;
 }
 
-export async function setPubKeyIdPair(pubKey: PubKey, pubId: PubId): Promise<void> {
-    const pubKeys: PubKeys = await getPubKeys();
-    pubKeys.set(pubKey, pubId);
-    await setPubKeys(pubKeys);
+export async function setPubKeyIdPair(
+  pubKey: PubKey,
+  pubId: PubId,
+): Promise<void> {
+  const pubKeys: PubKeys = await getPubKeys();
+  pubKeys.set(pubKey, pubId);
+  await setPubKeys(pubKeys);
 }
 
 // Might be a datarace here. Consult Melker or Simon for details.
@@ -57,17 +60,17 @@ export async function updatePubKey(
 }
 
 export async function getThemes(): Promise<Themes> {
-  const res = await kv.get(["themes"]);
+  const res = await kv.get(["Themes"]);
 
   if (res.versionstamp === null) {
-        return new Map() as Themes;
+    return new Map() as Themes;
   }
 
   return res.value as Themes;
 }
 
 export async function setThemes(themes: Themes): Promise<void> {
-    await kv.set(["themes"], themes);
+  await kv.set(["Themes"], themes);
 }
 
 export async function getTheme(themeId: ThemeId): Promise<Theme> {
@@ -86,11 +89,11 @@ export async function setTheme(
 ): Promise<void> {
   const themes: Themes = await getThemes();
   themes.set(themeId, theme);
-  await kv.set(["themes"], themes);
+  await kv.set(["Themes"], themes);
 }
 
 export async function getPubs(): Promise<Pubs> {
-  const res = await kv.get(["pubs"]);
+  const res = await kv.get(["Pubs"]);
 
   if (res.versionstamp === null) {
     return new Map() as Pubs;
@@ -100,7 +103,7 @@ export async function getPubs(): Promise<Pubs> {
 }
 
 export async function setPubs(pubs: Pubs): Promise<void> {
-  await kv.set(["pubs"], pubs);
+  await kv.set(["Pubs"], pubs);
 }
 
 export async function setPub(pubId: PubId, pub: Pub): Promise<void> {
@@ -119,11 +122,9 @@ export async function getPub(pubId: PubId): Promise<Pub> {
   return pubs.get(pubId) as Pub;
 }
 
-
 export async function getActivePubs(): Promise<Pubs> {
   const pubs: Pubs = await getPubs();
-    console.log(pubs);
-  const activePubs: Pubs = {} as Pubs;
+  const activePubs: Pubs = new Map() as Pubs;
 
   pubs.forEach((pub: Pub, pubId: PubId) => {
     if (pub.isActive) {
@@ -152,7 +153,6 @@ export async function setPubOccupancy(
 
   pub.occupancy = occupancy;
 
-  console.log(pub);
   await setPub(pubId, pub);
 }
 
