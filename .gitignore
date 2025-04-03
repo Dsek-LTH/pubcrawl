@@ -27,5 +27,5 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
 # SQLite
-db.sqlite-whl
+db.sqlite-wal
 db.sqlite-shm
