@@ -2,10 +2,18 @@
     import { enhance } from "$app/forms";
     import { source } from "sveltekit-sse";
     
-    const pubs_store = source("/events").select("pub_update");
+    const pubs_store = source("/events/pub-update").select("pubsUpdated");
+    const pub_keys_store = source("/events/pub-key-update").select("pubKeysUpdated");
+    const themes_store = source("/events/theme-update").select("themesUpdated");
 </script>
 
 { $pubs_store }
+<br>
+<br>
+{ $pub_keys_store }
+<br>
+<br>
+{ $themes_store }
 
 <form method="POST" use:enhance action="?/addTheme">
     <input type="text" name="themeId">
