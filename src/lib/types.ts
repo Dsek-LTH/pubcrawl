@@ -24,7 +24,6 @@ export interface Pub {
   themeId: ThemeId;
 }
 
-// Can this be restricted to onlu five char strings and no whitespace?
 export type PubId = string;
 
 export type Pubs = Map<PubId, Pub>;

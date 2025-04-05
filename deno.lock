@@ -12,7 +12,8 @@
     "npm:svelte-adapter-deno@~0.9.1": "0.9.1_@sveltejs+kit@2.20.0__@sveltejs+vite-plugin-svelte@5.0.3___svelte@5.23.1____acorn@8.14.1___vite@6.2.2__svelte@5.23.1___acorn@8.14.1__vite@6.2.2_rollup@3.29.5",
     "npm:sveltekit-sse@~0.13.16": "0.13.16_@microsoft+fetch-event-source@2.0.1_@sveltejs+kit@2.20.0__@sveltejs+vite-plugin-svelte@5.0.3___svelte@5.23.1____acorn@8.14.1___vite@6.2.2__svelte@5.23.1___acorn@8.14.1__vite@6.2.2_svelte@5.23.1__acorn@8.14.1_@sveltejs+vite-plugin-svelte@5.0.3__svelte@5.23.1___acorn@8.14.1__vite@6.2.2_vite@6.2.2",
     "npm:vite@*": "6.2.2",
-    "npm:vite@^6.2.2": "6.2.2"
+    "npm:vite@^6.2.2": "6.2.2",
+    "npm:zod@^3.24.2": "3.24.2"
   },
   "jsr": {
     "@std/assert@1.0.11": {
@@ -668,6 +669,9 @@
     },
     "zimmerframe@1.1.2": {
       "integrity": "sha512-rAbqEGa8ovJy4pyBxZM70hg4pE6gDgaQ0Sl9M3enG3I0d6H4XSAM3GeNGLKnsBpuijUow064sf7ww1nutC5/3w=="
+    },
+    "zod@3.24.2": {
+      "integrity": "sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ=="
     }
   },
   "remote": {
@@ -771,7 +775,8 @@
       "npm:postcss@^8.5.3",
       "npm:svelte-adapter-deno@~0.9.1",
       "npm:sveltekit-sse@~0.13.16",
-      "npm:vite@^6.2.2"
+      "npm:vite@^6.2.2",
+      "npm:zod@^3.24.2"
     ]
   }
 }

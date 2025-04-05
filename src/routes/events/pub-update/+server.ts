@@ -1,12 +1,14 @@
-import { getActivePubs, kv } from "$lib/server/db.ts";
+import { getPubs, kv } from "$lib/server/db.ts";
 import { produce } from "sveltekit-sse";
 
 export function POST() {
   return produce(async function start({ emit }) {
     const watcher = kv.watch([["Pubs"]]);
     for await (const change of watcher) {
-      emit("pubsUpdated", JSON.stringify(Object.fromEntries(await getActivePubs())));
+      emit(
+        "pubsUpdated",
+        JSON.stringify(Object.fromEntries(await getPubs())),
+      );
     }
-    console.log("SHOULD NEVER GET HERE");
   });
 }

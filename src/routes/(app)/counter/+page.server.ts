@@ -1,12 +1,27 @@
-import { fail } from "@sveltejs/kit";
+import { fail, redirect } from "@sveltejs/kit";
 import {
   getPub,
   getPubId,
+  getPubKeys,
   getTheme,
+  setPubOccupancy,
   updatePubOccupancy,
 } from "$lib/server/db.ts";
+import { type PubKeys } from "$lib/types.ts";
+import { Actions, PageServerLoad } from "./$types";
 
-export const actions = {
+export const load: PageServerLoad = async ({ cookies }) => {
+  const pubKey = cookies.get("pubKey");
+  const pubKeys: PubKeys = await getPubKeys();
+
+  if (!pubKey || !pubKeys.has(pubKey)) {
+    return redirect(302, "/login/counter");
+  }
+
+  return { pubId: await getPubId(pubKey) };
+};
+
+export const actions: Actions = {
   increment: async ({ cookies }) => {
     try {
       const pubKey = cookies.get("pubKey");
@@ -19,40 +34,17 @@ export const actions = {
       });
     }
   },
-
   decrement: async ({ cookies }) => {
-    try {
-      const pubKey = cookies.get("pubKey");
-      const pubId = await getPubId(pubKey);
-      await updatePubOccupancy(pubId, -1);
-    } catch (error) {
-      return fail(401, {
-        description: "Invalid pubKey",
-        error: error.message,
-      });
-    }
+    const pubKey = cookies.get("pubKey");
+    const pubId = await getPubId(pubKey);
+    await updatePubOccupancy(pubId, -1);
   },
-
-  verify: async ({ cookies, request }) => {
-    try {
-      const data = await request.formData();
-      const pubKey = data.get("pubKey");
-
-      // All these may fail
-      const pubId = await getPubId(pubKey);
-      const pub = await getPub(pubId);
-      const theme = await getTheme(pub.themeId);
-
-      // Maybe not want / for path?
-      cookies.set("pubKey", pubKey, { path: "/" });
-      cookies.set("theme", theme, { path: "/" });
-
-      return { theme };
-    } catch (error) {
-      return fail(401, {
-        description: "Invalid pubKey",
-        error: error.message,
-      });
-    }
+  reset: async ({ cookies }) => {
+    const pubKey = cookies.get("pubKey");
+    const pubId = await getPubId(pubKey);
+    await setPubOccupancy(pubId, 0);
   },
-};
+  logout: async ({ cookies }) => {
+    cookies.delete("pubKey", { path: "/" });
+  },
+} satisfies Actions;

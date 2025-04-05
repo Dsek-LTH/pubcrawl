@@ -1,18 +1,18 @@
 import {
-  Pub,
-  PubId,
-  PubKey,
-  PubKeys,
-  Pubs,
-  QueueStatus,
-  Theme,
-  ThemeId,
-  Themes,
+  type Pub,
+  type PubId,
+  type PubKey,
+  type PubKeys,
+  type Pubs,
+  type QueueStatus,
+  type Theme,
+  type ThemeId,
+  type Themes,
 } from "$lib/types.ts";
 
 export const kv = await Deno.openKv("db.sqlite");
 
-async function getPubKeys(): Promise<PubKeys> {
+export async function getPubKeys(): Promise<PubKeys> {
   const res = await kv.get(["PubKeys"]);
 
   if (res.versionstamp === null) {
@@ -22,7 +22,7 @@ async function getPubKeys(): Promise<PubKeys> {
   return res.value as PubKeys;
 }
 
-async function setPubKeys(pubKeys: PubKeys): Promise<void> {
+export async function setPubKeys(pubKeys: PubKeys): Promise<void> {
   await kv.set(["PubKeys"], pubKeys);
 }
 
@@ -89,7 +89,7 @@ export async function setTheme(
 ): Promise<void> {
   const themes: Themes = await getThemes();
   themes.set(themeId, theme);
-  await kv.set(["Themes"], themes);
+  await setThemes(themes);
 }
 
 export async function getPubs(): Promise<Pubs> {
@@ -141,15 +141,15 @@ export async function setPubOccupancy(
 ): Promise<void> {
   const pub: Pub = await getPub(pubId);
 
-  if (occupancy < 0) {
-    throw new Error(`occupancy (${occupancy}) must be non-negative`);
-  }
+  // if (occupancy < 0) {
+  //   throw new Error(`occupancy (${occupancy}) must be non-negative`);
+  // }
 
-  if (occupancy > pub.capacity) {
-    throw new Error(
-      `occupancy (${occupancy}) cannot exceed capacity (${pub.capacity})`,
-    );
-  }
+  // if (occupancy > pub.capacity) {
+  //   throw new Error(
+  //     `occupancy (${occupancy}) cannot exceed capacity (${pub.capacity})`,
+  //   );
+  // }
 
   pub.occupancy = occupancy;
 
@@ -176,11 +176,11 @@ export async function setPubCapacity(
 
   const pub: Pub = await getPub(pubId);
 
-  if (capacity < pub.occupancy) {
-    throw new Error(
-      `capacity (${capacity}) must be greater than or equal to occupancy (${pub.occupancy}))`,
-    );
-  }
+  // if (capacity < pub.occupancy) {
+  //   throw new Error(
+  //     `capacity (${capacity}) must be greater than or equal to occupancy (${pub.occupancy}))`,
+  //   );
+  // }
 
   pub.capacity = capacity;
 
