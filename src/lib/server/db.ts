@@ -16,7 +16,7 @@ export async function setPubKeyIdPairs(pubKeys: PubKeyIdPairs): Promise<void> {
 }
 
 export async function getPubKeyIdPairs(): Promise<PubKeyIdPairs> {
-  const res = await kv.get(["PubKeys"]);
+  const res = await kv.get(["PubKeyIdPairs"]);
 
   if (res.versionstamp === null) {
     return new Map() as PubKeyIdPairs;
