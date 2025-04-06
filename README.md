@@ -24,6 +24,13 @@ Ensure you have the following installed:
 - [Deno 2](https://deno.com/) – Required for development
 - [Docker](https://www.docker.com/) – Optional, for containerized environments
 
+### Installation
+1. Clone this repo
+2. Create a `.env` file in the project root and add `ADMIN_KEY=<password>`
+
+### Running
+Run any of the **Useful Commands** blow.
+
 ### Useful Commands
 
 | Command             | Description                                            |
