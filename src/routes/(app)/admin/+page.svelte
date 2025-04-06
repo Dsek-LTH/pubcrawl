@@ -94,7 +94,7 @@
 {/if}
 
 <h2>Create</h2>
-<CreateThemeForm form={form} createAction="?/createTheme"}>
+<CreateThemeForm form={form} createAction="?/createTheme">
 </CreateThemeForm>
 <br>
 
