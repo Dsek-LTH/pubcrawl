@@ -7,11 +7,11 @@ import {
   setTheme,
 } from "$lib/server/db.ts";
 import { ADMIN_KEY } from "$env/static/private";
-import { generatePubKeyString, randomizePubKeys } from "$lib/server/util.ts";
+import { randomizePubKeys } from "$lib/server/util.ts";
 import { QueueStatus } from "$lib/types.ts";
 import { type Actions, type PageServerLoad } from "./$types";
 import { fail, redirect } from "@sveltejs/kit";
-import { themeIdSchema, themeSchema } from "$lib/schemas/themeSchema.ts";
+import { themeSchema } from "$lib/schemas/themeSchema.ts";
 import { pubSchema } from "$lib/schemas/pubSchema.ts";
 import { pubKeyIdPairSchema } from "$lib/schemas/pubKeyIdPairSchema.ts";
 

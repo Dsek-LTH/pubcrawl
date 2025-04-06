@@ -1,5 +1,5 @@
 import { type Pub, type PubId, type PubKeys, type Pubs } from "$lib/types.ts";
-import { getPubs, setPubKeyIdPairs, setPubKeys } from "$lib/server/db.ts";
+import { getPubs, setPubKeyIdPairs } from "$lib/server/db.ts";
 
 export function generatePubKeyString(length: number = 5): string {
   const characters: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
