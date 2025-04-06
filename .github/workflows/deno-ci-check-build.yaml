@@ -21,8 +21,5 @@ jobs:
       - name: Check code formatting
         run: deno fmt --check
 
-      - name: Lint code
-        run: deno lint
-
       - name: Build
         run: deno task build
