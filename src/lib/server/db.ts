@@ -2,9 +2,8 @@ import {
   type Pub,
   type PubId,
   type PubKey,
-  type PubKeys,
+  type PubKeyIdPairs,
   type Pubs,
-  type QueueStatus,
   type Theme,
   type ThemeId,
   type Themes,
@@ -12,51 +11,67 @@ import {
 
 export const kv = await Deno.openKv("db.sqlite");
 
-export async function getPubKeys(): Promise<PubKeys> {
+export async function setPubKeyIdPairs(pubKeys: PubKeyIdPairs): Promise<void> {
+  await kv.set(["PubKeyIdPairs"], pubKeys);
+}
+
+export async function getPubKeyIdPairs(): Promise<PubKeyIdPairs> {
   const res = await kv.get(["PubKeys"]);
 
   if (res.versionstamp === null) {
-    return new Map() as PubKeys;
+    return new Map() as PubKeyIdPairs;
   }
 
-  return res.value as PubKeys;
+  return res.value as PubKeyIdPairs;
 }
 
-export async function setPubKeys(pubKeys: PubKeys): Promise<void> {
-  await kv.set(["PubKeys"], pubKeys);
-}
+export async function getPubKeyIdPairId(pubKey: PubKey): Promise<PubId> {
+  const pubKeyIdPairs: PubKeyIdPairs = await getPubKeyIdPairs();
 
-export async function getPubId(pubKey: PubKey): Promise<PubId> {
-  const pubKeys: PubKeys = await getPubKeys();
-
-  if (!pubKeys.has(pubKey)) {
+  if (!pubKeyIdPairs.has(pubKey)) {
     throw new Error(`pubKey ${pubKey} does not exist`);
   }
 
-  return pubKeys.get(pubKey) as PubKey;
+  return pubKeyIdPairs.get(pubKey) as PubId;
 }
 
 export async function setPubKeyIdPair(
   pubKey: PubKey,
   pubId: PubId,
 ): Promise<void> {
-  const pubKeys: PubKeys = await getPubKeys();
-  pubKeys.set(pubKey, pubId);
-  await setPubKeys(pubKeys);
+  const pubKeyIdPairs: PubKeyIdPairs = await getPubKeyIdPairs();
+
+  pubKeyIdPairs.set(pubKey, pubId);
+
+  await setPubKeyIdPairs(pubKeyIdPairs);
 }
 
-// Might be a datarace here. Consult Melker or Simon for details.
-export async function updatePubKey(
+export async function deletePubKeyIdPair(
+    pubKey: PubKey
+): Promise<void> {
+  const pubKeyIdPairs: PubKeyIdPairs = await getPubKeyIdPairs();
+
+  pubKeyIdPairs.delete(pubKey);
+
+  await setPubKeyIdPairs(pubKeyIdPairs);
+}
+
+// This might cause a datarace. Consult Melker or Simon for details.
+export async function updatePubKeyIdPairPubKey(
   oldPubKey: PubKey,
   newPubKey: PubKey,
 ): Promise<void> {
-  const pubKeys: PubKeys = await getPubKeys();
-  const pubId: PubId = await getPubId(oldPubKey);
+  const pubKeyIdPairs: PubKeyIdPairs = await getPubKeyIdPairs();
+  const pubId: PubId = await getPubKeyIdPairId(oldPubKey);
 
-  pubKeys.delete(oldPubKey);
-  pubKeys.set(newPubKey, pubId);
+  pubKeyIdPairs.delete(oldPubKey);
+  pubKeyIdPairs.set(newPubKey, pubId);
 
-  await setPubKeys(pubKeys);
+  await setPubKeyIdPairs(pubKeyIdPairs);
+}
+
+export async function setThemes(themes: Themes): Promise<void> {
+  await kv.set(["Themes"], themes);
 }
 
 export async function getThemes(): Promise<Themes> {
@@ -69,8 +84,13 @@ export async function getThemes(): Promise<Themes> {
   return res.value as Themes;
 }
 
-export async function setThemes(themes: Themes): Promise<void> {
-  await kv.set(["Themes"], themes);
+export async function setTheme(
+  themeId: ThemeId,
+  theme: Theme,
+): Promise<void> {
+  const themes: Themes = await getThemes();
+  themes.set(themeId, theme);
+  await setThemes(themes);
 }
 
 export async function getTheme(themeId: ThemeId): Promise<Theme> {
@@ -83,13 +103,32 @@ export async function getTheme(themeId: ThemeId): Promise<Theme> {
   return themes.get(themeId) as Theme;
 }
 
-export async function setTheme(
-  themeId: ThemeId,
-  theme: Theme,
+export async function deleteTheme(
+    themeId: ThemeId,
+): Promise<void> {
+
+  const themes: Themes = await getThemes();
+
+  themes.delete(themeId);
+
+  await setThemes(themes);
+}
+
+export async function updateThemeId(
+    oldThemeId: ThemeId,
+    newThemeId: ThemeId,
 ): Promise<void> {
   const themes: Themes = await getThemes();
-  themes.set(themeId, theme);
+  const theme: Theme = themes.get(oldThemeId);
+
+  themes.delete(oldThemeId);
+  themes.set(newThemeId, theme);
+
   await setThemes(themes);
+}
+
+export async function setPubs(pubs: Pubs): Promise<void> {
+  await kv.set(["Pubs"], pubs);
 }
 
 export async function getPubs(): Promise<Pubs> {
@@ -100,10 +139,6 @@ export async function getPubs(): Promise<Pubs> {
   }
 
   return res.value as Pubs;
-}
-
-export async function setPubs(pubs: Pubs): Promise<void> {
-  await kv.set(["Pubs"], pubs);
 }
 
 export async function setPub(pubId: PubId, pub: Pub): Promise<void> {
@@ -122,87 +157,20 @@ export async function getPub(pubId: PubId): Promise<Pub> {
   return pubs.get(pubId) as Pub;
 }
 
-export async function getActivePubs(): Promise<Pubs> {
+export async function deletePub(pubId: PubId): Promise<void> {
   const pubs: Pubs = await getPubs();
-  const activePubs: Pubs = new Map() as Pubs;
 
-  pubs.forEach((pub: Pub, pubId: PubId) => {
-    if (pub.isActive) {
-      activePubs.set(pubId, pub);
-    }
-  });
+  pubs.delete(pubId);
 
-  return activePubs;
+  await setPubs(pubs);
 }
 
-export async function setPubOccupancy(
-  pubId: PubId,
-  occupancy: number,
-): Promise<void> {
-  const pub: Pub = await getPub(pubId);
+export async function updatePubId(oldPubId: PubId, newPubId: PubId): Promise<void> {
+  const pubs: Pubs = await getPubs();
+  const pub: Pub = pubs.get(oldPubId);
 
-  // if (occupancy < 0) {
-  //   throw new Error(`occupancy (${occupancy}) must be non-negative`);
-  // }
+  pubs.delete(oldPubId);
+  pubs.set(newPubId, pub);
 
-  // if (occupancy > pub.capacity) {
-  //   throw new Error(
-  //     `occupancy (${occupancy}) cannot exceed capacity (${pub.capacity})`,
-  //   );
-  // }
-
-  pub.occupancy = occupancy;
-
-  await setPub(pubId, pub);
-}
-
-export async function updatePubOccupancy(
-  pubId: PubId,
-  delta: number,
-): Promise<void> {
-  const pub: Pub = await getPub(pubId);
-  const newOccupancy = pub.occupancy + delta;
-
-  await setPubOccupancy(pubId, newOccupancy);
-}
-
-export async function setPubCapacity(
-  pubId: PubId,
-  capacity: number,
-): Promise<void> {
-  if (capacity < 0) {
-    throw new Error(`capacity (${capacity}) must be non-negative`);
-  }
-
-  const pub: Pub = await getPub(pubId);
-
-  // if (capacity < pub.occupancy) {
-  //   throw new Error(
-  //     `capacity (${capacity}) must be greater than or equal to occupancy (${pub.occupancy}))`,
-  //   );
-  // }
-
-  pub.capacity = capacity;
-
-  await setPub(pubId, pub);
-}
-
-export async function setPubQueueStatus(
-  pubId: PubId,
-  queueStatus: QueueStatus,
-): Promise<void> {
-  const pub: Pub = await getPub(pubId);
-  pub.queueStatus = queueStatus;
-
-  await setPub(pubId, pub);
-}
-
-export async function setPubTheme(
-  pubId: PubId,
-  themeId: ThemeId,
-): Promise<void> {
-  const pub: Pub = await getPub(pubId);
-  pub.themeId = themeId;
-
-  await setPub(pubId, pub);
+  await setPubs(pubs);
 }

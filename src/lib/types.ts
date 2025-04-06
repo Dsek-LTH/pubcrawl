@@ -30,4 +30,4 @@ export type Pubs = Map<PubId, Pub>;
 
 export type PubKey = string;
 
-export type PubKeys = Map<PubKey, PubId>;
+export type PubKeyIdPairs = Map<PubKey, PubId>;
