@@ -7,11 +7,7 @@ import {
   setPubOccupancy,
   updatePubOccupancy,
 } from "$lib/server/db.ts";
-import {
-  type PubId,
-  type PubKey,
-  type PubKeyIdPairs,
-} from "$lib/types.ts";
+import { type PubId, type PubKey, type PubKeyIdPairs } from "$lib/types.ts";
 import { Actions, PageServerLoad } from "./$types";
 import { pubSchema } from "$lib/schemas/pubSchema.ts";
 

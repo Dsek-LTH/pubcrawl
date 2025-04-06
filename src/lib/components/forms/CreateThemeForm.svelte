@@ -1,9 +1,8 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
     import { type ActionData } from "./$types"
-    import { type Theme, type ThemeId } from "$lib/types.ts";
 
-    let { form, createAction }: {form: ActionData, updateAction: string, themeId: ThemeId, theme: Theme} = $props();
+    let { form, createAction }: {form: ActionData, createAction: string } = $props();
 
     let logo = $state("");
 

@@ -3,7 +3,7 @@
     import { type ActionData } from "./$types"
     import { type PubId } from "$lib/types.ts";
 
-    let { form, createAction, pubIds }: {form: ActionData, updateAction: string, pubIds: PubId[]} = $props();
+    let { form, createAction, pubIds }: {form: ActionData, createAction: string, pubIds: PubId[]} = $props();
 </script>
 
 <form method="POST" action={createAction} use:enhance>
