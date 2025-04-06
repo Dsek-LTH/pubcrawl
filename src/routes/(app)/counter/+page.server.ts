@@ -1,10 +1,8 @@
 import { fail, redirect } from "@sveltejs/kit";
 import {
-  deletePubKeyIdPair,
   getPub,
   getPubKeyIdPairId,
   getPubKeyIdPairs,
-  getTheme,
   setPub,
   setPubOccupancy,
   updatePubOccupancy,
@@ -13,7 +11,6 @@ import {
   type PubId,
   type PubKey,
   type PubKeyIdPairs,
-  QueueStatus,
 } from "$lib/types.ts";
 import { Actions, PageServerLoad } from "./$types";
 import { pubSchema } from "$lib/schemas/pubSchema.ts";
