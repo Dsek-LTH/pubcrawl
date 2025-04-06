@@ -22,6 +22,10 @@
     let theme: Theme = $derived(themes[pub?.themeId]);
 </script>
 
+<form method="POST" action="?/logout" use:enhance>
+    <button>Logout</button>
+</form>
+
 {#if theme}
     <h1>{theme.displayName}</h1>
 {/if}
@@ -38,7 +42,3 @@
     <button formaction="?/reset">reset</button>
 </form>
 <br>
-
-<form method="POST" action="?/logout" use:enhance>
-    <button>Logout</button>
-</form>

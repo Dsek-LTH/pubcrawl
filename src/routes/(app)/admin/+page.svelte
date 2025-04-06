@@ -31,6 +31,10 @@
     const themes: Pubs = $derived(JSON.parse($themes_store || "{}"))
 </script>
 
+<form method="POST" action="?/logout" use:enhance>
+    <button>Logout</button>
+</form>
+
 <h1>Keys</h1>
 
 <h2>Update</h2>
@@ -52,6 +56,7 @@
 </DeletePubKeyIdPairForm>
 <br>
 
+<h2>Utilities</h2>
 <form method="POST" use:enhance action="?/randomizePubKeyIdPairPubKeys">
     <button>Randomize Pub Keys</button>
 </form>
@@ -97,7 +102,3 @@
 <DeleteThemeForm form={form} deleteAction="?/deleteTheme" themeIds={Object.keys(themes)}>
 </DeleteThemeForm>
 <br>
-
-<form method="POST" action="?/logout" use:enhance>
-    <button>Logout</button>
-</form>
