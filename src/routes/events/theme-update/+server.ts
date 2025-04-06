@@ -3,8 +3,7 @@ import { produce } from "sveltekit-sse";
 
 export function POST() {
   return produce(async function start({ emit }) {
-    const watcher = kv.watch([["Themes"]]);
-    for await (const change of watcher) {
+    for await (const change of kv.watch([["Themes"]])) {
       emit(
         "themesUpdated",
         JSON.stringify(Object.fromEntries(await getThemes())),

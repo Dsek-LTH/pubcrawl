@@ -47,7 +47,7 @@ export async function setPubKeyIdPair(
 }
 
 export async function deletePubKeyIdPair(
-    pubKey: PubKey
+  pubKey: PubKey,
 ): Promise<void> {
   const pubKeyIdPairs: PubKeyIdPairs = await getPubKeyIdPairs();
 
@@ -104,9 +104,8 @@ export async function getTheme(themeId: ThemeId): Promise<Theme> {
 }
 
 export async function deleteTheme(
-    themeId: ThemeId,
+  themeId: ThemeId,
 ): Promise<void> {
-
   const themes: Themes = await getThemes();
 
   themes.delete(themeId);
@@ -115,8 +114,8 @@ export async function deleteTheme(
 }
 
 export async function updateThemeId(
-    oldThemeId: ThemeId,
-    newThemeId: ThemeId,
+  oldThemeId: ThemeId,
+  newThemeId: ThemeId,
 ): Promise<void> {
   const themes: Themes = await getThemes();
   const theme: Theme = themes.get(oldThemeId);
@@ -165,7 +164,10 @@ export async function deletePub(pubId: PubId): Promise<void> {
   await setPubs(pubs);
 }
 
-export async function updatePubId(oldPubId: PubId, newPubId: PubId): Promise<void> {
+export async function updatePubId(
+  oldPubId: PubId,
+  newPubId: PubId,
+): Promise<void> {
   const pubs: Pubs = await getPubs();
   const pub: Pub = pubs.get(oldPubId);
 
@@ -173,4 +175,25 @@ export async function updatePubId(oldPubId: PubId, newPubId: PubId): Promise<voi
   pubs.set(newPubId, pub);
 
   await setPubs(pubs);
+}
+
+export async function setPubOccupancy(
+  pubId: PubId,
+  occupancy: number,
+): Promise<void> {
+  const pub: Pub = await getPub(pubId);
+
+  pub.occupancy = occupancy;
+
+  await setPub(pubId, pub);
+}
+
+export async function updatePubOccupancy(
+  pubId: PubId,
+  delta: number,
+): Promise<void> {
+  await setPubOccupancy(
+    pubId,
+    (await getPub(pubId)).occupancy + delta,
+  );
 }

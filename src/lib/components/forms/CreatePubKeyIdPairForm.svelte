@@ -3,10 +3,17 @@
     import { type ActionData } from "./$types"
     import { type PubId } from "$lib/types.ts";
 
-    let { form, deleteAction, pubIds }: { form: ActionData, updateAction: string, pubIds: PubId[]} = $props();
+    let { form, createAction, pubIds }: {form: ActionData, updateAction: string, pubIds: PubId[]} = $props();
 </script>
 
-<form method="POST" action={deleteAction} use:enhance>
+<form method="POST" action={createAction} use:enhance>
+    <div>
+        <span>Counter Key:</span>
+        <input type="text" name="pubKey"/>
+        {#if form?.errors?.pubKey}
+            <p class="error">{form.errors.pubKey[0]}</p>
+        {/if}
+    </div>
     <div>
         <span>Pub:</span>
         <select name="pubId">
@@ -22,5 +29,5 @@
     {#if form?.errors?.general}
         <p class="error">{form.errors.general[0]}</p>
     {/if}
-    <button type="submit">Delete</button>
+    <button type="submit">Create</button>
 </form>

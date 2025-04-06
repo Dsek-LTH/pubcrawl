@@ -3,9 +3,11 @@ import { themeIdSchema } from "$lib/schemas/themeSchema.ts";
 
 export const pubIdSchema = z.string({ required_error: "Pub id is required" })
   .trim()
+  .min(1, { message: "Pub id is required" })
   .toLowerCase();
 
 export const pubSchema = z.object({
+  oldPubId: pubIdSchema.optional(),
   pubId: pubIdSchema,
   occupancy: z.coerce.number({ required_error: "Occupancy is required" }).int({
     message: "Occupancy must be an integer",

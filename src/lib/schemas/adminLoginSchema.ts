@@ -5,5 +5,3 @@ export const adminLoginSchema = z.object({
     .trim()
     .min(1, { message: "Admin key is required" }),
 });
-
-export type AdminLoginForm = z.infer<typeof adminLoginSchema>;

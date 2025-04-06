@@ -1,17 +1,19 @@
 import {
+  deletePub,
+  deletePubKeyIdPair,
+  deleteTheme,
   setPub,
   setPubKeyIdPair,
   setTheme,
-  updatePubKey,
 } from "$lib/server/db.ts";
 import { ADMIN_KEY } from "$env/static/private";
-import { randomizePubKeys } from "$lib/server/util.ts";
+import { generatePubKeyString, randomizePubKeys } from "$lib/server/util.ts";
 import { QueueStatus } from "$lib/types.ts";
 import { type Actions, type PageServerLoad } from "./$types";
 import { fail, redirect } from "@sveltejs/kit";
-import { themeSchema } from "$lib/schemas/themeSchema.ts";
+import { themeIdSchema, themeSchema } from "$lib/schemas/themeSchema.ts";
 import { pubSchema } from "$lib/schemas/pubSchema.ts";
-import { pubKeyIdPairSchema } from "$lib/schemas/pubKeySchema.ts";
+import { pubKeyIdPairSchema } from "$lib/schemas/pubKeyIdPairSchema.ts";
 
 export const load: PageServerLoad = async ({ cookies }) => {
   if (cookies.get("adminKey") !== ADMIN_KEY) {
@@ -20,21 +22,41 @@ export const load: PageServerLoad = async ({ cookies }) => {
 };
 
 export const actions: Actions = {
-  createPubKey: async ({ request, cookies }) => {
+  createPubKeyIdPair: async ({ request, cookies }) => {
     if (cookies.get("adminKey") !== ADMIN_KEY) {
       return fail(401, { message: "Unauthorized" });
     }
 
-    const data = Object.fromEntries(await request.formData());
+    const formData = Object.fromEntries(await request.formData());
+
+    const result = pubKeyIdPairSchema.pick({
+      pubKey: true,
+      pubId: true,
+    })
+      .safeParse(formData);
+
+    if (!result.success) {
+      const { fieldErrors } = result.error.flatten();
+
+      return fail(400, {
+        errors: fieldErrors,
+        values: result.data,
+      });
+    }
+    console.log(result.data.pubId);
+    await setPubKeyIdPair(
+      result.data.pubKey,
+      result.data.pubId,
+    );
   },
-  updatePubKey: async ({ request, cookies }) => {
+  updatePubKeyIdPair: async ({ request, cookies }) => {
     if (cookies.get("adminKey") !== ADMIN_KEY) {
       return fail(401, { message: "Unauthorized" });
     }
 
-    const data = Object.fromEntries(await request.formData());
+    const formData = Object.fromEntries(await request.formData());
 
-    const result = pubSchema.safeParse(pubKeyIdPairSchema);
+    const result = pubKeyIdPairSchema.safeParse(formData);
 
     if (!result.success) {
       const { fieldErrors } = result.error.flatten();
@@ -45,32 +67,68 @@ export const actions: Actions = {
       });
     }
 
-    const oldPubKey = data.get("oldPubKey").toUpperCase();
-    const newPubKey = data.get("newPubKey").toUpperCase();
+    // Maybe want to make this atomic
+    await deletePubKeyIdPair(result.data.oldPubKey);
+    await setPubKeyIdPair(result.data.pubKey, result.data.pubId);
+  },
+  deletePubKeyIdPair: async ({ request, cookies }) => {
+    if (cookies.get("adminKey") !== ADMIN_KEY) {
+      return fail(401, { message: "Unauthorized" });
+    }
 
-    await updatePubKey(oldPubKey, newPubKey);
+    const formData = Object.fromEntries(await request.formData());
+
+    const result = pubKeyIdPairSchema.pick({
+      pubKey: true,
+    })
+      .safeParse(formData);
+
+    if (!result.success) {
+      const { fieldErrors } = result.error.flatten();
+
+      return fail(400, {
+        errors: fieldErrors,
+        values: result.data,
+      });
+    }
+
+    await deletePubKeyIdPair(result.data.pubKey);
   },
-  deletePubKey: async ({ request }) => {
-    const data = Object.fromEntries(await request.formData());
-  },
-  randomizePubKeys: async () => {
+  randomizePubKeyIdPairPubKeys: async () => {
     await randomizePubKeys();
   },
-  createPub: async ({ request }) => {
-    const data = Object.fromEntries(await request.formData());
-    const pubKey = data.get("pubKey").toUpperCase();
-    const pubId = data.get("pubId");
-    const themeId = data.get("themeId");
-    await setPub(pubId, {
-      occupancy: 0,
-      capacity: 150,
-      intending: new Map(),
+  createPub: async ({ request, cookies }) => {
+    if (cookies.get("adminKey") !== ADMIN_KEY) {
+      return fail(401, { message: "Unauthorized" });
+    }
+
+    const formData = Object.fromEntries(await request.formData());
+
+    const result = pubSchema.pick({
+      pubId: true,
+      occupancy: true,
+      capacity: true,
+      themeId: true,
+    })
+      .safeParse(formData);
+
+    if (!result.success) {
+      const { fieldErrors } = result.error.flatten();
+
+      return fail(400, {
+        errors: fieldErrors,
+        values: result.data,
+      });
+    }
+
+    await setPub(result.data.pubId, {
+      occupancy: result.data.occupancy,
+      capacity: result.data.capacity,
+      intending: new Map<string, Date>(),
       queueStatus: QueueStatus.EMPTY,
       isActive: true,
-      themeId,
+      themeId: result.data.themeId,
     });
-
-    await setPubKeyIdPair(pubKey, pubId);
   },
   updatePub: async ({ request, cookies }) => {
     if (cookies.get("adminKey") !== ADMIN_KEY) {
@@ -90,6 +148,8 @@ export const actions: Actions = {
       });
     }
 
+    // Maybe want to make this atomic
+    await deletePub(result.data.oldPubId);
     await setPub(result.data.pubId, {
       occupancy: result.data.occupancy,
       capacity: result.data.capacity,
@@ -99,16 +159,34 @@ export const actions: Actions = {
       themeId: result.data.themeId,
     });
   },
-  deletePub: async ({ request }) => {
-    const data = Object.fromEntries(await request.formData());
+  deletePub: async ({ request, cookies }) => {
+    if (cookies.get("adminKey") !== ADMIN_KEY) {
+      return fail(401, { message: "Unauthorized" });
+    }
+
+    const formData = Object.fromEntries(await request.formData());
+
+    const result = pubSchema.pick({
+      pubId: true,
+    })
+      .safeParse(formData);
+
+    if (!result.success) {
+      const { fieldErrors } = result.error.flatten();
+
+      return fail(400, {
+        errors: fieldErrors,
+        values: result.data,
+      });
+    }
+
+    await deletePub(result.data.pubId);
   },
-  createTheme: async ({ request }) => {
-    const data = Object.fromEntries(await request.formData());
-    const themeId = data.get("themeId");
-    const displayName = data.get("displayName");
-    await setTheme(themeId, { displayName, logo: "", color: "" });
-  },
-  updateTheme: async ({ request }) => {
+  createTheme: async ({ request, cookies }) => {
+    if (cookies.get("adminKey") !== ADMIN_KEY) {
+      return fail(401, { message: "Unauthorized" });
+    }
+
     const formData = Object.fromEntries(await request.formData());
 
     const result = themeSchema.safeParse(formData);
@@ -128,7 +206,52 @@ export const actions: Actions = {
       color: result.data.color,
     });
   },
-  deleteTheme: async ({ request }) => {
-    const data = Object.fromEntries(await request.formData());
+  updateTheme: async ({ request, cookies }) => {
+    if (cookies.get("adminKey") !== ADMIN_KEY) {
+      return fail(401, { message: "Unauthorized" });
+    }
+
+    const formData = Object.fromEntries(await request.formData());
+
+    const result = themeSchema.safeParse(formData);
+
+    if (!result.success) {
+      const { fieldErrors } = result.error.flatten();
+
+      return fail(400, {
+        errors: fieldErrors,
+        values: result.data,
+      });
+    }
+
+    await deleteTheme(result.data.oldThemeId);
+    await setTheme(result.data.themeId, {
+      displayName: result.data.displayName,
+      logo: result.data.logo,
+      color: result.data.color,
+    });
+  },
+  deleteTheme: async ({ request, cookies }) => {
+    if (cookies.get("adminKey") !== ADMIN_KEY) {
+      return fail(401, { message: "Unauthorized" });
+    }
+
+    const formData = Object.fromEntries(await request.formData());
+
+    const result = themeSchema.pick({
+      themeId: true,
+    })
+      .safeParse(formData);
+
+    if (!result.success) {
+      const { fieldErrors } = result.error.flatten();
+
+      return fail(400, {
+        errors: fieldErrors,
+        values: result.data,
+      });
+    }
+
+    await deleteTheme(result.data.themeId);
   },
 };

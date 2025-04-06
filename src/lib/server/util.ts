@@ -1,5 +1,5 @@
 import { type Pub, type PubId, type PubKeys, type Pubs } from "$lib/types.ts";
-import { getPubs, setPubKeys } from "$lib/server/db.ts";
+import { getPubs, setPubKeyIdPairs, setPubKeys } from "$lib/server/db.ts";
 
 export function generatePubKeyString(length: number = 5): string {
   const characters: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -15,18 +15,18 @@ export function generatePubKeyString(length: number = 5): string {
 }
 
 export async function randomizePubKeys(): Promise<void> {
-  const newPubKeys: PubKeys = new Map() as PubKeys;
+  const newPubKeyIdPairs: PubKeys = new Map() as PubKeys;
   const pubs: Pubs = await getPubs();
 
   pubs.forEach((_: Pub, pubId: PubId): void => {
-    let newKey: string;
+    let newPubKey: string;
 
     do {
-      newKey = generatePubKeyString();
-    } while (newPubKeys.has(newKey));
+      newPubKey = generatePubKeyString();
+    } while (newPubKeyIdPairs.has(newPubKey));
 
-    newPubKeys.set(newKey, pubId);
+    newPubKeyIdPairs.set(newPubKey, pubId);
   });
 
-  await setPubKeys(newPubKeys);
+  await setPubKeyIdPairs(newPubKeyIdPairs);
 }

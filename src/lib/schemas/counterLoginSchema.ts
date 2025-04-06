@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { pubKeySchema } from "$lib/schemas/pubKeySchema.ts";
+import { pubKeySchema } from "./pubKeyIdPairSchema.ts";
 
 export const counterLoginSchema = z.object({
   pubKey: pubKeySchema,

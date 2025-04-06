@@ -16,3 +16,8 @@
     </div>
 </footer>
 
+<style>
+    :global(img) {
+        width: 64px;
+    }
+</style>

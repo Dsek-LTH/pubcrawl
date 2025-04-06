@@ -1,3 +1,7 @@
+<svelte:head>
+    <title>Pubcrawl</title>
+</svelte:head>
+
 <script lang="ts">
     import { source } from "sveltekit-sse";
     

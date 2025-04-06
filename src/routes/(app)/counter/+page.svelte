@@ -1,10 +1,16 @@
+<svelte:head>
+    <title>Pubcrawl - Counter</title>
+</svelte:head>
+
 <script lang="ts">
     import { enhance } from "$app/forms";
     import { source } from "sveltekit-sse";
-    import { type PageData } from "./$types";
+    import { type PageProps } from "./$types";
     import { type PubId, type Pub, type Pubs, type Theme, type Themes } from "$lib/types";
 
-    let { data }: { data: PageData } = $props();
+    import PartialPubUpdateForm from "$lib/components/forms/PartialPubUpdateForm.svelte"
+
+    let { data, form }: PageProps = $props();
 
     const pubs_store = source("/events/pub-update").select("pubsUpdated");
     const themes_store = source("/events/theme-update").select("themesUpdated");
@@ -21,14 +27,17 @@
 {/if}
 
 {#if pub}
-    {JSON.stringify(pub)}
+    <PartialPubUpdateForm form={form} updateAction="?/updatePub" pub={pub}>
+    </PartialPubUpdateForm>
 {/if}
+<br>
 
 <form method="POST" use:enhance>
     <button formaction="?/increment">+</button>
     <button formaction="?/decrement">-</button>
     <button formaction="?/reset">reset</button>
 </form>
+<br>
 
 <form method="POST" action="?/logout" use:enhance>
     <button>Logout</button>
