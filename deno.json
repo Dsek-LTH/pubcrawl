@@ -15,8 +15,6 @@
     "svelte-adapter-deno": "npm:svelte-adapter-deno@^0.9.1",
     "sveltekit-sse": "npm:sveltekit-sse@^0.13.16",
     "vite": "npm:vite@^6.2.2",
-    "$app/*": "./.svelte-kit/deno/generated/client/app/*",
-    "$lib/": "./src/lib/",
     "zod": "npm:zod@^3.24.2"
   }
 }
