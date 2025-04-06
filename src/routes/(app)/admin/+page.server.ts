@@ -254,4 +254,11 @@ export const actions: Actions = {
 
     await deleteTheme(result.data.themeId);
   },
+  logout: async ({ cookies }) => {
+    if (cookies.get("adminKey") !== ADMIN_KEY) {
+      return fail(401, { message: "Unauthorized" });
+    }
+
+    cookies.delete("adminKey", { path: "/" });
+  },
 };

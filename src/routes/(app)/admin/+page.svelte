@@ -97,3 +97,7 @@
 <DeleteThemeForm form={form} deleteAction="?/deleteTheme" themeIds={Object.keys(themes)}>
 </DeleteThemeForm>
 <br>
+
+<form method="POST" action="?/logout" use:enhance>
+    <button>Logout</button>
+</form>

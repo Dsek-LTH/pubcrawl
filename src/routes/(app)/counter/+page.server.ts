@@ -108,6 +108,13 @@ export const actions: Actions = {
     });
   },
   logout: async ({ cookies }) => {
+    const pubKey: PubKey = cookies.get("pubKey");
+    const pubKeyIdPairs: PubKeyIdPairs = await getPubKeyIdPairs();
+
+    if (!pubKey || !pubKeyIdPairs.has(pubKey)) {
+      return fail(401, { message: "Unauthorized" });
+    }
+
     cookies.delete("pubKey", { path: "/" });
   },
 } satisfies Actions;
