@@ -1,5 +1,9 @@
+<script lang="ts">
+import "../app.css";
+</script>
+
 <header>
-    <nav>
+    <nav class="navbar bg-base-200">
         <a href="/">Home</a>
         <a href="/about">About</a>
         <a href="/counter">Counter</a>
