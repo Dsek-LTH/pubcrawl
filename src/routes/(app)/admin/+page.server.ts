@@ -6,7 +6,7 @@ import {
   setPubKeyIdPair,
   setTheme,
 } from "$lib/server/db.ts";
-import { ADMIN_KEY } from "$env/static/private";
+import { env } from "$env/dynamic/private";
 import { randomizePubKeys } from "$lib/server/util.ts";
 import { QueueStatus } from "$lib/types.ts";
 import { type Actions, type PageServerLoad } from "./$types";
@@ -16,14 +16,14 @@ import { pubSchema } from "$lib/schemas/pubSchema.ts";
 import { pubKeyIdPairSchema } from "$lib/schemas/pubKeyIdPairSchema.ts";
 
 export const load: PageServerLoad = async ({ cookies }) => {
-  if (cookies.get("adminKey") !== ADMIN_KEY) {
+  if (cookies.get("adminKey") !== env.ADMIN_KEY) {
     return redirect(302, "/login/admin");
   }
 };
 
 export const actions: Actions = {
   createPubKeyIdPair: async ({ request, cookies }) => {
-    if (cookies.get("adminKey") !== ADMIN_KEY) {
+    if (cookies.get("adminKey") !== env.ADMIN_KEY) {
       return fail(401, { message: "Unauthorized" });
     }
 
@@ -50,7 +50,7 @@ export const actions: Actions = {
     );
   },
   updatePubKeyIdPair: async ({ request, cookies }) => {
-    if (cookies.get("adminKey") !== ADMIN_KEY) {
+    if (cookies.get("adminKey") !== env.ADMIN_KEY) {
       return fail(401, { message: "Unauthorized" });
     }
 
@@ -72,7 +72,7 @@ export const actions: Actions = {
     await setPubKeyIdPair(result.data.pubKey, result.data.pubId);
   },
   deletePubKeyIdPair: async ({ request, cookies }) => {
-    if (cookies.get("adminKey") !== ADMIN_KEY) {
+    if (cookies.get("adminKey") !== env.ADMIN_KEY) {
       return fail(401, { message: "Unauthorized" });
     }
 
@@ -98,7 +98,7 @@ export const actions: Actions = {
     await randomizePubKeys();
   },
   createPub: async ({ request, cookies }) => {
-    if (cookies.get("adminKey") !== ADMIN_KEY) {
+    if (cookies.get("adminKey") !== env.ADMIN_KEY) {
       return fail(401, { message: "Unauthorized" });
     }
 
@@ -131,7 +131,7 @@ export const actions: Actions = {
     });
   },
   updatePub: async ({ request, cookies }) => {
-    if (cookies.get("adminKey") !== ADMIN_KEY) {
+    if (cookies.get("adminKey") !== env.ADMIN_KEY) {
       return fail(401, { message: "Unauthorized" });
     }
 
@@ -160,7 +160,7 @@ export const actions: Actions = {
     });
   },
   deletePub: async ({ request, cookies }) => {
-    if (cookies.get("adminKey") !== ADMIN_KEY) {
+    if (cookies.get("adminKey") !== env.ADMIN_KEY) {
       return fail(401, { message: "Unauthorized" });
     }
 
@@ -183,7 +183,7 @@ export const actions: Actions = {
     await deletePub(result.data.pubId);
   },
   createTheme: async ({ request, cookies }) => {
-    if (cookies.get("adminKey") !== ADMIN_KEY) {
+    if (cookies.get("adminKey") !== env.ADMIN_KEY) {
       return fail(401, { message: "Unauthorized" });
     }
 
@@ -207,7 +207,7 @@ export const actions: Actions = {
     });
   },
   updateTheme: async ({ request, cookies }) => {
-    if (cookies.get("adminKey") !== ADMIN_KEY) {
+    if (cookies.get("adminKey") !== env.ADMIN_KEY) {
       return fail(401, { message: "Unauthorized" });
     }
 
@@ -232,7 +232,7 @@ export const actions: Actions = {
     });
   },
   deleteTheme: async ({ request, cookies }) => {
-    if (cookies.get("adminKey") !== ADMIN_KEY) {
+    if (cookies.get("adminKey") !== env.ADMIN_KEY) {
       return fail(401, { message: "Unauthorized" });
     }
 
@@ -255,7 +255,7 @@ export const actions: Actions = {
     await deleteTheme(result.data.themeId);
   },
   logout: async ({ cookies }) => {
-    if (cookies.get("adminKey") !== ADMIN_KEY) {
+    if (cookies.get("adminKey") !== env.ADMIN_KEY) {
       return fail(401, { message: "Unauthorized" });
     }
 

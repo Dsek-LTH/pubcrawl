@@ -6,7 +6,7 @@ import { type Actions, type PageServerLoad } from "./$types";
 export const load: PageServerLoad = async ({ cookies }) => {
   const adminKey = cookies.get("adminKey");
 
-  if (adminKey === ADMIN_KEY) {
+  if (adminKey === env.ADMIN_KEY) {
     return redirect(303, "/admin");
   }
 };
@@ -27,7 +27,7 @@ export const actions: Actions = {
 
     const adminKey: string = result.data.adminKey;
 
-    if (adminKey !== ADMIN_KEY) {
+    if (adminKey !== env.ADMIN_KEY) {
       return fail(401, {
         errors: {
           general: ["Invalid admin key"],
