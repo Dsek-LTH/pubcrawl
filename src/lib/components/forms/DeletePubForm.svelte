@@ -6,10 +6,12 @@
     let { form, deleteAction, pubIds }: { form: ActionData, deleteAction: string, pubIds: PubId[]} = $props();
 </script>
 
-<form method="POST" action={deleteAction} use:enhance>
+<div class="card w-6/12 bg-base-300">
+    <div class="card-body">
+        <h2 class="card-title">Delete pub</h2>
+<form method="POST" class="flex flex-col gap-1" action={deleteAction} use:enhance>
     <div>
-        <span>Pub:</span>
-        <select name="pubId">
+        <select class="select w-full" name="pubId">
             <option value="" selected disabled hidden>Select pub</option>
             {#each pubIds as pubIdOption}
                 <option value={pubIdOption}>{pubIdOption}</option>
@@ -22,5 +24,7 @@
     {#if form?.errors?.general}
         <p class="error">{form.errors.general[0]}</p>
     {/if}
-    <button type="submit">Delete</button>
+    <button class="btn btn-primary" type="submit">Delete</button>
 </form>
+</div>
+</div>

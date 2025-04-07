@@ -6,7 +6,7 @@
 </script>
 
 <form method="POST" action={loginAction} use:enhance>
-    <input type="password" name="adminKey" placeholder="Admin Key">
+    <input class="input" type="password" name="adminKey" placeholder="Admin Key">
     {#if form?.errors?.adminKey}
         <p class="error">{form.errors.adminKey[0]}</p>
     {/if}
@@ -15,5 +15,5 @@
         <p class="error">{form.errors.general[0]}</p>
     {/if}
 
-    <button>Login</button>
+    <button class="btn btn-primary">Login</button>
 </form>

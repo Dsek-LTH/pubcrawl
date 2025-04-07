@@ -1,24 +1,21 @@
 <script lang="ts">
-import "../app.css";
+import '../app.css';
 </script>
 
-<header>
-    <nav class="navbar bg-base-200">
-        <a href="/">Home</a>
-        <a href="/about">About</a>
-        <a href="/counter">Counter</a>
-        <a href="/admin">Admin</a>
+    <nav class="navbar bg-base-300">
+        <div class="navbar-start">
+        <a class="btn btn-ghost" href="/">Home</a>
+        <a class="btn btn-ghost" href="/about">About</a>
+        </div>
+        <div class="navbar-end">
+        <a class="btn btn-ghost" href="/counter">Counter</a>
+        <a class="btn btn-ghost" href="/admin">Admin</a>
+        </div>
     </nav>
-</header>
 
+<main class="mx-auto w-11/12 sm:w-10/12 lg:w-8/12 mt-3 text-center sm:text-left">
 <slot />
-
-<footer>
-    <div>
-        <p>Powered by Dsek</p>
-        <a href="https://github.com/Dsek-LTH/pubcrawl">Source Code</a>
-    </div>
-</footer>
+</main>
 
 <style>
     :global(img) {

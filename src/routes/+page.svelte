@@ -13,12 +13,12 @@
 </script>
 
 {#if pubs && themes}
-    <table>
+    <table class="table">
         <thead>
             <tr>
                 <th>Pub</th>
                 <th>Occupancy</th>
-                <th>Capacity</th>
+                <th class="hidden sm:table-cell">Capacity</th>
                 <th>Full %</th>
             </tr>
         </thead>
@@ -26,10 +26,10 @@
             {#each Object.entries(pubs).filter(([_, pub]) => pub.isActive) as [ pubId, pub ]}
 
                 <tr>
-                    <td>{themes[pub.themeId]?.displayName || "Unknown"}</td>
+                    <td class="border-l-6" style="border-color:{themes[pub.themeId]?.color}">{themes[pub.themeId]?.displayName || "Unknown"}</td>
                     <td>{pub.occupancy}</td>
-                    <td>{pub.capacity}</td>
-                    <td>{pub.occupancy / pub.capacity * 100}</td>
+                    <td class="hidden sm:table-cell">{pub.capacity}</td>
+                    <td><progress class="progress" style="color:{themes[pub.themeId]?.color}" value={pub.occupancy} max={pub.capacity}></progress></td>
                 </tr>
 
             {/each}

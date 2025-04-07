@@ -19,32 +19,34 @@
         }
     }
 </script>
-
-<form method="POST" action={createAction} use:enhance>
-    <div>
-        <span>Id:</span>
+<div class="card w-6/12 bg-base-300">
+<div class="card-body">
+    <h2 class="card-title">Create theme</h2>
+<form method="POST" class="flex flex-col gap-1" action={createAction} use:enhance>
+    <div class="input w-full">
+        <span class="label">Id:</span>
         <input type="text" name="themeId"/>
         {#if form?.errors?.themeId}
             <p class="error">{form.errors.themeId[0]}</p>
         {/if}
     </div>
-    <div>
+    <div class="w-full">
         <img src={logo} alt="">
-        <input type="file" accept="image/*" onchange={handleFileChange} />
+        <input class="file-input w-full" type="file" accept="image/*" onchange={handleFileChange} />
         <input type="hidden" name="logo" value={logo} />
         {#if form?.errors?.logo}
             <p class="error">{form.errors.logo[0]}</p>
         {/if}
     </div>
-    <div>
-        <span>Display Name:</span>
+    <div class="input w-full">
+        <span class="label">Display Name:</span>
         <input name="displayName"/>
         {#if form?.errors?.displayName}
             <p class="error">{form.errors.displayName[0]}</p>
         {/if}
     </div>
-    <div>
-        <span>Color:</span>
+    <div class="input w-full">
+        <span class="label">Color:</span>
         <input type="color" name="color"/>
         {#if form?.errors?.color}
             <p class="error">{form.errors.color[0]}</p>
@@ -53,5 +55,7 @@
     {#if form?.errors?.general}
         <p class="error">{form.errors.general[0]}</p>
     {/if}
-    <button type="submit">Create</button>
+    <button class="btn btn-primary" type="submit">Create</button>
 </form>
+</div>
+</div>
