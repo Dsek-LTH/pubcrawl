@@ -4,9 +4,10 @@ import { getPubs, setPubKeyIdPairs } from "$lib/server/db.ts";
 export function generatePubKeyString(length: number = 5): string {
   const characters: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-  return Array.from({ length }, () => 
-    characters.charAt(Math.floor(Math.random() * characters.length))
-  ).join('');
+  return Array.from(
+    { length },
+    () => characters.charAt(Math.floor(Math.random() * characters.length)),
+  ).join("");
 }
 
 export async function randomizePubKeys(): Promise<void> {
