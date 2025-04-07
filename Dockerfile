@@ -8,7 +8,7 @@ RUN deno cache deno.json
 COPY . .
 RUN deno task build
 
-RUN chgrp -R 0 .
+RUN chmod -R g+w .
 
 ENV PORT=11337
 EXPOSE 11337
