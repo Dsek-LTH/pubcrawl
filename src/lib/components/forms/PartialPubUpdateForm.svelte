@@ -18,20 +18,6 @@
             <p class="error">{form.errors.occupancy[0]}</p>
         {/if}
     </div>
-    <div>
-        <span>Capacity:</span>
-        <input type="text" name="capacity" value={pub.capacity}/>
-        {#if form?.errors?.capacity}
-            <p class="error">{form.errors.capacity[0]}</p>
-        {/if}
-    </div>
-    <div>
-        <span>Active:</span>
-        <input type="checkbox" name="isActive" value={pub.isActive} checked={pub.isActive}/>
-        {#if form?.errors?.capacity}
-            <p class="error">{form.errors.capacity[0]}</p>
-        {/if}
-    </div>
     {#if form?.errors?.general}
         <p class="error">{form.errors.general[0]}</p>
     {/if}

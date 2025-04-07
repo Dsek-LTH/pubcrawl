@@ -76,8 +76,6 @@ export const actions: Actions = {
 
     const result = pubSchema.pick({
       occupancy: true,
-      capacity: true,
-      isActive: true,
     })
       .safeParse(formData);
 
@@ -90,15 +88,10 @@ export const actions: Actions = {
       });
     }
 
-    const pub = await getPub(pubId);
-    await setPub(pubId, {
-      occupancy: result.data.occupancy,
-      capacity: result.data.capacity,
-      intending: pub.intending,
-      queueStatus: pub.queueStatus,
-      isActive: result.data.isActive,
-      themeId: pub.themeId,
-    });
+    await setPubOccupancy(
+      await getPubKeyIdPairId(pubKey),
+      result.data.occupancy,
+    );
   },
   logout: async ({ cookies }) => {
     const pubKey: PubKey = cookies.get("pubKey");
