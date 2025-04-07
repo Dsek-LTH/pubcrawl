@@ -10,7 +10,7 @@ export function generatePubKeyString(length: number = 5): string {
 }
 
 export async function randomizePubKeys(): Promise<void> {
-  const newPubKeyIdPairs: PubKeys = new Map() as PubKeys;
+  const newPubKeyIdPairs: PubKeys = new Map();
   const pubs: Pubs = await getPubs();
 
   pubs.forEach((_: Pub, pubId: PubId): void => {
