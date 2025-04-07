@@ -13,7 +13,7 @@ export async function randomizePubKeys(): Promise<void> {
   const newPubKeyIdPairs: PubKeys = new Map();
   const pubs: Pubs = await getPubs();
 
-  pubs.forEach((_: Pub, pubId: PubId): void => {
+  for (const [pubId] of pubs) {
     let newPubKey: string;
 
     do {
@@ -21,7 +21,7 @@ export async function randomizePubKeys(): Promise<void> {
     } while (newPubKeyIdPairs.has(newPubKey));
 
     newPubKeyIdPairs.set(newPubKey, pubId);
-  });
+  }
 
   await setPubKeyIdPairs(newPubKeyIdPairs);
 }
