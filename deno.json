@@ -1,4 +1,8 @@
 {
+  "compilerOptions": {
+    "checkJs": true,
+    "lib": ["dom", "dom.iterable", "dom.asynciterable", "deno.ns"]
+  },
   "tasks": {
     "dev": "deno run -A --node-modules-dir --unstable-kv npm:vite",
     "build": "deno run -A --node-modules-dir --unstable-kv npm:vite build",
@@ -8,13 +12,17 @@
   "imports": {
     "@deno/vite-plugin": "npm:@deno/vite-plugin@^1.0.4",
     "@std/assert": "jsr:@std/assert@1",
-    "@sveltejs/kit": "npm:@sveltejs/kit@^2.20.0",
+    "@sveltejs/adapter-auto": "npm:@sveltejs/adapter-auto@^6.0.0",
+    "@sveltejs/kit": "npm:@sveltejs/kit@^2.20.4",
     "@sveltejs/vite-plugin-svelte": "npm:@sveltejs/vite-plugin-svelte@^5.0.3",
     "autoprefixer": "npm:autoprefixer@^10.4.21",
     "postcss": "npm:postcss@^8.5.3",
+    "svelte": "npm:svelte@^5.25.8",
     "svelte-adapter-deno": "npm:svelte-adapter-deno@^0.9.1",
     "sveltekit-sse": "npm:sveltekit-sse@^0.13.16",
-    "vite": "npm:vite@^6.2.2",
+    "vite": "npm:vite@^6.2.5",
     "zod": "npm:zod@^3.24.2"
-  }
+  },
+  "exclude": [".svelte-kit/"],
+  "nodeModulesDir": "auto"
 }
