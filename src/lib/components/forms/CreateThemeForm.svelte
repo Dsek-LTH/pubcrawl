@@ -20,7 +20,12 @@
     }
 </script>
 
-<form method="POST" action={createAction} use:enhance>
+<form method="POST" action={ createAction } use:enhance={() => {
+    return async ({ update }) => {
+        logo = "";
+        update();
+    }
+}}>
     <div>
         <span>Id:</span>
         <input type="text" name="themeId"/>
