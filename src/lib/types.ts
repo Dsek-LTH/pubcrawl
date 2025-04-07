@@ -4,7 +4,9 @@ export interface Theme {
   color: string; // Hex
 }
 
-export type ThemeKey = string;
+export type ThemeId = string;
+
+export type Themes = Map<ThemeId, Theme>;
 
 export enum QueueStatus {
   EMPTY,
@@ -19,8 +21,13 @@ export interface Pub {
   intending: Map<string, Date>; // Is to be implemented later
   queueStatus: QueueStatus;
   isActive: boolean;
-  themeKey: ThemeKey;
+  themeId: ThemeId;
 }
 
-// Can this be restricted to onlu five char strings and no whitespace?
+export type PubId = string;
+
+export type Pubs = Map<PubId, Pub>;
+
 export type PubKey = string;
+
+export type PubKeyIdPairs = Map<PubKey, PubId>;

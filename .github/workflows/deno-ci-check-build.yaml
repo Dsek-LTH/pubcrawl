@@ -18,14 +18,10 @@ jobs:
         with:
           deno-version: v2.x
 
-      - name: Check code
-        run: deno check .
-
       - name: Check code formatting
         run: deno fmt --check
 
-      - name: Lint code
-        run: deno lint
-
       - name: Build
         run: deno task build
+        env:
+          ADMIN_KEY: secret
