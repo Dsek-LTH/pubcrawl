@@ -1,4 +1,4 @@
-import { ADMIN_KEY } from "$env/static/private";
+import { env } from "$env/dynamic/private";
 import { adminLoginSchema } from "$lib/schemas/adminLoginSchema.ts";
 import { fail, redirect } from "@sveltejs/kit";
 import { type Actions, type PageServerLoad } from "./$types";
