@@ -10,6 +10,8 @@ import {
   type Themes,
 } from "$lib/types.ts";
 
+// This is a cursed mess, tread carefully.
+
 export const kv = await Deno.openKv("db.sqlite");
 
 async function setObject(key: Deno.KvKey, obj: object): Promise<void> {
