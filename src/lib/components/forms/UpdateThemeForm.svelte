@@ -23,52 +23,52 @@
 
 <div class="card card-sm bg-base-300 border-l-6" style="border-color:{theme.color};">
     <div class="card-body">
-<form class="flex flex-row gap-1" method="POST" action={updateAction} use:enhance={() => {
-    return async ({ update }) => {
-      update({ reset: false });
-    };
-}}>
-<div class="flex flex-col">
-    <div class="input w-full">
-        <span class="label">Id:</span>
-        <input type="hidden" name="oldThemeId" value={themeId}/>
-        <input type="text" class="card-title" name="themeId" value={themeId}/>
-        {#if form?.errors?.themeId}
-            <p class="error">{form.errors.themeId[0]}</p>
-        {/if}
-    </div>
-    <div class="input w-full">
-        <span class="label">Display Name:</span>
-        <input name="displayName" value={theme.displayName}/>
-        {#if form?.errors?.displayName}
-            <p class="error">{form.errors.displayName[0]}</p>
-        {/if}
-    </div>
-    </div>
+        <form class="flex flex-row gap-1" method="POST" action={updateAction} use:enhance={() => {
+            return async ({ update }) => {
+              update({ reset: false });
+            };
+        }}>
+            <div class="flex flex-col">
+                <div class="input w-full">
+                    <span class="label">Id:</span>
+                    <input type="hidden" name="oldThemeId" value={themeId}/>
+                    <input type="text" class="card-title" name="themeId" value={themeId}/>
+                    {#if form?.errors?.themeId}
+                        <p class="error">{form.errors.themeId[0]}</p>
+                    {/if}
+                </div>
+                <div class="input w-full">
+                    <span class="label">Display Name:</span>
+                    <input name="displayName" value={theme.displayName}/>
+                    {#if form?.errors?.displayName}
+                        <p class="error">{form.errors.displayName[0]}</p>
+                    {/if}
+                </div>
+                </div>
 
-    <div class="flex flex-col">
-    <div>
-        <img src={logo} alt="">
-        <input class="file-input w-full" type="file" accept="image/*" onchange={handleFileChange} />
-        <input type="hidden" name="logo" value={logo} />
-        {#if form?.errors?.logo}
-            <p class="error">{form.errors.logo[0]}</p>
-        {/if}
-    </div>
+                <div class="flex flex-col">
+                <div>
+                    <img src={logo} alt="">
+                    <input class="file-input w-full" type="file" accept="image/*" onchange={handleFileChange} />
+                    <input type="hidden" name="logo" value={logo} />
+                    {#if form?.errors?.logo}
+                        <p class="error">{form.errors.logo[0]}</p>
+                    {/if}
+                </div>
 
-    <div class="input w-full">
-        <span class="label">Color:</span>
-        <input type="color" name="color" value={theme.color}/>
-        {#if form?.errors?.color}
-            <p class="error">{form.errors.color[0]}</p>
-        {/if}
-    </div>
-</div>
+                <div class="input w-full">
+                    <span class="label">Color:</span>
+                    <input type="color" name="color" value={theme.color}/>
+                    {#if form?.errors?.color}
+                        <p class="error">{form.errors.color[0]}</p>
+                    {/if}
+                </div>
+            </div>
 
-    {#if form?.errors?.general}
-        <p class="error">{form.errors.general[0]}</p>
-    {/if}
-    <button class="btn btn-primary" type="submit">Update</button>
-</form>
-</div>
+            {#if form?.errors?.general}
+                <p class="error">{form.errors.general[0]}</p>
+            {/if}
+            <button class="btn btn-primary" type="submit">Update</button>
+        </form>
+    </div>
 </div>
