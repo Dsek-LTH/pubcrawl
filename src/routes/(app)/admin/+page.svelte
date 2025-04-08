@@ -32,7 +32,7 @@
 </script>
 
 <form method="POST" action="?/logout" use:enhance>
-    <button class="btn btn-primary">Logout</button>
+    <button class="btn btn-info">Logout</button>
 </form>
 <div class="tabs tabs-border tabs-xl">
     <input type="radio" name="my_tabs_6" class="tab" aria-label="Pub keys" checked="checked" />
@@ -47,9 +47,8 @@
 </DeletePubKeyIdPairForm>
 <br>
 </div>
-<h2>Utilities</h2>
 <form method="POST" use:enhance action="?/randomizePubKeyIdPairPubKeys">
-    <button class="btn btn-primary">Randomize Pub Keys</button>
+    <button class="btn btn-info mt-2">Randomize Pub Keys</button>
 </form>
 {#if pubKeyIdPairs && pubs}
 <div class="flex flex-col gap-2 mt-4">
