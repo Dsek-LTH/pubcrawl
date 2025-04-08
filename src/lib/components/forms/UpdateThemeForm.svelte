@@ -46,15 +46,14 @@
                 </div>
                 </div>
 
-                <div class="flex flex-col">
-                <div>
-                    <img src={logo} alt="">
-                    <input class="file-input w-full" type="file" accept="image/*" onchange={handleFileChange} />
-                    <input type="hidden" name="logo" value={logo} />
-                    {#if form?.errors?.logo}
-                        <p class="error">{form.errors.logo[0]}</p>
-                    {/if}
-                </div>
+    <div class="flex flex-col">
+    <div>
+        <input class="file-input w-full" type="file" accept="image/*" onchange={handleFileChange} />
+        <input type="hidden" name="logo" value={logo} />
+        {#if form?.errors?.logo}
+            <p class="error">{form.errors.logo[0]}</p>
+        {/if}
+    </div>
 
                 <div class="input w-full">
                     <span class="label">Color:</span>
@@ -65,10 +64,18 @@
                 </div>
             </div>
 
-            {#if form?.errors?.general}
-                <p class="error">{form.errors.general[0]}</p>
-            {/if}
-            <button class="btn btn-primary" type="submit">Update</button>
-        </form>
+    {#if form?.errors?.general}
+        <p class="error">{form.errors.general[0]}</p>
+    {/if}
+
+    {#if logo}
+    <div class="flex flex-col">
+        <img class="p-1 bg-white rounded-lg h-[4.5lh] w-auto!" src={logo} alt="">
+        
+    
     </div>
+    {/if}
+    <button class="btn btn-secondary self-center" type="submit">Update</button>
+</form>
+</div>
 </div>

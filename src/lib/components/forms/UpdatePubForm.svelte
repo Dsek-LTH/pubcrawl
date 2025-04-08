@@ -4,7 +4,7 @@
     import { type Pub, type PubId, type ThemeId, type Theme} from "$lib/types.ts";
 
     let { form, updateAction, pubId, themes, pub, themeIds}: {form: ActionData, updateAction: string, pubId: PubId, pub: Pub, themes: Theme, themeIds: ThemeId[]} = $props();
-    let themeColor = "#000000";
+    let themeColor = "#999";
     if (pub != undefined && pub.themeId != undefined && themes != undefined && themes[pub.themeId] != undefined) {
         themeColor = themes[pub.themeId].color;
     }
@@ -71,8 +71,8 @@
                 </div>
 
 
-                <button class="btn btn-primary" type="submit">Update</button>
+                <button class="btn btn-secondary" type="submit">Update</button>
             </div>
-        </form>
-    </div>
+</form>
+</div>
 </div>
