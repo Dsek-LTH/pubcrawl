@@ -32,73 +32,82 @@
 </script>
 
 <form method="POST" action="?/logout" use:enhance>
-    <button>Logout</button>
+    <button class="btn btn-primary">Logout</button>
 </form>
-
-<h1>Keys</h1>
-
-<h2>Update</h2>
-{#if pubKeyIdPairs && pubs}
-    {#each (Object.entries(pubKeyIdPairs)) as [ pubKey, pubId ]}
-        <UpdatePubKeyIdPairForm form={form} updateAction="?/updatePubKeyIdPair" pubKey={pubKey} pubId={pubId} pubIds={Object.keys(pubs)}>
-        </UpdatePubKeyIdPairForm>
-        <br>
-    {/each}
-{/if}
-
-<h2>Create</h2>
+<div class="tabs tabs-border tabs-xl">
+    <input type="radio" name="my_tabs_6" class="tab" aria-label="Pub keys" checked="checked" />
+    <div class="tab-content bg-base-100 border-base-300 p-6">
+<p>This is where login codes for the pubs are created. These can be randomly genererated or manually typed, and are then used by the door guards to sign into the system. These will need to be distributed manually.</p><br>
+        <div class="flex flex-row gap-4">
 <CreatePubKeyIdPairForm form={form} createAction="?/createPubKeyIdPair" pubIds={Object.keys(pubs)}>
 </CreatePubKeyIdPairForm>
 <br>
 
-<h2>Delete</h2>
 <DeletePubKeyIdPairForm form={form} deleteAction="?/deletePubKeyIdPair" pubKeys={Object.keys(pubKeyIdPairs)}>
 </DeletePubKeyIdPairForm>
 <br>
-
+</div>
 <h2>Utilities</h2>
 <form method="POST" use:enhance action="?/randomizePubKeyIdPairPubKeys">
-    <button>Randomize Pub Keys</button>
+    <button class="btn btn-primary">Randomize Pub Keys</button>
 </form>
+{#if pubKeyIdPairs && pubs}
+<div class="flex flex-col gap-2 mt-4">
+    {#each (Object.entries(pubKeyIdPairs)) as [ pubKey, pubId ]}
+        <UpdatePubKeyIdPairForm form={form} updateAction="?/updatePubKeyIdPair" pubs={pubs} themes={themes} pubKey={pubKey} pubId={pubId} pubIds={Object.keys(pubs)}>
+        </UpdatePubKeyIdPairForm>
+        <br>
+    {/each}
+    </div>
+{/if}
 
-<h1>Pubs</h1>
+    </div>
+  
+    <input type="radio" name="my_tabs_6" class="tab" aria-label="Pubs" />
+    <div class="tab-content bg-base-100 border-base-300 p-6">
 
-<h2>Update</h2>
+<p>This is where pubs are created. Keep in mind that the name and color of the pubs is determined by the theme. Only pubs marked as Active are shown on the front-facing main page.</p><br>
+<div class="flex flex-row gap-4">
+<CreatePubForm form={form} createAction="?/createPub" themeIds={Object.keys(themes)}>
+</CreatePubForm>
+
+
+<DeletePubForm form={form} deleteAction="?/deletePub" pubIds={Object.keys(pubs)}>
+</DeletePubForm>
+</div>
 {#if pubs && themes}
+<div class="flex flex-col gap-2 mt-4">
     {#each (Object.entries(pubs)) as [ pubId, pub ]}
-        <UpdatePubForm form={form} updateAction="?/updatePub" pubId={pubId} pub={pub} themeIds={Object.keys(themes)}>
+        <UpdatePubForm form={form} updateAction="?/updatePub" pubId={pubId} pub={pub} themes={themes} themeIds={Object.keys(themes)}>
         </UpdatePubForm>
         <br>
     {/each}
+    </div>
 {/if}
-
-<h2>Create</h2>
-<CreatePubForm form={form} createAction="?/createPub" themeIds={Object.keys(themes)}>
-</CreatePubForm>
+    </div>
+  
+    <input type="radio" name="my_tabs_6" class="tab" aria-label="Themes" />
+    <div class="tab-content bg-base-100 border-base-300 p-6">
+        <p>This is where themes are created. Themes determine the name, color and logo of the pubs.</p><br>
+<div class="flex flex-row gap-4">
+<CreateThemeForm form={form} createAction="?/createTheme">
+</CreateThemeForm>
 <br>
 
-<h2>Delete</h2>
-<DeletePubForm form={form} deleteAction="?/deletePub" pubIds={Object.keys(pubs)}>
-</DeletePubForm>
+<DeleteThemeForm form={form} deleteAction="?/deleteTheme" themeIds={Object.keys(themes)}>
+</DeleteThemeForm>
 <br>
+</div>
 
-<h1>Themes</h1>
-
-<h2>Update</h2>
 {#if themes}
+<div class="flex flex-col gap-2 mt-4">
     {#each (Object.entries(themes)) as [ themeId, theme ]}
         <UpdateThemeForm form={form} updateAction="?/updateTheme" themeId={themeId} theme={theme}>
         </UpdateThemeForm>
         <br>
     {/each}
+    </div>
 {/if}
+    </div>
+  </div>
 
-<h2>Create</h2>
-<CreateThemeForm form={form} createAction="?/createTheme">
-</CreateThemeForm>
-<br>
-
-<h2>Delete</h2>
-<DeleteThemeForm form={form} deleteAction="?/deleteTheme" themeIds={Object.keys(themes)}>
-</DeleteThemeForm>
-<br>

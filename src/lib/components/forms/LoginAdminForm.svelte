@@ -5,8 +5,8 @@
     let { form, loginAction }: { form: ActionData, loginAction: string } = $props();
 </script>
 
-<form method="POST" action={loginAction} use:enhance>
-    <input type="password" name="adminKey" placeholder="Admin Key">
+<form class="flex flex-row justify-center w-full" method="POST" action={loginAction} use:enhance>
+    <input class="input mr-1" type="password" name="adminKey" placeholder="Admin Key">
     {#if form?.errors?.adminKey}
         <p class="error">{form.errors.adminKey[0]}</p>
     {/if}
@@ -15,5 +15,5 @@
         <p class="error">{form.errors.general[0]}</p>
     {/if}
 
-    <button>Login</button>
+    <button class="btn btn-primary ml-1">Login</button>
 </form>
