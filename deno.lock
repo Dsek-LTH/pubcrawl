@@ -7,6 +7,9 @@
     "npm:@sveltejs/vite-plugin-svelte@^5.0.3": "5.0.3_svelte@5.25.8__acorn@8.14.1_vite@6.2.5",
     "npm:@tailwindcss/vite@^4.1.3": "4.1.3_vite@6.2.5",
     "npm:daisyui@^5.0.15": "5.0.15",
+    "npm:prettier-plugin-svelte@^3.3.3": "3.3.3_prettier@3.5.3_svelte@5.25.8__acorn@8.14.1",
+    "npm:prettier-plugin-tailwindcss@~0.6.11": "0.6.11_prettier@3.5.3_prettier-plugin-svelte@3.3.3__prettier@3.5.3__svelte@5.25.8___acorn@8.14.1_svelte@5.25.8__acorn@8.14.1",
+    "npm:prettier@^3.5.3": "3.5.3",
     "npm:svelte@^5.25.8": "5.25.8_acorn@8.14.1",
     "npm:sveltekit-sse@~0.13.16": "0.13.16_@microsoft+fetch-event-source@2.0.1_@sveltejs+kit@2.20.4__@sveltejs+vite-plugin-svelte@5.0.3___svelte@5.25.8____acorn@8.14.1___vite@6.2.5__svelte@5.25.8___acorn@8.14.1__vite@6.2.5_svelte@5.25.8__acorn@8.14.1_@sveltejs+vite-plugin-svelte@5.0.3__svelte@5.25.8___acorn@8.14.1__vite@6.2.5_vite@6.2.5",
     "npm:tailwindcss@^4.1.3": "4.1.3",
@@ -586,6 +589,23 @@
         "source-map-js"
       ]
     },
+    "prettier-plugin-svelte@3.3.3_prettier@3.5.3_svelte@5.25.8__acorn@8.14.1": {
+      "integrity": "sha512-yViK9zqQ+H2qZD1w/bH7W8i+bVfKrD8GIFjkFe4Thl6kCT9SlAsXVNmt3jCvQOCsnOhcvYgsoVlRV/Eu6x5nNw==",
+      "dependencies": [
+        "prettier",
+        "svelte"
+      ]
+    },
+    "prettier-plugin-tailwindcss@0.6.11_prettier@3.5.3_prettier-plugin-svelte@3.3.3__prettier@3.5.3__svelte@5.25.8___acorn@8.14.1_svelte@5.25.8__acorn@8.14.1": {
+      "integrity": "sha512-YxaYSIvZPAqhrrEpRtonnrXdghZg1irNg4qrjboCXrpybLWVs55cW2N3juhspVJiO0JBvYJT8SYsJpc8OQSnsA==",
+      "dependencies": [
+        "prettier",
+        "prettier-plugin-svelte"
+      ]
+    },
+    "prettier@3.5.3": {
+      "integrity": "sha512-QQtaxnoDJeAkDvDKWCLiwIXkTgRhwYDEQCghU9Z6q03iyek/rxRh/2lC3HB7P8sWT2xC/y5JDctPLBIGzHKbhw=="
+    },
     "resolve@1.22.10": {
       "integrity": "sha512-NPRy+/ncIMeDlTAsuqwKIiferiawhefFJtkNSW0qZJEqMEb+qBt/77B/jGeeek+F0uOeN05CDa6HXbbIgtVX4w==",
       "dependencies": [
@@ -710,6 +730,9 @@
       "npm:@sveltejs/vite-plugin-svelte@^5.0.3",
       "npm:@tailwindcss/vite@^4.1.3",
       "npm:daisyui@^5.0.15",
+      "npm:prettier-plugin-svelte@^3.3.3",
+      "npm:prettier-plugin-tailwindcss@~0.6.11",
+      "npm:prettier@^3.5.3",
       "npm:svelte@^5.25.8",
       "npm:sveltekit-sse@~0.13.16",
       "npm:tailwindcss@^4.1.3",

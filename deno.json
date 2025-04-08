@@ -7,7 +7,8 @@
     "dev": "deno run -A --unstable-kv npm:vite",
     "build": "deno run -A --unstable-kv npm:vite build",
     "preview": "deno run -A --unstable-kv npm:vite preview",
-    "serve": "deno run -A --unstable-kv build/index.js"
+    "serve": "deno run -A --unstable-kv build/index.js",
+    "format": "prettier --write ."
   },
   "imports": {
     "@deno/vite-plugin": "npm:@deno/vite-plugin@^1.0.4",
@@ -16,6 +17,9 @@
     "@sveltejs/vite-plugin-svelte": "npm:@sveltejs/vite-plugin-svelte@^5.0.3",
     "@tailwindcss/vite": "npm:@tailwindcss/vite@^4.1.3",
     "daisyui": "npm:daisyui@^5.0.15",
+    "prettier": "npm:prettier@^3.5.3",
+    "prettier-plugin-svelte": "npm:prettier-plugin-svelte@^3.3.3",
+    "prettier-plugin-tailwindcss": "npm:prettier-plugin-tailwindcss@^0.6.11",
     "svelte": "npm:svelte@^5.25.8",
     "sveltekit-sse": "npm:sveltekit-sse@^0.13.16",
     "tailwindcss": "npm:tailwindcss@^4.1.3",
