@@ -770,6 +770,7 @@
     "dependencies": [
       "jsr:@kitsonk/kv-toolbox@~0.27.4",
       "npm:@deno/vite-plugin@^1.0.4",
+      "npm:@rollup/plugin-typescript@^12.1.2",
       "npm:@sveltejs/adapter-node@^5.2.12",
       "npm:@sveltejs/kit@^2.20.4",
       "npm:@sveltejs/vite-plugin-svelte@^5.0.3",
@@ -780,11 +781,6 @@
       "npm:tailwindcss@^4.1.3",
       "npm:vite@^6.2.5",
       "npm:zod@^3.24.2"
-    ],
-    "packageJson": {
-      "dependencies": [
-        "npm:@rollup/plugin-typescript@^12.1.2"
-      ]
-    }
+    ]
   }
 }
