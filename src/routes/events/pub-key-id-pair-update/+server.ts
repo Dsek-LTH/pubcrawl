@@ -11,7 +11,9 @@ export async function POST({ cookies }) {
   }
 
   return produce(async function start({ emit }) {
-    for await (const _ of kv.watch([["PubKeyIdPairs"]])) {
+    for await (
+      const _ of kv.watch([["PubKeyIdPairs", "__kv_toolbox_meta__"]])
+    ) {
       emit(
         "pubKeyIdPairsUpdated",
         JSON.stringify(Object.fromEntries(await getPubKeyIdPairs())),

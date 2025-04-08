@@ -1,3 +1,4 @@
+import { getAsBlob, set } from "@kitsonk/kv-toolbox/blob";
 import {
   type Pub,
   type PubId,
@@ -11,18 +12,33 @@ import {
 
 export const kv = await Deno.openKv("db.sqlite");
 
-export async function setPubKeyIdPairs(pubKeys: PubKeyIdPairs): Promise<void> {
-  await kv.set(["PubKeyIdPairs"], pubKeys);
+async function setObject(key: Deno.KvKey, obj: object): Promise<void> {
+  const jsonString = JSON.stringify(obj);
+  const blob = new Blob([jsonString], { type: "application/json" });
+  await set(kv, key, blob);
+}
+
+async function getObject(key: Deno.KvKey): Promise<object | null> {
+  const result = await getAsBlob(kv, key);
+
+  if (result === null) {
+    return null;
+  }
+
+  console.log(await Array.fromAsync(kv.list({ prefix: [] })));
+  return JSON.parse(await result.text());
+}
+
+export async function setPubKeyIdPairs(
+  pubKeyIdPairs: PubKeyIdPairs,
+): Promise<void> {
+  await setObject(["PubKeyIdPairs"], Object.fromEntries(pubKeyIdPairs));
 }
 
 export async function getPubKeyIdPairs(): Promise<PubKeyIdPairs> {
-  const res = await kv.get(["PubKeyIdPairs"]);
-
-  if (res.versionstamp === null) {
-    return new Map() as PubKeyIdPairs;
-  }
-
-  return res.value as PubKeyIdPairs;
+  return new Map(
+    Object.entries(await getObject(["PubKeyIdPairs"]) ?? {}),
+  ) as PubKeyIdPairs;
 }
 
 export async function getPubKeyIdPairId(pubKey: PubKey): Promise<PubId> {
@@ -71,17 +87,11 @@ export async function updatePubKeyIdPairPubKey(
 }
 
 export async function setThemes(themes: Themes): Promise<void> {
-  await kv.set(["Themes"], themes);
+  await setObject(["Themes"], Object.fromEntries(themes));
 }
 
 export async function getThemes(): Promise<Themes> {
-  const res = await kv.get(["Themes"]);
-
-  if (res.versionstamp === null) {
-    return new Map() as Themes;
-  }
-
-  return res.value as Themes;
+  return new Map(Object.entries(await getObject(["Themes"]) ?? {})) as Themes;
 }
 
 export async function setTheme(
@@ -127,17 +137,11 @@ export async function updateThemeId(
 }
 
 export async function setPubs(pubs: Pubs): Promise<void> {
-  await kv.set(["Pubs"], pubs);
+  await setObject(["Pubs"], Object.fromEntries(pubs));
 }
 
 export async function getPubs(): Promise<Pubs> {
-  const res = await kv.get(["Pubs"]);
-
-  if (res.versionstamp === null) {
-    return new Map() as Pubs;
-  }
-
-  return res.value as Pubs;
+  return new Map(Object.entries(await getObject(["Pubs"]) ?? {})) as Pubs;
 }
 
 export async function setPub(pubId: PubId, pub: Pub): Promise<void> {
