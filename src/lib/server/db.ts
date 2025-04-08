@@ -27,7 +27,6 @@ async function getObject(key: Deno.KvKey): Promise<object | null> {
     return null;
   }
 
-  console.log(await Array.fromAsync(kv.list({ prefix: [] })));
   return JSON.parse(await result.text());
 }
 
