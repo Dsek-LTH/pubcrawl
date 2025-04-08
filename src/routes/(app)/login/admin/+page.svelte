@@ -9,5 +9,7 @@
     let { form }: { form: ActionData } = $props();
 </script>
 
-<LoginAdminForm form={form} loginAction="?/login">
-</LoginAdminForm>
+<div class="flex items-center flex-grow">
+    <LoginAdminForm form={form} loginAction="?/login">
+    </LoginAdminForm>
+</div>
