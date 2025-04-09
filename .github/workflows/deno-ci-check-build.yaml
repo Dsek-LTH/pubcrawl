@@ -1,4 +1,4 @@
-name: "Deno CI - Check and Build"
+name: 'Deno CI - Check and Build'
 
 on:
   pull_request:

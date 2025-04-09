@@ -1,9 +1,9 @@
-import adapter from "@sveltejs/adapter-node";
-import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
+import adapter from '@sveltejs/adapter-node';
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
-export default {
-  kit: {
-    adapter: adapter({ precompress: false }),
-  },
-  preprocess: vitePreprocess(),
+const config = {
+	preprocess: vitePreprocess(),
+	kit: { adapter: adapter() }
 };
+
+export default config;
