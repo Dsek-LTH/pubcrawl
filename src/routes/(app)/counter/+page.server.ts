@@ -1,65 +1,59 @@
-import { fail, redirect } from '@sveltejs/kit';
-import {
-	getPubKeyIdPairId,
-	getPubKeyIdPairs,
-	setPubOccupancy,
-	updatePubOccupancy
-} from '$lib/server/db';
-import { type PubId, type PubKey, type PubKeyIdPairs } from '$lib/types';
+import { type Cookies, fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { pubSchema } from '$lib/schemas/pubSchema';
+import apolloClient from '$lib/graphql/apollo-client';
+import { DecrementPubOccupancy, type GetPubKeysQuery, IncrementPubOccupancy, UpdatePub } from '$lib/graphql/types';
+import { getPubKeys } from '$lib/graphql/queries/get-pub-keys';
 
-export const load: PageServerLoad = async ({ cookies }) => {
+const getPubKeyAndId = async (cookies: Cookies) => {
 	const pubKey = cookies.get('pubKey');
-	const pubKeyIdPairs: PubKeyIdPairs = await getPubKeyIdPairs();
+	const { pubKeys } = (await apolloClient.query<GetPubKeysQuery>({ query: getPubKeys })).data;
+	const pubId = pubKeys.find((key) => key.key === pubKey)?.pubId
 
-	if (!pubKey || !pubKeyIdPairs.has(pubKey)) {
-		return redirect(302, '/login/counter');
+	if (!pubKey || !pubId) {
+		return null
 	}
 
-	return { pubId: await getPubKeyIdPairId(pubKey) };
+	return { pubKey, pubId };
+}
+
+const unauthorized = () => {
+	return fail(401, { message: 'Unauthorized' });
+}
+
+export const load: PageServerLoad = async ({ cookies }) => {
+		const result = await getPubKeyAndId(cookies);
+		if (!result) return redirect(302, '/login/counter');
+
+		return { pubId: result.pubId };
 };
 
 export const actions: Actions = {
 	increment: async ({ cookies }) => {
-		const pubKey: PubKey = cookies.get('pubKey');
-		const pubKeyIdPairs: PubKeyIdPairs = await getPubKeyIdPairs();
+		const result = await getPubKeyAndId(cookies);
+		if (!result) return unauthorized();
+		const { pubId } = result;
 
-		if (!pubKey || !pubKeyIdPairs.has(pubKey)) {
-			return fail(401, { message: 'Unauthorized' });
-		}
-
-		await updatePubOccupancy(await getPubKeyIdPairId(pubKey), 1);
+		await IncrementPubOccupancy({variables: {pubId: pubId, increment: 1}})
 	},
 	decrement: async ({ cookies }) => {
-		const pubKey: PubKey = cookies.get('pubKey');
-		const pubKeyIdPairs: PubKeyIdPairs = await getPubKeyIdPairs();
+		const result = await getPubKeyAndId(cookies);
+		if (!result) return unauthorized();
+		const { pubId } = result;
 
-		if (!pubKey || !pubKeyIdPairs.has(pubKey)) {
-			return fail(401, { message: 'Unauthorized' });
-		}
-
-		await updatePubOccupancy(await getPubKeyIdPairId(pubKey), -1);
+		await DecrementPubOccupancy({variables: {pubId: pubId, decrement: 1}})
 	},
 	reset: async ({ cookies }) => {
-		const pubKey: PubKey = cookies.get('pubKey');
-		const pubKeyIdPairs: PubKeyIdPairs = await getPubKeyIdPairs();
+		const result = await getPubKeyAndId(cookies);
+		if (!result) return unauthorized();
+		const { pubId } = result;
 
-		if (!pubKey || !pubKeyIdPairs.has(pubKey)) {
-			return fail(401, { message: 'Unauthorized' });
-		}
-
-		await setPubOccupancy(await getPubKeyIdPairId(pubKey), 0);
+		await UpdatePub({variables: {oldPubId: pubId, pub: {occupancy: 0}}})
 	},
 	updatePub: async ({ request, cookies }) => {
-		const pubKey: PubKey = cookies.get('pubKey');
-		const pubKeyIdPairs: PubKeyIdPairs = await getPubKeyIdPairs();
-
-		if (!pubKey || !pubKeyIdPairs.has(pubKey)) {
-			return fail(401, { message: 'Unauthorized' });
-		}
-
-		const pubId: PubId = pubKeyIdPairs.get(pubKey);
+		const pubKeyAndIdResult = await getPubKeyAndId(cookies);
+		if (!pubKeyAndIdResult) return unauthorized();
+		const { pubId } = pubKeyAndIdResult;
 
 		const formData = Object.fromEntries(await request.formData());
 
@@ -78,15 +72,10 @@ export const actions: Actions = {
 			});
 		}
 
-		await setPubOccupancy(await getPubKeyIdPairId(pubKey), result.data.occupancy);
+		await UpdatePub({variables: {oldPubId: pubId, pub: {occupancy: result.data.occupancy}}})
 	},
 	logout: async ({ cookies }) => {
-		const pubKey: PubKey = cookies.get('pubKey');
-		const pubKeyIdPairs: PubKeyIdPairs = await getPubKeyIdPairs();
-
-		if (!pubKey || !pubKeyIdPairs.has(pubKey)) {
-			return fail(401, { message: 'Unauthorized' });
-		}
+		if (!(await getPubKeyAndId(cookies))) return unauthorized();
 
 		cookies.delete('pubKey', { path: '/' });
 	}
