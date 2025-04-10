@@ -1,19 +1,30 @@
 import { counterLoginSchema } from '$lib/schemas/counterLoginSchema';
-import { fail, redirect } from '@sveltejs/kit';
+import { type Cookies, fail, redirect } from '@sveltejs/kit';
 import { type Actions, type PageServerLoad } from './$types';
-import { getPubKeyIdPairs } from '$lib/server/db';
-import type { PubKeyIdPairs } from '$lib/types';
+import apolloClient from '$lib/graphql/apollo-client';
+import type { GetPubKeysQuery } from '$lib/graphql/types';
+import { getPubKeys } from '$lib/graphql/queries/get-pub-keys';
 
-export const load: PageServerLoad = async ({ cookies }) => {
+const getPubKey = async (cookies: Cookies) => {
 	const pubKey = cookies.get('pubKey');
 
 	if (!pubKey) return null;
 
-	const pubKeyIdPairs: PubKeyIdPairs = await getPubKeyIdPairs();
+	return (await validatePubKey(pubKey)) ? pubKey : null;
+}
 
-	if (pubKeyIdPairs.has(pubKey)) {
-		return redirect(303, '/counter');
-	}
+const validatePubKey = async (pubKey: string) => {
+	const { pubKeys } = (await apolloClient.query<GetPubKeysQuery>({ query: getPubKeys })).data;
+
+	return !!pubKeys.find((key) => key.key === pubKey)
+}
+
+export const load: PageServerLoad = async ({ cookies }) => {
+	const result = await getPubKey(cookies);
+
+	if (result) return redirect(303, '/counter');
+
+	return null;
 };
 
 export const actions: Actions = {
@@ -31,9 +42,9 @@ export const actions: Actions = {
 		}
 
 		const pubKey: string = result.data.pubKey;
-		const pubKeyIdPairs: PubKeyIdPairs = await getPubKeyIdPairs();
+		const pubKeyExists = validatePubKey(pubKey);
 
-		if (!pubKeyIdPairs.has(pubKey)) {
+		if (!pubKeyExists) {
 			return fail(401, {
 				errors: {
 					general: ['Invalid pub key']
