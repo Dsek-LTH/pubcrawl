@@ -3,10 +3,16 @@ import { buildSchema } from "drizzle-graphql";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { ApolloServer } from "@apollo/server";
 // import {startStandaloneServer} from '@apollo/server/standalone';
-
 import * as dbSchema from "./db/schema";
 import { pubKeys } from "./db/schema";
-
+import { createServer } from "http";
+import { WebSocketServer } from "ws";
+import { expressMiddleware } from "@apollo/server/express4";
+import express from "express";
+import cors from "cors";
+import bodyParser from "body-parser";
+import { useServer } from "graphql-ws/use/ws";
+import { increment } from "./utils";
 import pg from "pg";
 import {
   GraphQLInputObjectType,
@@ -18,6 +24,7 @@ import {
   GraphQLString,
 } from "graphql/type";
 import { eq } from "drizzle-orm";
+
 const { Pool } = pg;
 
 const pool = new Pool({
@@ -155,17 +162,10 @@ const schema = new GraphQLSchema({
         },
         resolve: async (source, args, context, info) => {
           const { pubId } = args.where;
-          const { increment } = args.values;
+          const value = args.values.increment;
           return db
             .update(dbSchema.pubs)
-            .set({
-              occupancy:
-                (
-                  await db.query.pubs.findFirst({
-                    where: eq(dbSchema.pubs.pubId, pubId),
-                  })
-                ).occupancy + increment,
-            })
+            .set({ occupancy: increment(dbSchema.pubs.occupancy, value) })
             .where(eq(dbSchema.pubs.pubId, pubId))
             .returning();
         },
@@ -199,16 +199,7 @@ const schema = new GraphQLSchema({
           const { decrement } = args.values;
           return db
             .update(dbSchema.pubs)
-            .set({
-              occupancy: Math.max(
-                (
-                  await db.query.pubs.findFirst({
-                    where: eq(dbSchema.pubs.pubId, pubId),
-                  })
-                ).occupancy - decrement,
-                0,
-              ),
-            })
+            .set({ occupancy: increment(dbSchema.pubs.occupancy, -decrement) })
             .where(eq(dbSchema.pubs.pubId, pubId))
             .returning();
         },
@@ -221,14 +212,6 @@ const schema = new GraphQLSchema({
 // const { url } = await startStandaloneServer(server);
 //
 // console.log(`🚀 Server ready at ${url}`);
-
-import { createServer } from "http";
-import { WebSocketServer } from "ws";
-import { expressMiddleware } from "@apollo/server/express4";
-import express from "express";
-import cors from "cors";
-import bodyParser from "body-parser";
-import { useServer } from "graphql-ws/use/ws";
 
 const apolloServer = new ApolloServer({ schema });
 await apolloServer.start();
