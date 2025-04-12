@@ -13,13 +13,23 @@
     "drizzle-graphql": "^0.8.5",
     "drizzle-orm": "^0.41.0",
     "graphql": "^16.10.0",
-    "pg": "^8.14.1"
+    "graphql-subscriptions": "^3.0.0",
+    "graphql-ws": "^6.0.4",
+    "pg": "^8.14.1",
+    "ws": "^8.18.1"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/node": "^22.14.0",
     "@types/pg": "^8.11.11",
+    "@types/ws": "^8.18.1",
     "drizzle-kit": "^0.30.6",
+    "prettier": "^3.5.3",
     "tsx": "^4.19.3",
     "typescript": "^5.8.3"
+  },
+  "scripts": {
+    "dev": "npx tsx src/index.ts",
+    "format": "prettier --write ."
   }
 }
