@@ -1,7 +1,7 @@
 import { env } from '$env/dynamic/private';
 import { adminLoginSchema } from '$lib/schemas/adminLoginSchema';
 import { fail, redirect } from '@sveltejs/kit';
-import { type Actions, type PageServerLoad } from './$types';
+import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = async ({ cookies }) => {
 	const adminKey = cookies.get('adminKey');
