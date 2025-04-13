@@ -217,18 +217,19 @@ const apolloServer = new ApolloServer({ schema });
 await apolloServer.start();
 
 const app = express();
-app.use(cors(), bodyParser.json(), expressMiddleware(apolloServer));
+app.use("/graphql", cors(), bodyParser.json(), expressMiddleware(apolloServer));
 
 const httpServer = createServer(app);
 
 const wsServer = new WebSocketServer({
   server: httpServer,
-  path: "/graphql",
+  path: "/subscriptions",
 });
 
 useServer({ schema }, wsServer);
 
 const PORT = process.env.PORT || 4000;
-httpServer.listen(PORT, () =>
-  console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`),
-);
+httpServer.listen(PORT, () => {
+  console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`);
+  console.log(`🚀 Subscriptions ready at ws://localhost:${PORT}/subscriptions`);
+});
