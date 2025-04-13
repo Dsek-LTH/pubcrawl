@@ -37,7 +37,7 @@ const db = drizzle({ client: pool, schema: dbSchema });
 const pubsub = new RedisPubSub({
   connection: process.env.REDIS_URL,
   connectionListener: (e) => {
-    if (e) console.log(`Error connecting to Redis: ${e}`);
+    if (e) console.error(`Error connecting to Redis: ${e}`);
   },
 });
 const PUB_KEYS_UPDATED = "PUB_KEYS_UPDATED";
