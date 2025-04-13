@@ -41,6 +41,8 @@ const pubsub = new RedisPubSub({
   },
 });
 const PUB_KEYS_UPDATED = "PUB_KEYS_UPDATED";
+const PUBS_UPDATED = "PUBS_UPDATED";
+const THEMES_UPDATED = "THEMES_UPDATED";
 
 const { entities } = buildSchema(db);
 const originalMutations = entities.mutations;
@@ -53,9 +55,17 @@ for (const [key, resolver] of Object.entries(originalMutations)) {
 
       // TODO: Might want to do this in a smarter/more sophisticated way?
       const touchesPubKeys = key.toLowerCase().includes("pubkey");
+      const touchesPubs = key.toLowerCase().includes("pub") && !touchesPubKeys;
+      const touchesThemes = key.toLowerCase().includes("theme");
 
       if (touchesPubKeys) {
         await pubsub.publish(PUB_KEYS_UPDATED, {});
+      }
+      if (touchesPubs) {
+        await pubsub.publish(PUBS_UPDATED, {});
+      }
+      if (touchesThemes) {
+        await pubsub.publish(THEMES_UPDATED, {});
       }
 
       return result;
@@ -69,9 +79,23 @@ const schema = new GraphQLSchema({
     fields: {
       pubKeysSubscription: {
         type: new GraphQLList(new GraphQLNonNull(entities.types.PubKeysItem)),
-        subscribe: () => pubsub.asyncIterableIterator([PUB_KEYS_UPDATED]),
+        subscribe: () => pubsub.asyncIterator([PUB_KEYS_UPDATED]),
         resolve: async () => {
           return db.query.pubKeys.findMany();
+        },
+      },
+      pubsSubscription: {
+        type: new GraphQLList(new GraphQLNonNull(entities.types.PubsItem)),
+        subscribe: () => pubsub.asyncIterator([PUBS_UPDATED]),
+        resolve: async () => {
+          return db.query.pubs.findMany();
+        },
+      },
+      themesSubscription: {
+        type: new GraphQLList(new GraphQLNonNull(entities.types.ThemesItem)),
+        subscribe: () => pubsub.asyncIterator([THEMES_UPDATED]),
+        resolve: async () => {
+          return db.query.themes.findMany();
         },
       },
     },
@@ -168,6 +192,7 @@ const schema = new GraphQLSchema({
         resolve: async (source, args, context, info) => {
           const { pubId } = args.where;
           const value = args.values.increment;
+          await pubsub.publish(PUBS_UPDATED, {});
           return db
             .update(dbSchema.pubs)
             .set({ occupancy: increment(dbSchema.pubs.occupancy, value) })
@@ -202,6 +227,7 @@ const schema = new GraphQLSchema({
         resolve: async (source, args, context, info) => {
           const { pubId } = args.where;
           const { decrement } = args.values;
+          await pubsub.publish(PUBS_UPDATED, {});
           return db
             .update(dbSchema.pubs)
             .set({ occupancy: increment(dbSchema.pubs.occupancy, -decrement) })
