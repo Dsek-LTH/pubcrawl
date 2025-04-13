@@ -13,6 +13,7 @@
     "drizzle-graphql": "^0.8.5",
     "drizzle-orm": "^0.41.0",
     "graphql": "^16.10.0",
+    "graphql-redis-subscriptions": "^2.7.0",
     "graphql-subscriptions": "^3.0.0",
     "graphql-ws": "^6.0.4",
     "pg": "^8.14.1",

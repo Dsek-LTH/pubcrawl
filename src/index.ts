@@ -24,6 +24,7 @@ import {
   GraphQLString,
 } from "graphql/type";
 import { eq } from "drizzle-orm";
+import { RedisPubSub } from "graphql-redis-subscriptions";
 
 const { Pool } = pg;
 
@@ -33,8 +34,12 @@ const pool = new Pool({
 
 const db = drizzle({ client: pool, schema: dbSchema });
 
-import { PubSub } from "graphql-subscriptions";
-const pubsub = new PubSub();
+const pubsub = new RedisPubSub({
+  connection: process.env.REDIS_URL,
+  connectionListener: (e) => {
+    if (e) console.log(`Error connecting to Redis: ${e}`);
+  },
+});
 const PUB_KEYS_UPDATED = "PUB_KEYS_UPDATED";
 
 const { entities } = buildSchema(db);
