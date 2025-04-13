@@ -1,6 +1,6 @@
 import { counterLoginSchema } from '$lib/schemas/counterLoginSchema';
 import { type Cookies, fail, redirect } from '@sveltejs/kit';
-import { type Actions, type PageServerLoad } from './$types';
+import type { Actions, PageServerLoad } from './$types';
 import apolloClient from '$lib/graphql/apollo-client';
 import type { GetPubKeysQuery } from '$lib/graphql/types';
 import { getPubKeys } from '$lib/graphql/queries/get-pub-keys';
@@ -11,13 +11,13 @@ const getPubKey = async (cookies: Cookies) => {
 	if (!pubKey) return null;
 
 	return (await validatePubKey(pubKey)) ? pubKey : null;
-}
+};
 
 const validatePubKey = async (pubKey: string) => {
 	const { pubKeys } = (await apolloClient.query<GetPubKeysQuery>({ query: getPubKeys })).data;
 
-	return !!pubKeys.find((key) => key.key === pubKey)
-}
+	return !!pubKeys.find((key) => key.key === pubKey);
+};
 
 export const load: PageServerLoad = async ({ cookies }) => {
 	const result = await getPubKey(cookies);

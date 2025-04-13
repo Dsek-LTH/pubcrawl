@@ -1,7 +1,7 @@
 import { env } from '$env/dynamic/private';
 import { randomizePubKeys } from '$lib/server/utils';
 import { QueueStatus } from '$lib/types';
-import { type Actions, type PageServerLoad } from './$types';
+import type { Actions, PageServerLoad } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
 import { themeSchema } from '$lib/schemas/themeSchema';
 import { pubSchema } from '$lib/schemas/pubSchema';
@@ -11,9 +11,11 @@ import {
 	CreatePubKey,
 	CreateTheme,
 	RemovePub,
-	RemovePubKey, RemoveTheme,
+	RemovePubKey,
+	RemoveTheme,
 	UpdatePub,
-	UpdatePubKey, UpdateTheme
+	UpdatePubKey,
+	UpdateTheme
 } from '$lib/graphql/types';
 
 export const load: PageServerLoad = async ({ cookies }) => {
@@ -48,7 +50,7 @@ export const actions: Actions = {
 		console.log(result.data.pubId);
 
 		const { pubKey, pubId } = result.data;
-		await CreatePubKey({variables: {pubKey, pubId}});
+		await CreatePubKey({ variables: { pubKey, pubId } });
 	},
 	updatePubKeyIdPair: async ({ request, cookies }) => {
 		if (cookies.get('adminKey') !== env.ADMIN_KEY) {
@@ -68,11 +70,11 @@ export const actions: Actions = {
 			});
 		}
 
-		const {pubKey, oldPubKey} = result.data;
+		const { pubKey, oldPubKey } = result.data;
 
 		if (!oldPubKey) return fail(400, { message: 'No key to update' });
 
-		await UpdatePubKey({variables: {pubKey, oldPubKey}});
+		await UpdatePubKey({ variables: { pubKey, oldPubKey } });
 	},
 	deletePubKeyIdPair: async ({ request, cookies }) => {
 		if (cookies.get('adminKey') !== env.ADMIN_KEY) {
@@ -96,7 +98,7 @@ export const actions: Actions = {
 			});
 		}
 
-		await RemovePubKey({variables: {pubKey: result.data.pubKey}});
+		await RemovePubKey({ variables: { pubKey: result.data.pubKey } });
 	},
 	randomizePubKeyIdPairPubKeys: async () => {
 		await randomizePubKeys();
@@ -126,14 +128,16 @@ export const actions: Actions = {
 			});
 		}
 
-		await CreatePub({variables: {
-			pubId: result.data.pubId,
-			occupancy: result.data.occupancy,
-			capacity: result.data.capacity,
-			queueStatus: QueueStatus.EMPTY,
-			isActive: true,
-			themeId: result.data.themeId
-			}})
+		await CreatePub({
+			variables: {
+				pubId: result.data.pubId,
+				occupancy: result.data.occupancy,
+				capacity: result.data.capacity,
+				queueStatus: QueueStatus.EMPTY,
+				isActive: true,
+				themeId: result.data.themeId
+			}
+		});
 	},
 	updatePub: async ({ request, cookies }) => {
 		if (cookies.get('adminKey') !== env.ADMIN_KEY) {
@@ -155,7 +159,8 @@ export const actions: Actions = {
 
 		if (!result.data.oldPubId) return fail(400, { message: 'No pub to update' });
 
-		await UpdatePub({variables: {
+		await UpdatePub({
+			variables: {
 				oldPubId: result.data.oldPubId,
 				pub: {
 					pubId: result.data.pubId,
@@ -165,7 +170,8 @@ export const actions: Actions = {
 					isActive: true,
 					themeId: result.data.themeId
 				}
-			}})
+			}
+		});
 	},
 	deletePub: async ({ request, cookies }) => {
 		if (cookies.get('adminKey') !== env.ADMIN_KEY) {
@@ -189,7 +195,7 @@ export const actions: Actions = {
 			});
 		}
 
-		await RemovePub({variables: {pubId: result.data.pubId}});
+		await RemovePub({ variables: { pubId: result.data.pubId } });
 	},
 	createTheme: async ({ request, cookies }) => {
 		if (cookies.get('adminKey') !== env.ADMIN_KEY) {
@@ -209,12 +215,14 @@ export const actions: Actions = {
 			});
 		}
 
-		await CreateTheme({variables: {
-			themeId: result.data.themeId,
-			displayName: result.data.displayName,
-			logo: result.data.logo,
-			color: result.data.color
-			}})
+		await CreateTheme({
+			variables: {
+				themeId: result.data.themeId,
+				displayName: result.data.displayName,
+				logo: result.data.logo,
+				color: result.data.color
+			}
+		});
 	},
 	updateTheme: async ({ request, cookies }) => {
 		if (cookies.get('adminKey') !== env.ADMIN_KEY) {
@@ -236,15 +244,17 @@ export const actions: Actions = {
 
 		if (!result.data.oldThemeId) return fail(400, { message: 'No theme to update' });
 
-		await UpdateTheme({variables: {
-			oldThemeId: result.data.oldThemeId,
+		await UpdateTheme({
+			variables: {
+				oldThemeId: result.data.oldThemeId,
 				theme: {
-				themeId: result.data.themeId,
-				displayName: result.data.displayName,
-				logo: result.data.logo,
-				color: result.data.color
+					themeId: result.data.themeId,
+					displayName: result.data.displayName,
+					logo: result.data.logo,
+					color: result.data.color
 				}
-			}})
+			}
+		});
 	},
 	deleteTheme: async ({ request, cookies }) => {
 		if (cookies.get('adminKey') !== env.ADMIN_KEY) {
@@ -268,7 +278,7 @@ export const actions: Actions = {
 			});
 		}
 
-		await RemoveTheme({variables: {themeId: result.data.themeId}});
+		await RemoveTheme({ variables: { themeId: result.data.themeId } });
 	},
 	logout: async ({ cookies }) => {
 		if (cookies.get('adminKey') !== env.ADMIN_KEY) {

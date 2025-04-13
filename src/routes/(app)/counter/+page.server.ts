@@ -1,31 +1,38 @@
-import { type Cookies, fail, redirect } from '@sveltejs/kit';
+import { type Cookies, fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { pubSchema } from '$lib/schemas/pubSchema';
 import apolloClient from '$lib/graphql/apollo-client';
-import { DecrementPubOccupancy, type GetPubKeysQuery, IncrementPubOccupancy, UpdatePub } from '$lib/graphql/types';
+import {
+	DecrementPubOccupancy,
+	type GetPubKeysQuery,
+	IncrementPubOccupancy,
+	UpdatePub
+} from '$lib/graphql/types';
 import { getPubKeys } from '$lib/graphql/queries/get-pub-keys';
 
 const getPubKeyAndId = async (cookies: Cookies) => {
 	const pubKey = cookies.get('pubKey');
 	const { pubKeys } = (await apolloClient.query<GetPubKeysQuery>({ query: getPubKeys })).data;
-	const pubId = pubKeys.find((key) => key.key === pubKey)?.pubId
+	const pubId = pubKeys.find((key) => key.key === pubKey)?.pubId;
 
 	if (!pubKey || !pubId) {
-		return null
+		return null;
 	}
 
 	return { pubKey, pubId };
-}
+};
 
 const unauthorized = () => {
 	return fail(401, { message: 'Unauthorized' });
-}
+};
 
 export const load: PageServerLoad = async ({ cookies }) => {
-		const result = await getPubKeyAndId(cookies);
-		if (!result) return redirect(302, '/login/counter');
+	const result = await getPubKeyAndId(cookies);
+	// if (!result) return redirect(302, '/login/counter');
+	//
+	// return { pubId: result.pubId };
 
-		return { pubId: result.pubId };
+	return {};
 };
 
 export const actions: Actions = {
@@ -34,21 +41,21 @@ export const actions: Actions = {
 		if (!result) return unauthorized();
 		const { pubId } = result;
 
-		await IncrementPubOccupancy({variables: {pubId: pubId, increment: 1}})
+		await IncrementPubOccupancy({ variables: { pubId: pubId, increment: 1 } });
 	},
 	decrement: async ({ cookies }) => {
 		const result = await getPubKeyAndId(cookies);
 		if (!result) return unauthorized();
 		const { pubId } = result;
 
-		await DecrementPubOccupancy({variables: {pubId: pubId, decrement: 1}})
+		await DecrementPubOccupancy({ variables: { pubId: pubId, decrement: 1 } });
 	},
 	reset: async ({ cookies }) => {
 		const result = await getPubKeyAndId(cookies);
 		if (!result) return unauthorized();
 		const { pubId } = result;
 
-		await UpdatePub({variables: {oldPubId: pubId, pub: {occupancy: 0}}})
+		await UpdatePub({ variables: { oldPubId: pubId, pub: { occupancy: 0 } } });
 	},
 	updatePub: async ({ request, cookies }) => {
 		const pubKeyAndIdResult = await getPubKeyAndId(cookies);
@@ -72,7 +79,7 @@ export const actions: Actions = {
 			});
 		}
 
-		await UpdatePub({variables: {oldPubId: pubId, pub: {occupancy: result.data.occupancy}}})
+		await UpdatePub({ variables: { oldPubId: pubId, pub: { occupancy: result.data.occupancy } } });
 	},
 	logout: async ({ cookies }) => {
 		if (!(await getPubKeyAndId(cookies))) return unauthorized();
