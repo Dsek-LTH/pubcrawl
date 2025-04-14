@@ -205,7 +205,9 @@ const schema = new GraphQLSchema({
             .set({ occupancy: increment(dbSchema.pubs.occupancy, value) })
             .where(eq(dbSchema.pubs.pubId, pubId))
             .returning();
-          await pubsub.publish(PUBS_UPDATED, { pubsSubscription: returning });
+          await pubsub.publish(PUBS_UPDATED, {
+            pubsSubscription: await db.query.pubs.findMany(),
+          });
           return returning;
         },
       },
@@ -241,7 +243,9 @@ const schema = new GraphQLSchema({
             .set({ occupancy: increment(dbSchema.pubs.occupancy, -decrement) })
             .where(eq(dbSchema.pubs.pubId, pubId))
             .returning();
-          await pubsub.publish(PUBS_UPDATED, { pubsSubscription: returning });
+          await pubsub.publish(PUBS_UPDATED, {
+            pubsSubscription: await db.query.pubs.findMany(),
+          });
           return returning;
         },
       },
