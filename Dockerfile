@@ -1,4 +1,4 @@
-FROM denoland/deno:latest
+FROM docker.io/denoland/deno:latest
 
 WORKDIR /app
 RUN mkdir -p /app/deno-dir && chown -R deno:deno /app/deno-dir
@@ -10,7 +10,7 @@ RUN deno cache deno.json
 COPY . .
 RUN deno task build
 
-RUN chmod -R g+w . && chmod -R o+w deno-dir
+RUN rm db.sqlite && chmod -R g+w . && chmod -R o+w deno-dir
 
 ENV PORT=11337
 EXPOSE 11337
