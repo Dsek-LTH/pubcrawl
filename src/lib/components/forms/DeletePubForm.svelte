@@ -17,7 +17,7 @@
 			<div>
 				<select class="select w-full" name="pubId">
 					<option value="" selected disabled hidden>Select pub</option>
-					{#each pubIds as pubIdOption}
+					{#each pubIds as pubIdOption (pubIdOption)}
 						<option value={pubIdOption}>{pubIdOption}</option>
 					{/each}
 				</select>

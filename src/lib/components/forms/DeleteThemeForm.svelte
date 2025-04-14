@@ -17,7 +17,7 @@
 			<div>
 				<select class="select w-full" name="themeId">
 					<option value="" selected disabled hidden>Select theme</option>
-					{#each themeIds as themeIdOption}
+					{#each themeIds as themeIdOption (themeIdOption)}
 						<option value={themeIdOption}>{themeIdOption}</option>
 					{/each}
 				</select>
