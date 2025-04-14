@@ -1361,17 +1361,6 @@ export type ThemesSubscriptionSubscription = {
 	}> | null;
 };
 
-export type TestQueryQueryVariables = Exact<{ [key: string]: never }>;
-
-export type TestQueryQuery = {
-	__typename?: 'Query';
-	pubKeys: Array<{
-		__typename?: 'PubKeysSelectItem';
-		key: string;
-		pub?: { __typename?: 'PubKeysPubRelation'; pubId: string } | null;
-	}>;
-};
-
 export const CreatePubDoc = gql`
 	mutation CreatePub(
 		$capacity: Int!
@@ -1590,16 +1579,6 @@ export const ThemesSubscriptionDoc = gql`
 		}
 	}
 `;
-export const TestQueryDoc = gql`
-	query TestQuery {
-		pubKeys {
-			key
-			pub {
-				pubId
-			}
-		}
-	}
-`;
 export const CreatePub = (
 	options: Omit<MutationOptions<any, CreatePubMutationVariables>, 'mutation'>
 ) => {
@@ -1809,26 +1788,4 @@ export const ThemesSubscription = (
 		...options
 	});
 	return q;
-};
-export const TestQuery = (
-	options: Omit<WatchQueryOptions<TestQueryQueryVariables>, 'query'>
-): Readable<
-	ApolloQueryResult<TestQueryQuery> & {
-		query: ObservableQuery<TestQueryQuery, TestQueryQueryVariables>;
-	}
-> => {
-	const q = client.watchQuery({
-		query: TestQueryDoc,
-		...options
-	});
-	var result = readable<
-		ApolloQueryResult<TestQueryQuery> & {
-			query: ObservableQuery<TestQueryQuery, TestQueryQueryVariables>;
-		}
-	>({ data: {} as any, loading: true, error: undefined, networkStatus: 1, query: q }, (set) => {
-		q.subscribe((v: any) => {
-			set({ ...v, query: q });
-		});
-	});
-	return result;
 };
