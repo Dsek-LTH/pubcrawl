@@ -1,10 +1,13 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { type ActionData } from './$types';
-	import { type PubId } from '$lib/types';
+	import type { PubsItem } from '$lib/graphql/types';
 
-	let { form, createAction, pubIds }: { form: ActionData; createAction: string; pubIds: PubId[] } =
-		$props();
+	let {
+		form,
+		createAction,
+		pubIds
+	}: { form: ActionData; createAction: string; pubIds: PubsItem['pubId'][] } = $props();
 </script>
 
 <div class="card bg-base-300 w-6/12">
@@ -21,7 +24,7 @@
 			<div>
 				<select class="select w-full" name="pubId">
 					<option value="" selected disabled hidden>Select pub</option>
-					{#each pubIds as pubIdOption}
+					{#each pubIds as pubIdOption (pubIdOption)}
 						<option value={pubIdOption}>{pubIdOption}</option>
 					{/each}
 				</select>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { type ActionData } from './$types';
-	import { type Pub, type PubId, type ThemeId, type Theme } from '$lib/types';
+	import type { PubsItem, ThemesItem } from '$lib/graphql/types';
 
 	let {
 		form,
@@ -13,20 +13,15 @@
 	}: {
 		form: ActionData;
 		updateAction: string;
-		pubId: PubId;
-		pub: Pub;
-		themes: Theme;
-		themeIds: ThemeId[];
+		pubId: PubsItem['pubId'];
+		pub: PubsItem;
+		themes: ThemesItem[];
+		themeIds: ThemesItem['themeId'][];
 	} = $props();
-	let themeColor = '#999';
-	if (
-		pub != undefined &&
-		pub.themeId != undefined &&
-		themes != undefined &&
-		themes[pub.themeId] != undefined
-	) {
-		themeColor = themes[pub.themeId].color;
-	}
+
+	let themeColor = $derived(
+		themes?.find((theme) => theme.themeId === pub.themeId)?.color ?? '#999'
+	);
 </script>
 
 <div class="card card-sm bg-base-300 border-l-6" style="border-color:{themeColor};">
@@ -53,7 +48,7 @@
 				<div class="select">
 					<span class="label">Theme</span>
 					<select class="w-full" name="themeId">
-						{#each themeIds as themeIdOption}
+						{#each themeIds as themeIdOption (themeIdOption)}
 							<option value={themeIdOption} selected={themeIdOption === pub.themeId}
 								>{themeIdOption}</option
 							>

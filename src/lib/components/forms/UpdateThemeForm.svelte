@@ -1,14 +1,15 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { type ActionData } from './$types';
-	import { type Theme, type ThemeId } from '$lib/types';
+	import type { ThemesItem } from '$lib/graphql/types';
 
 	let {
 		form,
 		updateAction,
 		themeId,
 		theme
-	}: { form: ActionData; updateAction: string; themeId: ThemeId; theme: Theme } = $props();
+	}: { form: ActionData; updateAction: string; themeId: ThemesItem['themeId']; theme: ThemesItem } =
+		$props();
 
 	let logo = $state(theme.logo);
 

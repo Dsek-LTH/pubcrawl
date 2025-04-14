@@ -47,7 +47,6 @@ export const actions: Actions = {
 				values: result.data
 			});
 		}
-		console.log(result.data.pubId);
 
 		const { pubKey, pubId } = result.data;
 		await CreatePubKey({ variables: { pubKey, pubId } });

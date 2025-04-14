@@ -2,20 +2,25 @@
 	import { enhance } from '$app/forms';
 	import { source } from 'sveltekit-sse';
 	import { type PageProps } from './$types';
-	import { type Pub, type Pubs, type Theme } from '$lib/types';
 
 	import PartialPubUpdateForm from '$lib/components/forms/PartialPubUpdateForm.svelte';
+	import { API_ROUTES, EVENTS } from '$lib/api';
+	import type { PubsItem, ThemesItem } from '$lib/graphql/types';
+	import type { Readable } from 'svelte/store';
 
 	let { data, form }: PageProps = $props();
 
-	const pubs_store = source('/events/pub-update').select('pubsUpdated');
-	const themes_store = source('/events/theme-update').select('themesUpdated');
+	const pubs: Readable<PubsItem[]> = source(API_ROUTES.EVENTS).select(EVENTS.pubsUpdated).json();
+	const themes: Readable<ThemesItem[]> = source(API_ROUTES.EVENTS)
+		.select(EVENTS.themesUpdated)
+		.json();
 
-	let pubs: Pubs = $derived(JSON.parse($pubs_store || '{}'));
-	let themes: Pubs = $derived(JSON.parse($themes_store || '{}'));
-
-	let pub: Pub = $derived(pubs[data?.pubId]);
-	let theme: Theme = $derived(themes[pub?.themeId]);
+	let pub: PubsItem | undefined = $derived(
+		($pubs || []).find(({ pubId }) => pubId === data?.pubId)
+	);
+	let theme: ThemesItem | undefined = $derived(
+		($themes || []).find(({ themeId }) => themeId === pub?.themeId)
+	);
 </script>
 
 <svelte:head>

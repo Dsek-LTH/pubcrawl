@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { type ActionData } from './$types';
-	import { type Pub } from '$lib/types';
+	import type { PubsItem } from '$lib/graphql/types';
 
-	let { form, updateAction, pub }: { form: ActionData; updateAction: string; pub: Pub } = $props();
+	let { form, updateAction, pub }: { form: ActionData; updateAction: string; pub: PubsItem } =
+		$props();
 </script>
 
 <form
@@ -19,9 +20,7 @@
 	<div class="stats w-60 bg-white shadow dark:bg-black">
 		<div class="stat">
 			<span class="stat-title">Occupancy</span>
-			<span class="stat-value text-5xl font-bold" type="text" name="occupancy"
-				>{pub.occupancy} / {pub.capacity}</span
-			>
+			<span class="stat-value text-5xl font-bold">{pub.occupancy} / {pub.capacity}</span>
 			{#if form?.errors?.occupancy}
 				<p class="error">{form.errors.occupancy[0]}</p>
 			{/if}

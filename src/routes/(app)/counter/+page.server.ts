@@ -1,7 +1,6 @@
-import { type Cookies, fail } from '@sveltejs/kit';
+import { type Cookies, fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { pubSchema } from '$lib/schemas/pubSchema';
-import apolloClient from '$lib/graphql/apollo-client';
 import {
 	DecrementPubOccupancy,
 	type GetPubKeysQuery,
@@ -9,10 +8,12 @@ import {
 	UpdatePub
 } from '$lib/graphql/types';
 import { getPubKeys } from '$lib/graphql/queries/get-pub-keys';
+import { createApolloServerClient } from '$lib/graphql/apollo-client.server';
 
 const getPubKeyAndId = async (cookies: Cookies) => {
 	const pubKey = cookies.get('pubKey');
-	const { pubKeys } = (await apolloClient.query<GetPubKeysQuery>({ query: getPubKeys })).data;
+	const apolloServerClient = createApolloServerClient();
+	const { pubKeys } = (await apolloServerClient.query<GetPubKeysQuery>({ query: getPubKeys })).data;
 	const pubId = pubKeys.find((key) => key.key === pubKey)?.pubId;
 
 	if (!pubKey || !pubId) {
@@ -28,11 +29,9 @@ const unauthorized = () => {
 
 export const load: PageServerLoad = async ({ cookies }) => {
 	const result = await getPubKeyAndId(cookies);
-	// if (!result) return redirect(302, '/login/counter');
-	//
-	// return { pubId: result.pubId };
+	if (!result) return redirect(302, '/login/counter');
 
-	return {};
+	return { pubId: result.pubId };
 };
 
 export const actions: Actions = {
