@@ -1,6 +1,5 @@
 <div align="center">
-  <!-- Logo NEEDS to be changed -->
-  <img src="./static/logo.png" alt="Fancy logo">
+  <img src="/static/icons/favicon-256x256.png" alt="Pubcrawl logo">
   <h3>Pubcrawl</h3>
   <p>
     Bar occupancy tracker
