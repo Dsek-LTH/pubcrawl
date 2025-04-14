@@ -1,2 +1,16 @@
 @import 'tailwindcss';
-@plugin "daisyui"
+@plugin "daisyui" {
+	themes:
+		light,
+		dark --prefersdark,
+		bumblebee;
+}
+
+@plugin "daisyui/theme" {
+	name: 'bumblebee';
+	default: true;
+	--color-primary: oklch(79.2% 0.209 151.711);
+	--color-primary-content: #000000;
+	--color-secondary: teal;
+	--color-secondary-content: #ffffff;
+}
