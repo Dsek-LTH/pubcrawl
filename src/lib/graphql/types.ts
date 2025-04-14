@@ -1089,16 +1089,6 @@ export type ThemesUpdateInput = {
 	themeId?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type CreatePubKeyMutationVariables = Exact<{
-	pubKey: Scalars['String']['input'];
-	pubId: Scalars['String']['input'];
-}>;
-
-export type CreatePubKeyMutation = {
-	__typename?: 'Mutation';
-	insertIntoPubKeys: Array<{ __typename?: 'PubKeysItem'; pubId: string; key: string; id: number }>;
-};
-
 export type CreatePubMutationVariables = Exact<{
 	capacity: Scalars['Int']['input'];
 	isActive: Scalars['Boolean']['input'];
@@ -1120,6 +1110,16 @@ export type CreatePubMutation = {
 		queueStatus: number;
 		themeId: string;
 	}>;
+};
+
+export type CreatePubKeyMutationVariables = Exact<{
+	pubKey: Scalars['String']['input'];
+	pubId: Scalars['String']['input'];
+}>;
+
+export type CreatePubKeyMutation = {
+	__typename?: 'Mutation';
+	insertIntoPubKeys: Array<{ __typename?: 'PubKeysItem'; pubId: string; key: string; id: number }>;
 };
 
 export type CreateThemeMutationVariables = Exact<{
@@ -1160,6 +1160,128 @@ export type DecrementPubOccupancyMutation = {
 	}> | null;
 };
 
+export type IncrementPubOccupancyMutationVariables = Exact<{
+	pubId: Scalars['String']['input'];
+	increment: Scalars['Int']['input'];
+}>;
+
+export type IncrementPubOccupancyMutation = {
+	__typename?: 'Mutation';
+	incrementPubOccupancy?: Array<{
+		__typename?: 'PubsItem';
+		id: number;
+		pubId: string;
+		occupancy: number;
+		capacity: number;
+		queueStatus: number;
+		isActive: boolean;
+		themeId: string;
+	}> | null;
+};
+
+export type RegeneratePubKeysMutationVariables = Exact<{
+	input: Array<RegeneratePubKeysInput> | RegeneratePubKeysInput;
+}>;
+
+export type RegeneratePubKeysMutation = {
+	__typename?: 'Mutation';
+	regeneratePubKeys?: Array<{
+		__typename?: 'PubKeysItem';
+		id: number;
+		pubId: string;
+		key: string;
+	}> | null;
+};
+
+export type RemovePubMutationVariables = Exact<{
+	pubId: Scalars['String']['input'];
+}>;
+
+export type RemovePubMutation = {
+	__typename?: 'Mutation';
+	deleteFromPubs: Array<{
+		__typename?: 'PubsItem';
+		id: number;
+		pubId: string;
+		occupancy: number;
+		capacity: number;
+		queueStatus: number;
+		isActive: boolean;
+		themeId: string;
+	}>;
+};
+
+export type RemovePubKeyMutationVariables = Exact<{
+	pubKey: Scalars['String']['input'];
+}>;
+
+export type RemovePubKeyMutation = {
+	__typename?: 'Mutation';
+	deleteFromPubKeys: Array<{ __typename?: 'PubKeysItem'; id: number; pubId: string; key: string }>;
+};
+
+export type RemoveThemeMutationVariables = Exact<{
+	themeId: Scalars['String']['input'];
+}>;
+
+export type RemoveThemeMutation = {
+	__typename?: 'Mutation';
+	deleteFromThemes: Array<{
+		__typename?: 'ThemesItem';
+		id: number;
+		themeId: string;
+		displayName: string;
+		logo: string;
+		color: string;
+	}>;
+};
+
+export type UpdatePubMutationVariables = Exact<{
+	pub: PubsUpdateInput;
+	oldPubId: Scalars['String']['input'];
+}>;
+
+export type UpdatePubMutation = {
+	__typename?: 'Mutation';
+	updatePubs: Array<{
+		__typename?: 'PubsItem';
+		id: number;
+		pubId: string;
+		occupancy: number;
+		capacity: number;
+		queueStatus: number;
+		isActive: boolean;
+		themeId: string;
+	}>;
+};
+
+export type UpdatePubKeyMutationVariables = Exact<{
+	pubKey: Scalars['String']['input'];
+	oldPubKey: Scalars['String']['input'];
+}>;
+
+export type UpdatePubKeyMutation = {
+	__typename?: 'Mutation';
+	updatePubKeys: Array<{ __typename?: 'PubKeysItem'; pubId: string; key: string; id: number }>;
+};
+
+export type UpdateThemeMutationVariables = Exact<{
+	theme: ThemesUpdateInput;
+	oldThemeId: Scalars['String']['input'];
+}>;
+
+export type UpdateThemeMutation = {
+	__typename?: 'Mutation';
+	updateThemes: Array<{
+		__typename?: 'ThemesItem';
+		id: number;
+		themeId: string;
+		displayName: string;
+		logo: string;
+		color: string;
+	}>;
+};
+
 export type GetPubKeysQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetPubKeysQuery = {
@@ -1197,25 +1319,6 @@ export type GetThemesQuery = {
 	}>;
 };
 
-export type IncrementPubOccupancyMutationVariables = Exact<{
-	pubId: Scalars['String']['input'];
-	increment: Scalars['Int']['input'];
-}>;
-
-export type IncrementPubOccupancyMutation = {
-	__typename?: 'Mutation';
-	incrementPubOccupancy?: Array<{
-		__typename?: 'PubsItem';
-		id: number;
-		pubId: string;
-		occupancy: number;
-		capacity: number;
-		queueStatus: number;
-		isActive: boolean;
-		themeId: string;
-	}> | null;
-};
-
 export type PubKeysSubscriptionSubscriptionVariables = Exact<{ [key: string]: never }>;
 
 export type PubKeysSubscriptionSubscription = {
@@ -1244,63 +1347,6 @@ export type PubsSubscriptionSubscription = {
 	}> | null;
 };
 
-export type RegeneratePubKeysMutationVariables = Exact<{
-	input: Array<RegeneratePubKeysInput> | RegeneratePubKeysInput;
-}>;
-
-export type RegeneratePubKeysMutation = {
-	__typename?: 'Mutation';
-	regeneratePubKeys?: Array<{
-		__typename?: 'PubKeysItem';
-		id: number;
-		pubId: string;
-		key: string;
-	}> | null;
-};
-
-export type RemovePubKeyMutationVariables = Exact<{
-	pubKey: Scalars['String']['input'];
-}>;
-
-export type RemovePubKeyMutation = {
-	__typename?: 'Mutation';
-	deleteFromPubKeys: Array<{ __typename?: 'PubKeysItem'; id: number; pubId: string; key: string }>;
-};
-
-export type RemovePubMutationVariables = Exact<{
-	pubId: Scalars['String']['input'];
-}>;
-
-export type RemovePubMutation = {
-	__typename?: 'Mutation';
-	deleteFromPubs: Array<{
-		__typename?: 'PubsItem';
-		id: number;
-		pubId: string;
-		occupancy: number;
-		capacity: number;
-		queueStatus: number;
-		isActive: boolean;
-		themeId: string;
-	}>;
-};
-
-export type RemoveThemeMutationVariables = Exact<{
-	themeId: Scalars['String']['input'];
-}>;
-
-export type RemoveThemeMutation = {
-	__typename?: 'Mutation';
-	deleteFromThemes: Array<{
-		__typename?: 'ThemesItem';
-		id: number;
-		themeId: string;
-		displayName: string;
-		logo: string;
-		color: string;
-	}>;
-};
-
 export type ThemesSubscriptionSubscriptionVariables = Exact<{ [key: string]: never }>;
 
 export type ThemesSubscriptionSubscription = {
@@ -1315,52 +1361,6 @@ export type ThemesSubscriptionSubscription = {
 	}> | null;
 };
 
-export type UpdatePubKeyMutationVariables = Exact<{
-	pubKey: Scalars['String']['input'];
-	oldPubKey: Scalars['String']['input'];
-}>;
-
-export type UpdatePubKeyMutation = {
-	__typename?: 'Mutation';
-	updatePubKeys: Array<{ __typename?: 'PubKeysItem'; pubId: string; key: string; id: number }>;
-};
-
-export type UpdatePubMutationVariables = Exact<{
-	pub: PubsUpdateInput;
-	oldPubId: Scalars['String']['input'];
-}>;
-
-export type UpdatePubMutation = {
-	__typename?: 'Mutation';
-	updatePubs: Array<{
-		__typename?: 'PubsItem';
-		id: number;
-		pubId: string;
-		occupancy: number;
-		capacity: number;
-		queueStatus: number;
-		isActive: boolean;
-		themeId: string;
-	}>;
-};
-
-export type UpdateThemeMutationVariables = Exact<{
-	theme: ThemesUpdateInput;
-	oldThemeId: Scalars['String']['input'];
-}>;
-
-export type UpdateThemeMutation = {
-	__typename?: 'Mutation';
-	updateThemes: Array<{
-		__typename?: 'ThemesItem';
-		id: number;
-		themeId: string;
-		displayName: string;
-		logo: string;
-		color: string;
-	}>;
-};
-
 export type TestQueryQueryVariables = Exact<{ [key: string]: never }>;
 
 export type TestQueryQuery = {
@@ -1372,15 +1372,6 @@ export type TestQueryQuery = {
 	}>;
 };
 
-export const CreatePubKeyDoc = gql`
-	mutation CreatePubKey($pubKey: String!, $pubId: String!) {
-		insertIntoPubKeys(values: { key: $pubKey, pubId: $pubId }) {
-			pubId
-			key
-			id
-		}
-	}
-`;
 export const CreatePubDoc = gql`
 	mutation CreatePub(
 		$capacity: Int!
@@ -1410,6 +1401,15 @@ export const CreatePubDoc = gql`
 		}
 	}
 `;
+export const CreatePubKeyDoc = gql`
+	mutation CreatePubKey($pubKey: String!, $pubId: String!) {
+		insertIntoPubKeys(values: { key: $pubKey, pubId: $pubId }) {
+			pubId
+			key
+			id
+		}
+	}
+`;
 export const CreateThemeDoc = gql`
 	mutation CreateTheme($themeId: String!, $color: String!, $logo: String!, $displayName: String!) {
 		insertIntoThemesSingle(
@@ -1433,6 +1433,94 @@ export const DecrementPubOccupancyDoc = gql`
 			queueStatus
 			isActive
 			themeId
+		}
+	}
+`;
+export const IncrementPubOccupancyDoc = gql`
+	mutation IncrementPubOccupancy($pubId: String!, $increment: Int!) {
+		incrementPubOccupancy(where: { pubId: $pubId }, values: { increment: $increment }) {
+			id
+			pubId
+			occupancy
+			capacity
+			queueStatus
+			isActive
+			themeId
+		}
+	}
+`;
+export const RegeneratePubKeysDoc = gql`
+	mutation RegeneratePubKeys($input: [RegeneratePubKeysInput!]!) {
+		regeneratePubKeys(input: $input) {
+			id
+			pubId
+			key
+		}
+	}
+`;
+export const RemovePubDoc = gql`
+	mutation RemovePub($pubId: String!) {
+		deleteFromPubs(where: { pubId: { eq: $pubId } }) {
+			id
+			pubId
+			occupancy
+			capacity
+			queueStatus
+			isActive
+			themeId
+		}
+	}
+`;
+export const RemovePubKeyDoc = gql`
+	mutation RemovePubKey($pubKey: String!) {
+		deleteFromPubKeys(where: { key: { eq: $pubKey } }) {
+			id
+			pubId
+			key
+		}
+	}
+`;
+export const RemoveThemeDoc = gql`
+	mutation RemoveTheme($themeId: String!) {
+		deleteFromThemes(where: { themeId: { eq: $themeId } }) {
+			id
+			themeId
+			displayName
+			logo
+			color
+		}
+	}
+`;
+export const UpdatePubDoc = gql`
+	mutation UpdatePub($pub: PubsUpdateInput!, $oldPubId: String!) {
+		updatePubs(set: $pub, where: { pubId: { eq: $oldPubId } }) {
+			id
+			pubId
+			occupancy
+			capacity
+			queueStatus
+			isActive
+			themeId
+		}
+	}
+`;
+export const UpdatePubKeyDoc = gql`
+	mutation UpdatePubKey($pubKey: String!, $oldPubKey: String!) {
+		updatePubKeys(set: { key: $pubKey }, where: { key: { eq: $oldPubKey } }) {
+			pubId
+			key
+			id
+		}
+	}
+`;
+export const UpdateThemeDoc = gql`
+	mutation UpdateTheme($theme: ThemesUpdateInput!, $oldThemeId: String!) {
+		updateThemes(set: $theme, where: { themeId: { eq: $oldThemeId } }) {
+			id
+			themeId
+			displayName
+			logo
+			color
 		}
 	}
 `;
@@ -1469,19 +1557,6 @@ export const GetThemesDoc = gql`
 		}
 	}
 `;
-export const IncrementPubOccupancyDoc = gql`
-	mutation IncrementPubOccupancy($pubId: String!, $increment: Int!) {
-		incrementPubOccupancy(where: { pubId: $pubId }, values: { increment: $increment }) {
-			id
-			pubId
-			occupancy
-			capacity
-			queueStatus
-			isActive
-			themeId
-		}
-	}
-`;
 export const PubKeysSubscriptionDoc = gql`
 	subscription PubKeysSubscription {
 		pubKeysSubscription {
@@ -1504,48 +1579,6 @@ export const PubsSubscriptionDoc = gql`
 		}
 	}
 `;
-export const RegeneratePubKeysDoc = gql`
-	mutation RegeneratePubKeys($input: [RegeneratePubKeysInput!]!) {
-		regeneratePubKeys(input: $input) {
-			id
-			pubId
-			key
-		}
-	}
-`;
-export const RemovePubKeyDoc = gql`
-	mutation RemovePubKey($pubKey: String!) {
-		deleteFromPubKeys(where: { key: { eq: $pubKey } }) {
-			id
-			pubId
-			key
-		}
-	}
-`;
-export const RemovePubDoc = gql`
-	mutation RemovePub($pubId: String!) {
-		deleteFromPubs(where: { pubId: { eq: $pubId } }) {
-			id
-			pubId
-			occupancy
-			capacity
-			queueStatus
-			isActive
-			themeId
-		}
-	}
-`;
-export const RemoveThemeDoc = gql`
-	mutation RemoveTheme($themeId: String!) {
-		deleteFromThemes(where: { themeId: { eq: $themeId } }) {
-			id
-			themeId
-			displayName
-			logo
-			color
-		}
-	}
-`;
 export const ThemesSubscriptionDoc = gql`
 	subscription ThemesSubscription {
 		themesSubscription {
@@ -1554,39 +1587,6 @@ export const ThemesSubscriptionDoc = gql`
 			id
 			logo
 			themeId
-		}
-	}
-`;
-export const UpdatePubKeyDoc = gql`
-	mutation UpdatePubKey($pubKey: String!, $oldPubKey: String!) {
-		updatePubKeys(set: { key: $pubKey }, where: { key: { eq: $oldPubKey } }) {
-			pubId
-			key
-			id
-		}
-	}
-`;
-export const UpdatePubDoc = gql`
-	mutation UpdatePub($pub: PubsUpdateInput!, $oldPubId: String!) {
-		updatePubs(set: $pub, where: { pubId: { eq: $oldPubId } }) {
-			id
-			pubId
-			occupancy
-			capacity
-			queueStatus
-			isActive
-			themeId
-		}
-	}
-`;
-export const UpdateThemeDoc = gql`
-	mutation UpdateTheme($theme: ThemesUpdateInput!, $oldThemeId: String!) {
-		updateThemes(set: $theme, where: { themeId: { eq: $oldThemeId } }) {
-			id
-			themeId
-			displayName
-			logo
-			color
 		}
 	}
 `;
@@ -1600,20 +1600,20 @@ export const TestQueryDoc = gql`
 		}
 	}
 `;
-export const CreatePubKey = (
-	options: Omit<MutationOptions<any, CreatePubKeyMutationVariables>, 'mutation'>
-) => {
-	const m = client.mutate<CreatePubKeyMutation, CreatePubKeyMutationVariables>({
-		mutation: CreatePubKeyDoc,
-		...options
-	});
-	return m;
-};
 export const CreatePub = (
 	options: Omit<MutationOptions<any, CreatePubMutationVariables>, 'mutation'>
 ) => {
 	const m = client.mutate<CreatePubMutation, CreatePubMutationVariables>({
 		mutation: CreatePubDoc,
+		...options
+	});
+	return m;
+};
+export const CreatePubKey = (
+	options: Omit<MutationOptions<any, CreatePubKeyMutationVariables>, 'mutation'>
+) => {
+	const m = client.mutate<CreatePubKeyMutation, CreatePubKeyMutationVariables>({
+		mutation: CreatePubKeyDoc,
 		...options
 	});
 	return m;
@@ -1632,6 +1632,78 @@ export const DecrementPubOccupancy = (
 ) => {
 	const m = client.mutate<DecrementPubOccupancyMutation, DecrementPubOccupancyMutationVariables>({
 		mutation: DecrementPubOccupancyDoc,
+		...options
+	});
+	return m;
+};
+export const IncrementPubOccupancy = (
+	options: Omit<MutationOptions<any, IncrementPubOccupancyMutationVariables>, 'mutation'>
+) => {
+	const m = client.mutate<IncrementPubOccupancyMutation, IncrementPubOccupancyMutationVariables>({
+		mutation: IncrementPubOccupancyDoc,
+		...options
+	});
+	return m;
+};
+export const RegeneratePubKeys = (
+	options: Omit<MutationOptions<any, RegeneratePubKeysMutationVariables>, 'mutation'>
+) => {
+	const m = client.mutate<RegeneratePubKeysMutation, RegeneratePubKeysMutationVariables>({
+		mutation: RegeneratePubKeysDoc,
+		...options
+	});
+	return m;
+};
+export const RemovePub = (
+	options: Omit<MutationOptions<any, RemovePubMutationVariables>, 'mutation'>
+) => {
+	const m = client.mutate<RemovePubMutation, RemovePubMutationVariables>({
+		mutation: RemovePubDoc,
+		...options
+	});
+	return m;
+};
+export const RemovePubKey = (
+	options: Omit<MutationOptions<any, RemovePubKeyMutationVariables>, 'mutation'>
+) => {
+	const m = client.mutate<RemovePubKeyMutation, RemovePubKeyMutationVariables>({
+		mutation: RemovePubKeyDoc,
+		...options
+	});
+	return m;
+};
+export const RemoveTheme = (
+	options: Omit<MutationOptions<any, RemoveThemeMutationVariables>, 'mutation'>
+) => {
+	const m = client.mutate<RemoveThemeMutation, RemoveThemeMutationVariables>({
+		mutation: RemoveThemeDoc,
+		...options
+	});
+	return m;
+};
+export const UpdatePub = (
+	options: Omit<MutationOptions<any, UpdatePubMutationVariables>, 'mutation'>
+) => {
+	const m = client.mutate<UpdatePubMutation, UpdatePubMutationVariables>({
+		mutation: UpdatePubDoc,
+		...options
+	});
+	return m;
+};
+export const UpdatePubKey = (
+	options: Omit<MutationOptions<any, UpdatePubKeyMutationVariables>, 'mutation'>
+) => {
+	const m = client.mutate<UpdatePubKeyMutation, UpdatePubKeyMutationVariables>({
+		mutation: UpdatePubKeyDoc,
+		...options
+	});
+	return m;
+};
+export const UpdateTheme = (
+	options: Omit<MutationOptions<any, UpdateThemeMutationVariables>, 'mutation'>
+) => {
+	const m = client.mutate<UpdateThemeMutation, UpdateThemeMutationVariables>({
+		mutation: UpdateThemeDoc,
 		...options
 	});
 	return m;
@@ -1705,15 +1777,6 @@ export const GetThemes = (
 	return result;
 };
 
-export const IncrementPubOccupancy = (
-	options: Omit<MutationOptions<any, IncrementPubOccupancyMutationVariables>, 'mutation'>
-) => {
-	const m = client.mutate<IncrementPubOccupancyMutation, IncrementPubOccupancyMutationVariables>({
-		mutation: IncrementPubOccupancyDoc,
-		...options
-	});
-	return m;
-};
 export const PubKeysSubscription = (
 	options: Omit<SubscriptionOptions<PubKeysSubscriptionSubscriptionVariables>, 'query'>
 ) => {
@@ -1735,42 +1798,6 @@ export const PubsSubscription = (
 	});
 	return q;
 };
-export const RegeneratePubKeys = (
-	options: Omit<MutationOptions<any, RegeneratePubKeysMutationVariables>, 'mutation'>
-) => {
-	const m = client.mutate<RegeneratePubKeysMutation, RegeneratePubKeysMutationVariables>({
-		mutation: RegeneratePubKeysDoc,
-		...options
-	});
-	return m;
-};
-export const RemovePubKey = (
-	options: Omit<MutationOptions<any, RemovePubKeyMutationVariables>, 'mutation'>
-) => {
-	const m = client.mutate<RemovePubKeyMutation, RemovePubKeyMutationVariables>({
-		mutation: RemovePubKeyDoc,
-		...options
-	});
-	return m;
-};
-export const RemovePub = (
-	options: Omit<MutationOptions<any, RemovePubMutationVariables>, 'mutation'>
-) => {
-	const m = client.mutate<RemovePubMutation, RemovePubMutationVariables>({
-		mutation: RemovePubDoc,
-		...options
-	});
-	return m;
-};
-export const RemoveTheme = (
-	options: Omit<MutationOptions<any, RemoveThemeMutationVariables>, 'mutation'>
-) => {
-	const m = client.mutate<RemoveThemeMutation, RemoveThemeMutationVariables>({
-		mutation: RemoveThemeDoc,
-		...options
-	});
-	return m;
-};
 export const ThemesSubscription = (
 	options: Omit<SubscriptionOptions<ThemesSubscriptionSubscriptionVariables>, 'query'>
 ) => {
@@ -1782,33 +1809,6 @@ export const ThemesSubscription = (
 		...options
 	});
 	return q;
-};
-export const UpdatePubKey = (
-	options: Omit<MutationOptions<any, UpdatePubKeyMutationVariables>, 'mutation'>
-) => {
-	const m = client.mutate<UpdatePubKeyMutation, UpdatePubKeyMutationVariables>({
-		mutation: UpdatePubKeyDoc,
-		...options
-	});
-	return m;
-};
-export const UpdatePub = (
-	options: Omit<MutationOptions<any, UpdatePubMutationVariables>, 'mutation'>
-) => {
-	const m = client.mutate<UpdatePubMutation, UpdatePubMutationVariables>({
-		mutation: UpdatePubDoc,
-		...options
-	});
-	return m;
-};
-export const UpdateTheme = (
-	options: Omit<MutationOptions<any, UpdateThemeMutationVariables>, 'mutation'>
-) => {
-	const m = client.mutate<UpdateThemeMutation, UpdateThemeMutationVariables>({
-		mutation: UpdateThemeDoc,
-		...options
-	});
-	return m;
 };
 export const TestQuery = (
 	options: Omit<WatchQueryOptions<TestQueryQueryVariables>, 'query'>

@@ -3,17 +3,18 @@ import type { Actions, PageServerLoad } from './$types';
 import { pubSchema } from '$lib/schemas/pubSchema';
 import {
 	DecrementPubOccupancy,
+	GetPubKeysDoc,
 	type GetPubKeysQuery,
 	IncrementPubOccupancy,
 	UpdatePub
 } from '$lib/graphql/types';
-import { getPubKeys } from '$lib/graphql/queries/get-pub-keys';
 import { createApolloServerClient } from '$lib/graphql/apollo-client.server';
 
 const getPubKeyAndId = async (cookies: Cookies) => {
 	const pubKey = cookies.get('pubKey');
 	const apolloServerClient = createApolloServerClient();
-	const { pubKeys } = (await apolloServerClient.query<GetPubKeysQuery>({ query: getPubKeys })).data;
+	const { pubKeys } = (await apolloServerClient.query<GetPubKeysQuery>({ query: GetPubKeysDoc }))
+		.data;
 	const pubId = pubKeys.find((key) => key.key === pubKey)?.pubId;
 
 	if (!pubKey || !pubId) {
