@@ -5,7 +5,7 @@ import '../app.css';
 <div class="flex flex-col min-h-screen w-screen m-0 p-0">
     <nav class="navbar bg-base-300">
         <div class="navbar-start">
-            <a href="/"><img src="/icons/favicon-512x512.png" alt="Pubcrawl logo"></a>
+            <a href="/"><img src="/icons/favicon-512x512.png" alt="Pubcrawl logo" width=64></a>
             <a class="btn btn-ghost" href="/">Home</a>
         </div>
         <div class="navbar-middle">
