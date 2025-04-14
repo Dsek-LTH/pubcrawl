@@ -59,13 +59,19 @@ for (const [key, resolver] of Object.entries(originalMutations)) {
       const touchesThemes = key.toLowerCase().includes("theme");
 
       if (touchesPubKeys) {
-        await pubsub.publish(PUB_KEYS_UPDATED, {});
+        await pubsub.publish(PUB_KEYS_UPDATED, {
+          pubKeysSubscription: await db.query.pubKeys.findMany(),
+        });
       }
       if (touchesPubs) {
-        await pubsub.publish(PUBS_UPDATED, {});
+        await pubsub.publish(PUBS_UPDATED, {
+          pubsSubscription: await db.query.pubs.findMany(),
+        });
       }
       if (touchesThemes) {
-        await pubsub.publish(THEMES_UPDATED, {});
+        await pubsub.publish(THEMES_UPDATED, {
+          themesSubscription: await db.query.themes.findMany(),
+        });
       }
 
       return result;
@@ -80,22 +86,22 @@ const schema = new GraphQLSchema({
       pubKeysSubscription: {
         type: new GraphQLList(new GraphQLNonNull(entities.types.PubKeysItem)),
         subscribe: () => pubsub.asyncIterator([PUB_KEYS_UPDATED]),
-        resolve: async () => {
-          return db.query.pubKeys.findMany();
+        resolve: async (payload) => {
+          return payload.pubKeysSubscription;
         },
       },
       pubsSubscription: {
         type: new GraphQLList(new GraphQLNonNull(entities.types.PubsItem)),
         subscribe: () => pubsub.asyncIterator([PUBS_UPDATED]),
-        resolve: async () => {
-          return db.query.pubs.findMany();
+        resolve: async (payload) => {
+          return payload.pubsSubscription;
         },
       },
       themesSubscription: {
         type: new GraphQLList(new GraphQLNonNull(entities.types.ThemesItem)),
         subscribe: () => pubsub.asyncIterator([THEMES_UPDATED]),
-        resolve: async () => {
-          return db.query.themes.findMany();
+        resolve: async (payload) => {
+          return payload.themesSubscription;
         },
       },
     },
@@ -161,7 +167,9 @@ const schema = new GraphQLSchema({
               .returning();
             results.push(result[0]);
           }
-          await pubsub.publish(PUB_KEYS_UPDATED, {});
+          await pubsub.publish(PUB_KEYS_UPDATED, {
+            pubKeysSubscription: results,
+          });
           return results;
         },
       },
@@ -192,12 +200,13 @@ const schema = new GraphQLSchema({
         resolve: async (source, args, context, info) => {
           const { pubId } = args.where;
           const value = args.values.increment;
-          await pubsub.publish(PUBS_UPDATED, {});
-          return db
+          const returning = await db
             .update(dbSchema.pubs)
             .set({ occupancy: increment(dbSchema.pubs.occupancy, value) })
             .where(eq(dbSchema.pubs.pubId, pubId))
             .returning();
+          await pubsub.publish(PUBS_UPDATED, { pubsSubscription: returning });
+          return returning;
         },
       },
       decrementPubOccupancy: {
@@ -227,12 +236,13 @@ const schema = new GraphQLSchema({
         resolve: async (source, args, context, info) => {
           const { pubId } = args.where;
           const { decrement } = args.values;
-          await pubsub.publish(PUBS_UPDATED, {});
-          return db
+          const returning = await db
             .update(dbSchema.pubs)
             .set({ occupancy: increment(dbSchema.pubs.occupancy, -decrement) })
             .where(eq(dbSchema.pubs.pubId, pubId))
             .returning();
+          await pubsub.publish(PUBS_UPDATED, { pubsSubscription: returning });
+          return returning;
         },
       },
     },
