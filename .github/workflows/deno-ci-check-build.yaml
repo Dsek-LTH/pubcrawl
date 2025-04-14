@@ -1,4 +1,4 @@
-name: 'Deno CI - Check and Build'
+name: 'Node CI - Check and Build'
 
 on:
   pull_request:
@@ -13,15 +13,27 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
 
-      - name: Set up Deno
-        uses: denoland/setup-deno@v2
+      - uses: pnpm/action-setup@v2
         with:
-          deno-version: v2.x
+          version: 10
+      - name: Use Node.js latest LTS
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm i
 
       - name: Check code formatting
-        run: deno fmt --check
+        run: pnpm run lint
+
+      - name: SvelteKit check
+        run: pnpm run check
 
       - name: Build
-        run: deno task build
+        run: pnpm run build
         env:
-          ADMIN_KEY: secret
+          ADMIN_KEY: tripp
+          GRAPHQL_SUBSCRIPTIONS_URL: trapp
+          PUBLIC_GRAPHQL_URL: trull
