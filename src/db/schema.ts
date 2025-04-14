@@ -18,14 +18,17 @@ export const pubs = pgTable("pubs", {
   isActive: boolean("is_active").notNull(),
   themeId: text("theme_id")
     .notNull()
-    .references(() => themes.themeId),
+    .references(() => themes.themeId, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
 });
 
 export const pubKeys = pgTable("pub_keys", {
   id: serial("id").primaryKey(),
   pubId: text("pub_id")
     .notNull()
-    .references(() => pubs.pubId),
+    .references(() => pubs.pubId, { onDelete: "cascade", onUpdate: "cascade" }),
   key: text("key").notNull(),
 });
 

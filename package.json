@@ -31,6 +31,7 @@
   },
   "scripts": {
     "dev": "npx tsx src/index.ts",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "push": "drizzle-kit push"
   }
 }
