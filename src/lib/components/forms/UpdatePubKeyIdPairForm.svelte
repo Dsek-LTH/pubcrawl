@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { type ActionData } from './$types';
-	import { type PubId, type PubKey, type Pub, type Theme } from '$lib/types';
+	import type { PubKeysItem, PubsItem, ThemesItem } from '$lib/graphql/types';
 
 	let {
 		form,
@@ -13,23 +13,19 @@
 		pubIds
 	}: {
 		form: ActionData;
-		pubs: Pub;
-		themes: Theme;
+		pubs: PubsItem[];
+		themes: ThemesItem[];
 		updateAction: string;
-		pubKey: PubKey;
-		pubId: PubId;
-		pubIds: PubId[];
+		pubKey: PubKeysItem['key'];
+		pubId: PubsItem['pubId'];
+		pubIds: PubsItem['pubId'][];
 	} = $props();
 	let themeColor = $state('#999');
-	if (
-		pubs != undefined &&
-		pubs[pubId] != undefined &&
-		themes != undefined &&
-		themes[pubs[pubId].themeId] != undefined
-	) {
-		themeColor = themes[pubs[pubId].themeId].color;
-	}
-	console.log(themeColor);
+	let pub = $derived(pubs?.find((pub) => pub.pubId === pubId));
+	let theme = $derived(themes?.find((theme) => theme.themeId === pub?.themeId));
+	$effect(() => {
+		if (theme) themeColor = theme.color;
+	});
 </script>
 
 <div class="card card-sm bg-base-300 border-l-6" style="border-color:{themeColor};">
@@ -47,7 +43,7 @@
 			<div class="input">
 				<span class="label">Pub:</span>
 				<select class="select w-full" name="pubId">
-					{#each pubIds as pubIdOption}
+					{#each pubIds as pubIdOption (pubIdOption)}
 						<option value={pubIdOption} selected={pubIdOption === pubId}>{pubIdOption}</option>
 					{/each}
 				</select>

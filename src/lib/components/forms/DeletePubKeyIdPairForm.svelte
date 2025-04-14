@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { type ActionData } from './$types';
-	import { type PubKey } from '$lib/types';
+	import type { PubKeysItem } from '$lib/graphql/types';
 
 	let {
 		form,
 		deleteAction,
 		pubKeys
-	}: { form: ActionData; deleteAction: string; pubKeys: PubKey[] } = $props();
+	}: { form: ActionData; deleteAction: string; pubKeys: PubKeysItem['key'][] } = $props();
 </script>
 
 <div class="card bg-base-300 w-6/12">

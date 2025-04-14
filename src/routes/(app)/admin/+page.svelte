@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { source } from 'sveltekit-sse';
-	import { type Pubs } from '$lib/types';
 	import { type PageProps } from './$types';
 
 	import CreatePubKeyIdPairForm from '$lib/components/forms/CreatePubKeyIdPairForm.svelte';
@@ -15,18 +14,22 @@
 	import DeletePubKeyIdPairForm from '$lib/components/forms/DeletePubKeyIdPairForm.svelte';
 	import DeletePubForm from '$lib/components/forms/DeletePubForm.svelte';
 	import DeleteThemeForm from '$lib/components/forms/DeleteThemeForm.svelte';
+	import { API_ROUTES, EVENTS } from '$lib/api';
+	import type { Readable } from 'svelte/store';
+	import type { PubKeysItem, PubsItem, ThemesItem } from '$lib/graphql/types';
 
 	let { form }: PageProps = $props();
 
-	const pub_key_id_pairs_store = source('/events/pub-key-id-pair-update').select(
-		'pubKeyIdPairsUpdated'
-	);
-	const pubs_store = source('/events/pub-update').select('pubsUpdated');
-	const themes_store = source('/events/theme-update').select('themesUpdated');
+	const pubKeys: Readable<PubKeysItem[]> = source(API_ROUTES.EVENTS)
+		.select(EVENTS.pubKeysUpdated)
+		.json();
+	const pubs: Readable<PubsItem[]> = source(API_ROUTES.EVENTS).select(EVENTS.pubsUpdated).json();
+	const themes: Readable<ThemesItem[]> = source(API_ROUTES.EVENTS)
+		.select(EVENTS.themesUpdated)
+		.json();
 
-	const pubKeyIdPairs: Pubs = $derived(JSON.parse($pub_key_id_pairs_store || '{}'));
-	const pubs: Pubs = $derived(JSON.parse($pubs_store || '{}'));
-	const themes: Pubs = $derived(JSON.parse($themes_store || '{}'));
+	let pubIds = $derived(($pubs || []).map(({ pubId }) => pubId));
+	let themeIds = $derived(($themes || []).map(({ themeId }) => themeId));
 </script>
 
 <svelte:head>
@@ -37,7 +40,7 @@
 	<button class="btn btn-info">Logout</button>
 </form>
 <div class="tabs tabs-border tabs-xl">
-	<input type="radio" name="my_tabs_6" class="tab" aria-label="Pub keys" checked="checked" />
+	<input type="radio" name="my_tabs_6" class="tab" aria-label="Pub keys" checked />
 	<div class="tab-content bg-base-100 border-base-300 p-6">
 		<p>
 			This is where login codes for the pubs are created. These can be randomly genererated or
@@ -46,31 +49,31 @@
 		</p>
 		<br />
 		<div class="flex flex-row gap-4">
-			<CreatePubKeyIdPairForm {form} createAction="?/createPubKeyIdPair" pubIds={Object.keys(pubs)}
+			<CreatePubKeyIdPairForm {form} createAction="?/createPubKeyIdPair" {pubIds}
 			></CreatePubKeyIdPairForm>
 			<br />
 
 			<DeletePubKeyIdPairForm
 				{form}
 				deleteAction="?/deletePubKeyIdPair"
-				pubKeys={Object.keys(pubKeyIdPairs)}
+				pubKeys={($pubKeys || []).map(({ key }) => key)}
 			></DeletePubKeyIdPairForm>
 			<br />
 		</div>
 		<form method="POST" use:enhance action="?/randomizePubKeyIdPairPubKeys">
 			<button class="btn btn-info mt-2">Randomize Pub Keys</button>
 		</form>
-		{#if pubKeyIdPairs && pubs}
+		{#if $pubKeys && $pubs}
 			<div class="mt-4 flex flex-col gap-2">
-				{#each Object.entries(pubKeyIdPairs) as [pubKey, pubId]}
+				{#each $pubKeys as { key, pubId } (key)}
 					<UpdatePubKeyIdPairForm
 						{form}
 						updateAction="?/updatePubKeyIdPair"
-						{pubs}
-						{themes}
-						{pubKey}
+						pubs={$pubs}
+						themes={$themes}
+						pubKey={key}
 						{pubId}
-						pubIds={Object.keys(pubs)}
+						{pubIds}
 					></UpdatePubKeyIdPairForm>
 					<br />
 				{/each}
@@ -86,21 +89,20 @@
 		</p>
 		<br />
 		<div class="flex flex-row gap-4">
-			<CreatePubForm {form} createAction="?/createPub" themeIds={Object.keys(themes)}
-			></CreatePubForm>
+			<CreatePubForm {form} createAction="?/createPub" {themeIds}></CreatePubForm>
 
-			<DeletePubForm {form} deleteAction="?/deletePub" pubIds={Object.keys(pubs)}></DeletePubForm>
+			<DeletePubForm {form} deleteAction="?/deletePub" {pubIds}></DeletePubForm>
 		</div>
-		{#if pubs && themes}
+		{#if $pubs && $themes}
 			<div class="mt-4 flex flex-col gap-2">
-				{#each Object.entries(pubs) as [pubId, pub]}
+				{#each $pubs as pub (pub.pubId)}
 					<UpdatePubForm
 						{form}
 						updateAction="?/updatePub"
-						{pubId}
+						pubId={pub.pubId}
 						{pub}
-						{themes}
-						themeIds={Object.keys(themes)}
+						themes={$themes}
+						{themeIds}
 					></UpdatePubForm>
 					<br />
 				{/each}
@@ -116,15 +118,15 @@
 			<CreateThemeForm {form} createAction="?/createTheme"></CreateThemeForm>
 			<br />
 
-			<DeleteThemeForm {form} deleteAction="?/deleteTheme" themeIds={Object.keys(themes)}
-			></DeleteThemeForm>
+			<DeleteThemeForm {form} deleteAction="?/deleteTheme" {themeIds}></DeleteThemeForm>
 			<br />
 		</div>
 
-		{#if themes}
+		{#if $themes}
 			<div class="mt-4 flex flex-col gap-2">
-				{#each Object.entries(themes) as [themeId, theme]}
-					<UpdateThemeForm {form} updateAction="?/updateTheme" {themeId} {theme}></UpdateThemeForm>
+				{#each $themes as theme (theme.themeId)}
+					<UpdateThemeForm {form} updateAction="?/updateTheme" themeId={theme.themeId} {theme}
+					></UpdateThemeForm>
 					<br />
 				{/each}
 			</div>

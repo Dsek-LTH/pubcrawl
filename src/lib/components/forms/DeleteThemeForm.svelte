@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { type ActionData } from './$types';
-	import { type ThemeId } from '$lib/types';
+	import type { ThemesItem } from '$lib/graphql/types';
 
 	let {
 		form,
 		deleteAction,
 		themeIds
-	}: { form: ActionData; deleteAction: string; themeIds: ThemeId[] } = $props();
+	}: { form: ActionData; deleteAction: string; themeIds: ThemesItem['themeId'][] } = $props();
 </script>
 
 <div class="card bg-base-300 w-6/12">

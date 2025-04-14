@@ -1,19 +1,22 @@
 <script lang="ts">
 	import { source } from 'sveltekit-sse';
-	import type { Pubs, Themes } from '$lib/types';
+	import type { PubsItem, ThemesItem } from '$lib/graphql/types';
+	import type { Readable } from 'svelte/store';
+	import { API_ROUTES, EVENTS } from '$lib/api';
 
-	const pubs_store = source('/events/pub-update').select('pubsUpdated');
-	const themes_store = source('/events/theme-update').select('themesUpdated');
+	const pubs: Readable<PubsItem[]> = source(API_ROUTES.EVENTS).select(EVENTS.pubsUpdated).json();
+	const themes: Readable<ThemesItem[]> = source(API_ROUTES.EVENTS)
+		.select(EVENTS.themesUpdated)
+		.json();
 
-	let pubs: Pubs = $derived(JSON.parse($pubs_store || '{}'));
-	let themes: Themes = $derived(JSON.parse($themes_store || '{}'));
+	let activePubs = $derived(($pubs || []).filter(({ isActive }) => isActive));
 </script>
 
 <svelte:head>
 	<title>Pubcrawl</title>
 </svelte:head>
 
-{#if pubs && themes}
+{#if $themes?.length + $pubs?.length > 0}
 	<table class="table">
 		<thead>
 			<tr>
@@ -24,24 +27,24 @@
 			</tr>
 		</thead>
 		<tbody>
-			{#each pubs
-				.values()
-				.filter((pub) => pub.isActive)
-				.toArray() as pub (pub.themeId)}
+			{#each activePubs as pub (pub.pubId)}
 				<tr>
-					<td class="border-l-6" style="border-color:{themes.get(pub.themeId)?.color}"
-						>{themes.get(pub.themeId)?.displayName || 'Unknown'}</td
+					<td
+						class="border-l-6"
+						style="border-color:{$themes.find(({ themeId }) => themeId === pub.themeId)?.color}"
 					>
+						{$themes.find(({ themeId }) => themeId === pub.themeId)?.displayName || 'Unknown'}
+					</td>
 					<td>{pub.occupancy}</td>
 					<td class="hidden sm:table-cell">{pub.capacity}</td>
-					<td
-						><progress
+					<td>
+						<progress
 							class="progress"
-							style="color:{themes.get(pub.themeId)?.color}"
+							style="color:{$themes.find(({ themeId }) => themeId === pub.themeId)?.color}"
 							value={pub.occupancy}
 							max={pub.capacity}
-						></progress></td
-					>
+						></progress>
+					</td>
 				</tr>
 			{/each}
 		</tbody>
