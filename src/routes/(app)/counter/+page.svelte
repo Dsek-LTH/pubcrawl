@@ -29,39 +29,39 @@
 
 <div class="card bg-base-300">
 	<div class="card-body">
-		{#if theme}
-			<div class="flex flex-row justify-between">
-				<h1 class="card-title">
-					{theme.displayName} <span class="text-sm">(id: {data?.pubId})</span>
-				</h1>
+		<form method="POST">
+			{#if theme}
+				<div class="flex flex-row justify-between">
+					<h1 class="card-title">
+						{theme.displayName} <span class="text-sm">(id: {data?.pubId})</span>
+					</h1>
 
-				<details class="dropdown dropdown-end">
-					<summary class="btn m-1"
-						>Danger zone <svg
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 24 24"
-							class="inline-block h-5 w-5 stroke-current"
+					<details class="dropdown dropdown-end">
+						<summary class="btn m-1"
+							>Danger zone <svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 24 24"
+								class="inline-block h-5 w-5 stroke-current"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M4 6h16M4 12h16M4 18h16"
+								></path>
+							</svg></summary
 						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M4 6h16M4 12h16M4 18h16"
-							></path>
-						</svg></summary
-					>
-					<ul
-						class="menu dropdown-content bg-base-100 rounded-box dropdown-right z-1 w-52 p-2 shadow-sm"
-					>
-						<form method="POST" use:enhance>
+						<ul
+							class="menu dropdown-content bg-base-100 rounded-box dropdown-right z-1 w-52 p-2 shadow-sm"
+						>
 							<button class="btn btn-warning mb-1 w-full" formaction="?/reset">Reset</button>
 							<button class="btn btn-primary mt-1 w-full" formaction="?/logout">Logout</button>
-						</form>
-					</ul>
-				</details>
-			</div>
-		{/if}
+						</ul>
+					</details>
+				</div>
+			{/if}
+		</form>
 
 		<br />
 

@@ -17,7 +17,7 @@
 			<div>
 				<select class="select w-full" name="pubKey">
 					<option value="" selected disabled hidden>Select counter key</option>
-					{#each pubKeys as pubKeyOption}
+					{#each pubKeys as pubKeyOption (pubKeyOption)}
 						<option value={pubKeyOption}>{pubKeyOption}</option>
 					{/each}
 				</select>
