@@ -23,6 +23,7 @@
     "ws": "^8.18.1"
   },
   "devDependencies": {
+    "@tsconfig/node-lts": "^22.0.1",
     "@types/body-parser": "^1.19.5",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",

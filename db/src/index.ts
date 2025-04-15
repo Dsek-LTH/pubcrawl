@@ -3,8 +3,8 @@ import { buildSchema } from "drizzle-graphql";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { ApolloServer } from "@apollo/server";
 // import {startStandaloneServer} from '@apollo/server/standalone';
-import * as dbSchema from "./db/schema";
-import { pubKeys } from "./db/schema";
+import * as dbSchema from "./db/schema.js";
+import { pubKeys } from "./db/schema.js";
 import { createServer } from "http";
 import { WebSocketServer } from "ws";
 import { expressMiddleware } from "@apollo/server/express4";
@@ -12,7 +12,7 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import { useServer } from "graphql-ws/use/ws";
-import { increment } from "./utils";
+import { increment } from "./utils.js";
 import pg from "pg";
 import {
   GraphQLInputObjectType,
@@ -22,7 +22,7 @@ import {
   GraphQLObjectType,
   GraphQLSchema,
   GraphQLString,
-} from "graphql/type";
+} from "graphql/type/index.js";
 import { eq } from "drizzle-orm";
 import { RedisPubSub } from "graphql-redis-subscriptions";
 
@@ -48,10 +48,10 @@ const { entities } = buildSchema(db);
 const originalMutations = entities.mutations;
 const wrappedMutations = {};
 for (const [key, resolver] of Object.entries(originalMutations)) {
+  // @ts-ignore
   wrappedMutations[key] = {
     ...resolver,
     resolve: async (...args: [any, any, any, any]) => {
-      // @ts-ingore
       const result = await resolver.resolve(...args);
 
       // TODO: Might want to do this in a smarter/more sophisticated way?

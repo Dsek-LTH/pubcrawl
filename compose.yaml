@@ -28,8 +28,8 @@ services:
       context: ./db
     restart: always
     environment:
-      - DATABASE_URL="postgres://postgres:postgres@pubcrawl-postgres:5432/postgres"
-      - REDIS_URL="redis://pubcrawl-redis:6379"
+      - DATABASE_URL=postgres://postgres:postgres@pubcrawl-postgres:5432/postgres
+      - REDIS_URL=redis://pubcrawl-redis:6379
     ports:
       - "4000:4000"
 
@@ -40,8 +40,9 @@ services:
     restart: always
     environment:
       - ADMIN_KEY=ADMIN
-      - GRAPHQL_SUBSCRIPTIONS_URL="ws://pubcrawl-db:4000/subscriptions"
-      - PUBLIC_GRAPHQL_URL="http://pubcrawl-db:4000/graphql"
+      - GRAPHQL_SUBSCRIPTIONS_URL=ws://pubcrawl-db:4000/subscriptions
+      - PUBLIC_GRAPHQL_URL=http://pubcrawl-db:4000/graphql
+      - ORIGIN=http://127.0.0.1:11337
     ports:
       - "11337:11337"
 

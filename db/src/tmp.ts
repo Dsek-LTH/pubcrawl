@@ -1,4 +1,4 @@
-import type * as schema from "./db/schema";
+import type * as schema from "./db/schema.js";
 import { sql } from "drizzle-orm";
 import { NodePgDatabase } from "drizzle-orm/node-postgres";
 

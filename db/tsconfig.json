@@ -1,14 +1,10 @@
 {
+  "extends": "@tsconfig/node-lts/tsconfig.json",
   "compilerOptions": {
-    "rootDirs": ["src"],
+    "module": "nodeNext",
     "outDir": "dist",
-    "lib": ["es2020"],
-    "target": "es2020",
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "esModuleInterop": true,
     "types": ["node"],
-    "skipLibCheck": true
+    "noUncheckedIndexedAccess": true,
   },
   "exclude": ["node_modules", "dist", ".env"]
 }
