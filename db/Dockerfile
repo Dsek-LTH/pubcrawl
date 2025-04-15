@@ -1,20 +1,22 @@
 FROM node:22-alpine AS base
 
+RUN corepack enable && corepack install -g pnpm
+
 FROM base AS deps
 
-RUN corepack enable && corepack install -g pnpm
 WORKDIR /app
-COPY package.json pnpm-lock.yaml ./
+COPY pnpm-lock.yaml .
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm fetch --frozen-lockfile --prod
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --offline --prod
+COPY package.json .
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --offline --frozen-lockfile  --prod
 
 FROM base AS build
 
-RUN corepack enable
 WORKDIR /app
-COPY package.json pnpm-lock.yaml ./
+COPY pnpm-lock.yaml .
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store pnpm fetch --frozen-lockfile
-RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store pnpm install --frozen-lockfile
+COPY package.json .
+RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store pnpm install --offline --frozen-lockfile
 COPY . .
 RUN pnpm build
 
