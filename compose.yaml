@@ -1,0 +1,38 @@
+name: pubcrawl
+
+services:
+  postgres:
+    container_name: pubcrawl-postgres
+    image: postgres:alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+  redis:
+    container_name: pubcrawl-redis
+    image: redis:alpine
+    restart: always
+    ports:
+      - "6379:6379"
+
+  db:
+    build: 
+      context: ./db
+    image: pubcrawl-db
+    ports:
+      - "4000:4000"
+
+  web:
+    build:
+      context: ./web
+    image: pubcrawl-web
+    ports:
+      - "11337:11337"
+
+volumes:
+  postgres:

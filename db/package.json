@@ -9,9 +9,12 @@
   "description": "",
   "dependencies": {
     "@apollo/server": "^4.12.0",
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "drizzle-graphql": "^0.8.5",
     "drizzle-orm": "^0.41.0",
+    "express": "^5.1.0",
     "graphql": "^16.10.0",
     "graphql-redis-subscriptions": "^2.7.0",
     "graphql-subscriptions": "^3.0.0",
@@ -21,6 +24,7 @@
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.1",
     "@types/node": "^22.14.0",
     "@types/pg": "^8.11.11",
     "@types/ws": "^8.18.1",
@@ -30,8 +34,9 @@
     "typescript": "^5.8.3"
   },
   "scripts": {
-    "dev": "npx tsx src/index.ts",
+    "dev": "pnpm exec tsx src/index.ts",
     "format": "prettier --write .",
-    "push": "drizzle-kit push"
+    "push": "drizzle-kit push",
+    "build": "tsc --project tsconfig.json"
   }
 }

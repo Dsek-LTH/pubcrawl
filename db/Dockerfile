@@ -15,5 +15,6 @@ WORKDIR /app
 
 COPY --from=build /app/out/ .
 
-EXPOSE 11337
+EXPOSE 4000
 CMD ["node", "build"]
+
