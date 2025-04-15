@@ -22,7 +22,7 @@ FROM base
 
 WORKDIR /app
 COPY --from=deps /app/node_modules /app/node_modules
-COPY --from=build /app/out /app/out
+COPY --from=build /app/dist /app/dist
 EXPOSE 4000
 ENV NODE_ENV=production
-CMD ["node", "out/src"]
+CMD ["node", "dist/src"]

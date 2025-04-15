@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "rootDirs": ["src"],
-    "outDir": "out",
+    "outDir": "dist",
     "lib": ["es2020"],
     "target": "es2020",
     "module": "esnext",
@@ -10,5 +10,5 @@
     "types": ["node"],
     "skipLibCheck": true
   },
-  "exclude": ["node_modules", "out", ".env"]
+  "exclude": ["node_modules", "dist", ".env"]
 }
