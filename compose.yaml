@@ -1,3 +1,5 @@
+# **IMPORTANT** This is mostly a reference for OKD, do **NOT** run this in production.
+
 name: pubcrawl
 
 services:
@@ -21,16 +23,25 @@ services:
       - "6379:6379"
 
   db:
-    build: 
+    container_name: pubcrawl-db
+    build:
       context: ./db
-    image: pubcrawl-db
+    restart: always
+    environment:
+      - DATABASE_URL="postgres://postgres:postgres@pubcrawl-postgres:5432/postgres"
+      - REDIS_URL="redis://pubcrawl-redis:6379"
     ports:
       - "4000:4000"
 
   web:
+    container_name: pubcrawl-web
     build:
       context: ./web
-    image: pubcrawl-web
+    restart: always
+    environment:
+      - ADMIN_KEY=ADMIN
+      - GRAPHQL_SUBSCRIPTIONS_URL="ws://pubcrawl-db:4000/subscriptions"
+      - PUBLIC_GRAPHQL_URL="http://pubcrawl-db:4000/graphql"
     ports:
       - "11337:11337"
 

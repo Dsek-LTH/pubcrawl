@@ -1,0 +1,8 @@
+# MacOS
+.DS_Store
+
+# Intellij
+.idea/
+
+# VS Code
+.vscode/
