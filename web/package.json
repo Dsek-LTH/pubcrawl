@@ -2,7 +2,9 @@
 	"name": "pubcrawl-web",
 	"private": true,
 	"version": "0.0.1",
-    "files": ["build"],
+	"files": [
+		"build"
+	],
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",

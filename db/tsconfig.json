@@ -4,7 +4,7 @@
     "module": "nodeNext",
     "outDir": "dist",
     "types": ["node"],
-    "noUncheckedIndexedAccess": true,
+    "noUncheckedIndexedAccess": true
   },
   "exclude": ["node_modules", "dist", ".env"]
 }
