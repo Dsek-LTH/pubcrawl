@@ -50,7 +50,8 @@ const wrappedMutations = {};
 for (const [key, resolver] of Object.entries(originalMutations)) {
   wrappedMutations[key] = {
     ...resolver,
-    resolve: async (...args) => {
+    resolve: async (...args: [any, any, any, any]) => {
+      // @ts-ingore
       const result = await resolver.resolve(...args);
 
       // TODO: Might want to do this in a smarter/more sophisticated way?
@@ -262,6 +263,7 @@ const apolloServer = new ApolloServer({ schema });
 await apolloServer.start();
 
 const app = express();
+// @ts-ignore
 app.use("/graphql", cors(), bodyParser.json(), expressMiddleware(apolloServer));
 
 const httpServer = createServer(app);
