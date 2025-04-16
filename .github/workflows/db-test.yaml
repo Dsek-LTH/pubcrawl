@@ -5,7 +5,7 @@ on:
     branches:
       - test
     paths:
-      - db
+      - db/**
 
 jobs:
   build:
@@ -27,15 +27,19 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
+        working-directory: db
         run: pnpm i
 
       - name: Check code formatting
+        working-directory: db
         run: pnpm run lint
 
       - name: SvelteKit check
+        working-directory: db
         run: pnpm run check
 
       - name: Build
+        working-directory: db
         run: pnpm run build
         env:
           DATABASE_URL: ""

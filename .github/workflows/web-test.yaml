@@ -5,7 +5,7 @@ on:
     branches:
       - test
     paths:
-      - web
+      - web/**
 
 jobs:
   build:
@@ -27,15 +27,19 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
+        working-directory: web
         run: pnpm i
 
       - name: Check code formatting
+        working-directory: web
         run: pnpm run lint
 
       - name: SvelteKit check
+        working-directory: web
         run: pnpm run check
 
       - name: Build
+        working-directory: web
         run: pnpm run build
         env:
           ADMIN_KEY: tripp
