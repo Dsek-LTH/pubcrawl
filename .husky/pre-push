@@ -4,13 +4,9 @@
 cd "$(dirname -- "$0")/.." || exit
 
 (
-    cd web && pnpm run ci-check
-) &
-(
-    cd db && pnpm run lint
-) &
-
-if ! wait; then
-    echo "Pre-push checks failed"
-    exit 1
-fi
+ cd web && pnpm run ci-check &&
+ cd ../db && pnpm run lint
+) || {
+ echo "Pre-push checks failed."
+ exit 1
+}
