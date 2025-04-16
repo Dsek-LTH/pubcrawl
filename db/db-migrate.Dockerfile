@@ -6,5 +6,6 @@ COPY pnpm-lock.yaml .
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store pnpm fetch --frozen-lockfile
 COPY package.json  .
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store pnpm install --offline --frozen-lockfile
-COPY . .
+COPY drizzle.config.ts .
+COPY src/db/schema.ts src/db/schema.ts
 CMD ["pnpm", "push"]
