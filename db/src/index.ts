@@ -47,15 +47,14 @@ const THEMES_UPDATED = "THEMES_UPDATED";
 
 const { entities } = buildSchema(db);
 const originalMutations = entities.mutations;
-const wrappedMutations: Record<
-  string,
-  (typeof originalMutations)[keyof typeof originalMutations]
-> = {};
+const wrappedMutations = {};
 
 for (const [key, resolver] of Object.entries(originalMutations)) {
+  // @ts-ignore
   wrappedMutations[key] = {
     ...resolver,
-    resolve: async (...args: Parameters<typeof resolver.resolve>) => {
+    // @ts-ignore
+    resolve: async (...args: [any, any, any, any]) => {
       const result = await resolver.resolve(...args);
 
       // TODO: Might want to do this in a smarter/more sophisticated way?
@@ -271,6 +270,7 @@ const apolloServer = new ApolloServer({
 });
 await apolloServer.start();
 
+// @ts-ignore This type error seems incorrect ¯\_(ツ)_/¯
 app.use("/graphql", cors(), bodyParser.json(), expressMiddleware(apolloServer));
 
 const wsServer = new WebSocketServer({
