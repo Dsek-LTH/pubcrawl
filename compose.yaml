@@ -31,7 +31,7 @@ services:
     container_name: pubcrawl-db-migrate
     build:
       context: ./db
-      dockerfile: drizzle-migrate.Dockerfile
+      dockerfile: db-migrate.Dockerfile
     restart: no
     depends_on:
       postgres:
