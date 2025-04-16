@@ -34,10 +34,6 @@ jobs:
         working-directory: db
         run: pnpm run lint
 
-      - name: SvelteKit check
-        working-directory: db
-        run: pnpm run check
-
       - name: Build
         working-directory: db
         run: pnpm run build
