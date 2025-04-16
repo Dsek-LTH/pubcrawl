@@ -47,13 +47,16 @@ const THEMES_UPDATED = "THEMES_UPDATED";
 
 const { entities } = buildSchema(db);
 const originalMutations = entities.mutations;
-const wrappedMutations = {};
+const wrappedMutations: Record<
+  string,
+  (typeof originalMutations)[keyof typeof originalMutations]
+> = {};
 
 for (const [key, resolver] of Object.entries(originalMutations)) {
-  // @ts-ignore
   wrappedMutations[key] = {
     ...resolver,
-    // @ts-ignore
+    // @ts-expect-error Typing this with Parameters<typeof resolver.resolve> breaks the build
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     resolve: async (...args: [any, any, any, any]) => {
       const result = await resolver.resolve(...args);
 
@@ -270,7 +273,7 @@ const apolloServer = new ApolloServer({
 });
 await apolloServer.start();
 
-// @ts-ignore This type error seems incorrect ¯\_(ツ)_/¯
+// @ts-expect-error This type error seems incorrect ¯\_(ツ)_/¯
 app.use("/graphql", cors(), bodyParser.json(), expressMiddleware(apolloServer));
 
 const wsServer = new WebSocketServer({

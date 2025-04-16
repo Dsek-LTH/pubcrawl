@@ -21,4 +21,7 @@ export default defineConfig([
     language: "json/json",
     extends: ["json/recommended"],
   },
+  {
+    ignores: ["node_modules/**", "dist/**"],
+  },
 ]);
