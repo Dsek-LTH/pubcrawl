@@ -15,7 +15,10 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint .",
-		"codegen": "graphql-codegen"
+		"codegen": "graphql-codegen",
+		"ci-check": "concurrently 'pnpm:lint' 'pnpm:test' 'pnpm:check' --prefix-colors 'auto' --group",
+		"test:unit": "vitest run --retry 2",
+		"test": "pnpm run test:unit"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.2.5",
