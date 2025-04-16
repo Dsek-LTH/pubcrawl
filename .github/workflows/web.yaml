@@ -1,13 +1,15 @@
-name: 'Node CI - Check and Build'
+name: Node Web CI - Check and Build
 
 on:
   pull_request:
     branches:
       - main
+    paths:
+      - web
 
 jobs:
   build:
-    name: Check and Build # This name is used in gihub rules
+    name: web-check-and-build # This name is used in gihub rules
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
