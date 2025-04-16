@@ -2,7 +2,6 @@ import "dotenv/config";
 import { buildSchema } from "drizzle-graphql";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { ApolloServer } from "@apollo/server";
-// import {startStandaloneServer} from '@apollo/server/standalone';
 import * as dbSchema from "./db/schema.js";
 import { pubKeys } from "./db/schema.js";
 import { createServer } from "http";
@@ -260,10 +259,6 @@ const schema = new GraphQLSchema({
   }),
 });
 
-// const server = new ApolloServer({ schema });
-// const { url } = await startStandaloneServer(server);
-//
-// console.log(`🚀 Server ready at ${url}`);
 const app = express();
 const httpServer = createServer(app);
 
