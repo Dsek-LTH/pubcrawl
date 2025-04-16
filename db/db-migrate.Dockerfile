@@ -1,6 +1,6 @@
 FROM node:22-alpine AS base
 
-RUN corepack enable
+RUN corepack enable && corepack install -g pnpm
 WORKDIR /app
 COPY package.json  .
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store pnpm fetch --frozen-lockfile
