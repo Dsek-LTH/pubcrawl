@@ -25,6 +25,7 @@ import {
 } from "graphql/type/index.js";
 import { eq } from "drizzle-orm";
 import { RedisPubSub } from "graphql-redis-subscriptions";
+import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 
 const { Pool } = pg;
 
@@ -46,12 +47,15 @@ const THEMES_UPDATED = "THEMES_UPDATED";
 
 const { entities } = buildSchema(db);
 const originalMutations = entities.mutations;
-const wrappedMutations = {};
+const wrappedMutations: Record<
+  string,
+  (typeof originalMutations)[keyof typeof originalMutations]
+> = {};
+
 for (const [key, resolver] of Object.entries(originalMutations)) {
-  // @ts-ignore
   wrappedMutations[key] = {
     ...resolver,
-    resolve: async (...args: [any, any, any, any]) => {
+    resolve: async (...args: Parameters<typeof resolver.resolve>) => {
       const result = await resolver.resolve(...args);
 
       // TODO: Might want to do this in a smarter/more sophisticated way?
@@ -156,7 +160,7 @@ const schema = new GraphQLSchema({
             ),
           },
         },
-        resolve: async (source, args, context, info) => {
+        resolve: async (args) => {
           const results = [];
           for (const item of args.input) {
             const { id } = item.where;
@@ -198,7 +202,7 @@ const schema = new GraphQLSchema({
             ),
           },
         },
-        resolve: async (source, args, context, info) => {
+        resolve: async (args) => {
           const { pubId } = args.where;
           const value = args.values.increment;
           const returning = await db
@@ -236,7 +240,7 @@ const schema = new GraphQLSchema({
             ),
           },
         },
-        resolve: async (source, args, context, info) => {
+        resolve: async (args) => {
           const { pubId } = args.where;
           const { decrement } = args.values;
           const returning = await db
@@ -258,15 +262,16 @@ const schema = new GraphQLSchema({
 // const { url } = await startStandaloneServer(server);
 //
 // console.log(`🚀 Server ready at ${url}`);
+const app = express();
+const httpServer = createServer(app);
 
-const apolloServer = new ApolloServer({ schema });
+const apolloServer = new ApolloServer({
+  schema,
+  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+});
 await apolloServer.start();
 
-const app = express();
-// @ts-ignore
 app.use("/graphql", cors(), bodyParser.json(), expressMiddleware(apolloServer));
-
-const httpServer = createServer(app);
 
 const wsServer = new WebSocketServer({
   server: httpServer,
