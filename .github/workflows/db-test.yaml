@@ -1,0 +1,42 @@
+name: Node DB CI (test) - Check and Build
+
+on:
+  pull_request:
+    branches:
+      - test
+    paths:
+      - db
+
+jobs:
+  build:
+    name: db-test-check-and-build # This name is used in github rules
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10
+
+      - name: Use Node.js latest LTS
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm i
+
+      - name: Check code formatting
+        run: pnpm run lint
+
+      - name: SvelteKit check
+        run: pnpm run check
+
+      - name: Build
+        run: pnpm run build
+        env:
+          DATABASE_URL: ""
+          REDIS_URL: ""
