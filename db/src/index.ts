@@ -161,7 +161,7 @@ const schema = new GraphQLSchema({
             ),
           },
         },
-        resolve: async (args) => {
+        resolve: async (_, args) => {
           const results = [];
           for (const item of args.input) {
             const { id } = item.where;
@@ -203,7 +203,7 @@ const schema = new GraphQLSchema({
             ),
           },
         },
-        resolve: async (args) => {
+        resolve: async (_, args) => {
           const { pubId } = args.where;
           const value = args.values.increment;
           const returning = await db
@@ -241,7 +241,7 @@ const schema = new GraphQLSchema({
             ),
           },
         },
-        resolve: async (args) => {
+        resolve: async (_, args) => {
           const { pubId } = args.where;
           const { decrement } = args.values;
           const returning = await db
