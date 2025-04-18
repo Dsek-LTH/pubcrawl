@@ -53,7 +53,11 @@ export const actions: Actions = {
 			});
 		}
 
-		cookies.set('pubKey', pubKey, { path: '/' });
+		cookies.set('pubKey', pubKey, {
+			path: '/',
+			httpOnly: true,
+			maxAge: 48 * 60 * 60
+		});
 
 		throw redirect(303, '/counter');
 	}
