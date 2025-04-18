@@ -1,0 +1,20 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: web-test
+  namespace: pubcrawl
+  labels:
+    app.kubernetes.io/component: web-test
+    app.kubernetes.io/instance: web-test
+    app.kubernetes.io/name: web-test
+    app.kubernetes.io/part-of: pubcrawl-test
+spec:
+  host: pubcrawl-test.dsek.se
+  to:
+    kind: Service
+    name: web-test
+  port:
+    targetPort: 11337
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect

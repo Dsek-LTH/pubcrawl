@@ -1,0 +1,26 @@
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: db-migrate-test
+  namespace: pubcrawl
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'db-migrate-test:latest'
+  strategy:
+    type: Docker
+    dockerStrategy:
+      dockerfilePath: db-migrate.Dockerfile
+  source:
+    type: Git
+    git:
+      uri: 'https://github.com/Dsek-LTH/pubcrawl'
+      ref: test
+    contextDir: /db
+  triggers:
+    - type: ConfigChange
+    - type: GitHub
+      github:
+        secretReference:
+          name: pubcrawl-test-db-migrate-github-webhook-secret

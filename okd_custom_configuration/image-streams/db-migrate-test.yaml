@@ -1,0 +1,10 @@
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  name: db-migrate-test
+  namespace: pubcrawl
+  labels:
+    app.kubernetes.io/component: db-migrate-test
+    app.kubernetes.io/instance: db-migrate-test
+    app.kubernetes.io/name: db-migrate-test
+    app.kubernetes.io/part-of: pubcrawl-test

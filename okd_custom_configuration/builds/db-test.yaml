@@ -1,0 +1,29 @@
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: pubcrawl-test-db
+  namespace: pubcrawl
+  labels:
+    app.kubernetes.io/component: db-test
+    app.kubernetes.io/instance: db-test
+    app.kubernetes.io/name: db-test
+    app.kubernetes.io/part-of: pubcrawl-test
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'db-test:latest'
+  strategy:
+    type: Docker
+  source:
+    type: Git
+    git:
+      uri: 'https://github.com/Dsek-LTH/pubcrawl.git'
+      ref: test
+    contextDir: /db
+  triggers:
+    - type: ConfigChange
+    - type: GitHub
+      github:
+        secretReference:
+          name: pubcrawl-test-db-github-webhook-secret
