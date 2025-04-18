@@ -26,19 +26,19 @@ jobs:
           node-version: lts/*
 
       - name: Lint
-        working-directory: db
+        working-directory: apps/db
         run: pnpm lint
 
       - name: Check
-        working-directory: db
+        working-directory: apps/db
         run: pnpm check
 
       - name: Formatting
-        working-directory: db
+        working-directory: apps/db
         run: pnpm format:check
 
       - name: Build
-        working-directory: db
+        working-directory: apps/db
         run: pnpm build
         env:
           DATABASE_URL: ""
