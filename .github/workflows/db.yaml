@@ -20,6 +20,10 @@ jobs:
         with:
           version: latest
 
+      - name: Install dependencies
+        working-directory: apps/web
+        run: pnpm i
+
       - name: Use Node.js latest LTS
         uses: actions/setup-node@v4
         with:

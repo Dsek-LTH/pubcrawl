@@ -25,6 +25,10 @@ jobs:
         with:
           node-version: lts/*
 
+      - name: Install dependencies
+        working-directory: apps/web
+        run: pnpm i
+
       - name: Lint
         working-directory: apps/db
         run: pnpm lint
