@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="/web/static/icons/favicon-white-512x512.png" alt="Pubcrawl logo">
+  <img src="/apps/web/static/icons/favicon-white-512x512.png" alt="Pubcrawl logo">
   <h3>Pubcrawl</h3>
   <p>
     Bar occupancy tracker
