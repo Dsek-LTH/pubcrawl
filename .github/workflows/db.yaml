@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - db/**
+      - apps/db/**
 
 jobs:
   ci-check:
@@ -16,15 +16,14 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Set up pnpm
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v4
         with:
-          version: 10
+          version: latest
 
       - name: Use Node.js latest LTS
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: lts/*
-          cache: 'pnpm'
 
       - name: Lint
         working-directory: db
