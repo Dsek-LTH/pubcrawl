@@ -1,0 +1,10 @@
+pre-push:
+  parallel: true
+  jobs:
+    - name: ci-check-web
+      root: web
+      run: check-ci
+
+    - name: lint-db
+      root: db
+      run: lint
