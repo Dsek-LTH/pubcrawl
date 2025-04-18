@@ -1,26 +1,33 @@
 pre-push:
   parallel: true
-  jobs:
-    - name: check-web
+  commands:
+    check-web:
       root: web
+      glob:
+        - apps/web/*
       run: pnpm check
 
-    - name: lint-web
+    lint-web:
       root: web
+        - apps/web/*
       run: pnpm lint
 
-    - name: format-check-web
+    format-check-web:
       root: web
+        - apps/web/*
       run: pnpm format:check
 
-    - name: check-db
+    check-db:
       root: db
+        - apps/db/*
       run: pnpm check
 
-    - name: lint-db
+    lint-db:
       root: db
+        - apps/db/*
       run: pnpm lint
 
-    - name: format-check-db
+    format-check-db:
       root: db
+        - apps/db/*
       run: pnpm format:check
