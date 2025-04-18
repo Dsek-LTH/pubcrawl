@@ -5,5 +5,10 @@
   },
   "scripts": {
     "postinstall": "lefthook install"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }
