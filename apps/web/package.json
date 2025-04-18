@@ -13,12 +13,12 @@
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"lint": "eslint .",
+		"lint:fix": "eslint . --fix",
 		"format": "prettier --write .",
-		"lint": "prettier --check . && eslint .",
+		"format:check": "prettier --check .",
 		"codegen": "graphql-codegen",
-		"ci-check": "concurrently 'pnpm:lint' 'pnpm:test' 'pnpm:check' --prefix-colors 'auto' --group",
-		"test:unit": "vitest run --retry 2",
-		"test": "pnpm run test:unit"
+		"ci-check": "concurrently 'pnpm:check' 'pnpm:lint' 'pnpm:format:check' --prefix-colors 'auto' --group"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.2.5",

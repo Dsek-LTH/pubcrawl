@@ -1,10 +1,26 @@
 pre-push:
   parallel: true
   jobs:
-    - name: ci-check-web
+    - name: check-web
       root: web
-      run: check-ci
+      run: pnpm check
+
+    - name: lint-web
+      root: web
+      run: pnpm lint
+
+    - name: format-check-web
+      root: web
+      run: pnpm format:check
+
+    - name: check-db
+      root: db
+      run: pnpm check
 
     - name: lint-db
       root: db
-      run: lint
+      run: pnpm lint
+
+    - name: format-check-db
+      root: db
+      run: pnpm format:check

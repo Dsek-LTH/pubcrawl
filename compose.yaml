@@ -29,7 +29,7 @@ services:
   db_migrate:
     container_name: pubcrawl-db-migrate
     build:
-      context: ./db
+      context: ./apps/db
       dockerfile: db-migrate.Dockerfile
     restart: no
     depends_on:
@@ -42,7 +42,7 @@ services:
   db:
     container_name: pubcrawl-db
     build:
-      context: ./db
+      context: ./apps/db
     restart: always
     depends_on:
       db_migrate:
@@ -58,7 +58,7 @@ services:
   web:
     container_name: pubcrawl-web
     build:
-      context: ./web
+      context: ./apps/web
     restart: always
     depends_on:
       - db

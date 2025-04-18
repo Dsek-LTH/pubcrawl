@@ -8,7 +8,7 @@ on:
       - web/**
 
 jobs:
-  build:
+  ci-check:
     name: web-test-check-and-build # This name is used in github rules
     runs-on: ubuntu-latest
     steps:
@@ -30,18 +30,22 @@ jobs:
         working-directory: web
         run: pnpm i
 
-      - name: Check code formatting
+      - name: Lint
         working-directory: web
-        run: pnpm run lint
+        run: pnpm lint
 
-      - name: SvelteKit check
+      - name: Check
         working-directory: web
-        run: pnpm run check
+        run: pnpm check
+
+      - name: Formatting
+        working-directory: web
+        run: pnpm format:check
 
       - name: Build
         working-directory: web
-        run: pnpm run build
+        run: pnpm build
         env:
-          ADMIN_KEY: tripp
-          GRAPHQL_SUBSCRIPTIONS_URL: trapp
-          PUBLIC_GRAPHQL_URL: trull
+          ADMIN_KEY: ""
+          GRAPHQL_SUBSCRIPTIONS_URL: ""
+          PUBLIC_GRAPHQL_URL: ""

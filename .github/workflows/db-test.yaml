@@ -8,7 +8,7 @@ on:
       - db/**
 
 jobs:
-  build:
+  ci-check:
     name: db-test-check-and-build # This name is used in github rules
     runs-on: ubuntu-latest
     steps:
@@ -26,17 +26,21 @@ jobs:
           node-version: lts/*
           cache: 'pnpm'
 
-      - name: Install dependencies
+      - name: Lint
         working-directory: db
-        run: pnpm i
+        run: pnpm lint
 
-      - name: Check code formatting
+      - name: Check
         working-directory: db
-        run: pnpm run lint
+        run: pnpm check
+
+      - name: Formatting
+        working-directory: db
+        run: pnpm format:check
 
       - name: Build
         working-directory: db
-        run: pnpm run build
+        run: pnpm build
         env:
           DATABASE_URL: ""
           REDIS_URL: ""

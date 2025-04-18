@@ -17,7 +17,7 @@ spec:
     git:
       uri: 'https://github.com/Dsek-LTH/pubcrawl'
       ref: test
-    contextDir: /db
+    contextDir: /apps/db
   triggers:
     - type: ConfigChange
     - type: GitHub

@@ -33,6 +33,7 @@
     "@types/node": "^22.14.0",
     "@types/pg": "^8.11.11",
     "@types/ws": "^8.18.1",
+    "concurrently": "^9.1.2",
     "drizzle-kit": "^0.30.6",
     "eslint": "^9.24.0",
     "eslint-plugin-import": "^2.25.2",
@@ -46,9 +47,12 @@
   },
   "scripts": {
     "dev": "pnpm exec tsx src/index.ts",
-    "format": "prettier --write .",
-    "lint": "prettier --check . && eslint .",
+    "build": "tsc --project tsconfig.json",
     "push": "drizzle-kit push",
-    "build": "tsc --project tsconfig.json"
+    "lint": "eslint .",
+    "check": "tsc --project tsconfig.json --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "ci-check": "concurrently 'pnpm:check' 'pnpm:lint' 'pnpm:format:check' --prefix-colors 'auto' --group"
   }
 }
