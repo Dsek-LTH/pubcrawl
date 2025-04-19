@@ -1,0 +1,10 @@
+{
+  "extends": "@tsconfig/node-lts/tsconfig.json",
+  "compilerOptions": {
+    "module": "nodeNext",
+    "outDir": "dist",
+    "types": ["node"],
+    "noUncheckedIndexedAccess": true
+  },
+  "exclude": ["node_modules", "dist", ".env"]
+}

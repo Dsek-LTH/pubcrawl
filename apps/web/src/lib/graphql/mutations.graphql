@@ -1,0 +1,139 @@
+mutation CreatePub(
+	$capacity: Int!
+	$isActive: Boolean!
+	$occupancy: Int!
+	$pubId: String!
+	$queueStatus: Int!
+	$themeId: String!
+) {
+	insertIntoPubs(
+		values: {
+			capacity: $capacity
+			isActive: $isActive
+			occupancy: $occupancy
+			pubId: $pubId
+			queueStatus: $queueStatus
+			themeId: $themeId
+		}
+	) {
+		capacity
+		id
+		isActive
+		occupancy
+		pubId
+		queueStatus
+		themeId
+	}
+}
+
+mutation CreatePubKey($pubKey: String!, $pubId: String!) {
+	insertIntoPubKeys(values: { key: $pubKey, pubId: $pubId }) {
+		pubId
+		key
+		id
+	}
+}
+
+mutation CreateTheme($themeId: String!, $color: String!, $logo: String!, $displayName: String!) {
+	insertIntoThemesSingle(
+		values: { themeId: $themeId, color: $color, logo: $logo, displayName: $displayName }
+	) {
+		id
+		themeId
+		displayName
+		logo
+		color
+	}
+}
+
+mutation DecrementPubOccupancy($pubId: String!, $decrement: Int!) {
+	decrementPubOccupancy(where: { pubId: $pubId }, values: { decrement: $decrement }) {
+		id
+		pubId
+		occupancy
+		capacity
+		queueStatus
+		isActive
+		themeId
+	}
+}
+
+mutation IncrementPubOccupancy($pubId: String!, $increment: Int!) {
+	incrementPubOccupancy(where: { pubId: $pubId }, values: { increment: $increment }) {
+		id
+		pubId
+		occupancy
+		capacity
+		queueStatus
+		isActive
+		themeId
+	}
+}
+
+mutation RegeneratePubKeys($input: [RegeneratePubKeysInput!]!) {
+	regeneratePubKeys(input: $input) {
+		id
+		pubId
+		key
+	}
+}
+
+mutation RemovePub($pubId: String!) {
+	deleteFromPubs(where: { pubId: { eq: $pubId } }) {
+		id
+		pubId
+		occupancy
+		capacity
+		queueStatus
+		isActive
+		themeId
+	}
+}
+
+mutation RemovePubKey($pubKey: String!) {
+	deleteFromPubKeys(where: { key: { eq: $pubKey } }) {
+		id
+		pubId
+		key
+	}
+}
+
+mutation RemoveTheme($themeId: String!) {
+	deleteFromThemes(where: { themeId: { eq: $themeId } }) {
+		id
+		themeId
+		displayName
+		logo
+		color
+	}
+}
+
+mutation UpdatePub($pub: PubsUpdateInput!, $oldPubId: String!) {
+	updatePubs(set: $pub, where: { pubId: { eq: $oldPubId } }) {
+		id
+		pubId
+		occupancy
+		capacity
+		queueStatus
+		isActive
+		themeId
+	}
+}
+
+mutation UpdatePubKey($pubKey: String!, $oldPubKey: String!) {
+	updatePubKeys(set: { key: $pubKey }, where: { key: { eq: $oldPubKey } }) {
+		pubId
+		key
+		id
+	}
+}
+
+mutation UpdateTheme($theme: ThemesUpdateInput!, $oldThemeId: String!) {
+	updateThemes(set: $theme, where: { themeId: { eq: $oldThemeId } }) {
+		id
+		themeId
+		displayName
+		logo
+		color
+	}
+}

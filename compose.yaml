@@ -1,0 +1,74 @@
+# **IMPORTANT** This is mostly a reference for OKD, do **NOT** run this in production.
+
+name: pubcrawl
+
+services:
+  postgres:
+    container_name: pubcrawl-postgres
+    image: postgres:alpine
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      retries: 5
+      timeout: 10s
+
+  redis:
+    container_name: pubcrawl-redis
+    image: redis:alpine
+    restart: always
+    ports:
+      - "6379:6379"
+
+  db_migrate:
+    container_name: pubcrawl-db-migrate
+    build:
+      context: ./apps/db
+      dockerfile: db-migrate.Dockerfile
+    restart: no
+    depends_on:
+      postgres:
+        condition: service_healthy
+        restart: true
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@pubcrawl-postgres:5432/postgres
+
+  db:
+    container_name: pubcrawl-db
+    build:
+      context: ./apps/db
+    restart: always
+    depends_on:
+      db_migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_started
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@pubcrawl-postgres:5432/postgres
+      - REDIS_URL=redis://pubcrawl-redis:6379
+    ports:
+      - "4000:4000"
+
+  web:
+    container_name: pubcrawl-web
+    build:
+      context: ./apps/web
+    restart: always
+    depends_on:
+      - db
+    environment:
+      - ADMIN_KEY=ADMIN
+      - GRAPHQL_SUBSCRIPTIONS_URL=ws://pubcrawl-db:4000/subscriptions
+      - PUBLIC_GRAPHQL_URL=http://pubcrawl-db:4000/graphql
+      - ORIGIN=http://127.0.0.1:11337
+    ports:
+      - "11337:11337"
+
+volumes:
+  postgres:
