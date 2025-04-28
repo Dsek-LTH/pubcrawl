@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { themeIdSchema } from '$lib/schemas/themeSchema';
+import { pubKeySchema } from './pubKeyIdPairSchema';
 
 export const pubIdSchema = z
 	.string({ required_error: 'Pub id is required' })
@@ -20,5 +21,6 @@ export const pubSchema = z.object({
 		})
 		.nonnegative({ message: 'Capacity must be non-negative' }),
 	isActive: z.coerce.boolean({ required_error: 'Active status is required' }),
-	themeId: themeIdSchema
+	themeId: themeIdSchema,
+	pubKey: pubKeySchema
 });

@@ -7,6 +7,7 @@
 		form,
 		updateAction,
 		pubId,
+		pubKey,
 		themes,
 		pub,
 		themeIds
@@ -15,6 +16,7 @@
 		updateAction: string;
 		pubId: PubsItem['pubId'];
 		pub: PubsItem;
+		pubKey: PubsItem['pubKey'];
 		themes: ThemesItem[];
 		themeIds: ThemesItem['themeId'][];
 	} = $props();
@@ -95,9 +97,17 @@
 						<p class="error">{form.errors.capacity[0]}</p>
 					{/if}
 				</div>
-
-				<button class="btn btn-secondary" type="submit">Update</button>
+				<div class="input">
+					<span class="label">Counter Key:</span>
+					<input type="hidden" name="oldPubKey" value={pubKey} />
+					<input type="text" name="pubKey" value={pubKey} />
+					{#if form?.errors?.pubKey}
+						<p class="error">{form.errors.pubKey[0]}</p>
+					{/if}
+				</div>
+				
 			</div>
+			<button class="btn btn-secondary" type="submit">Update</button>
 		</form>
 	</div>
 </div>

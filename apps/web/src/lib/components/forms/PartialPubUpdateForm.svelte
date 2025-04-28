@@ -17,7 +17,7 @@
 		};
 	}}
 >
-	<div class="stats w-60 bg-white shadow dark:bg-black">
+	<div class="stats min-w-60 bg-white shadow dark:bg-black">
 		<div class="stat">
 			<span class="stat-title">Occupancy</span>
 			<span class="stat-value text-5xl font-bold">{pub.occupancy} / {pub.capacity}</span>

@@ -6,7 +6,6 @@
 	import CreatePubForm from '$lib/components/forms/CreatePubForm.svelte';
 	import CreateThemeForm from '$lib/components/forms/CreateThemeForm.svelte';
 
-	import UpdatePubKeyIdPairForm from '$lib/components/forms/UpdatePubKeyIdPairForm.svelte';
 	import UpdatePubForm from '$lib/components/forms/UpdatePubForm.svelte';
 	import UpdateThemeForm from '$lib/components/forms/UpdateThemeForm.svelte';
 
@@ -30,6 +29,10 @@
 
 	let pubIds = $derived(($pubs || []).map(({ pubId }) => pubId));
 	let themeIds = $derived(($themes || []).map(({ themeId }) => themeId));
+	let pubIdKeys = $derived(($pubKeys || []).map(({ pubId, pubKey }) => [pubId, pubKey]));
+	let pairs = $derived(new Map(pubIdKeys));
+    pubIdKeys //do not remove, it will break
+
 </script>
 
 <svelte:head>
@@ -40,42 +43,17 @@
 	<button class="btn btn-info">Logout</button>
 </form>
 <div class="tabs tabs-border tabs-xl">
-	<input type="radio" name="my_tabs_6" class="tab" aria-label="Pub keys" checked />
-	<div class="tab-content bg-base-100 border-base-300 p-6">
-		<p>
-			This is where login codes for the pubs are specified. These can be randomly genererated or
-			manually typed, and are then used by the door guards to sign into the system. These will need
-			to be distributed manually.
-		</p>
-		<br />
-		<form method="POST" use:enhance action="?/randomizePubKeyIdPairPubKeys">
-			<button class="btn btn-info mt-2">Randomize Pub Keys</button>
-		</form>
-		{#if $pubKeys && $pubs}
-			<div class="mt-4 flex flex-col gap-2">
-				{#each $pubKeys as { pubKey, pubId } (pubKey)}
-					<UpdatePubKeyIdPairForm
-						{form}
-						updateAction="?/updatePubKeyIdPair"
-						pubs={$pubs}
-						themes={$themes}
-						{pubKey}
-						{pubId}
-						{pubIds}
-					></UpdatePubKeyIdPairForm>
-					<br />
-				{/each}
-			</div>
-		{/if}
-	</div>
 
-	<input type="radio" name="my_tabs_6" class="tab" aria-label="Pubs" />
+	<input type="radio" name="my_tabs_6" class="tab" checked aria-label="Pubs" />
 	<div class="tab-content bg-base-100 border-base-300 p-6">
 		<p>
 			This is where pubs are created. Keep in mind that the name and color of the pubs is determined
 			by the theme. Only pubs marked as Active are shown on the front-facing main page.
 		</p>
 		<br />
+		<form method="POST" use:enhance action="?/randomizePubKeyIdPairPubKeys">
+			<button class="btn btn-info mt-2">Randomize Pub Keys</button>
+		</form>
 		<div class="flex flex-row gap-4">
 			<CreatePubForm {form} createAction="?/createPub" {themeIds}></CreatePubForm>
 
@@ -88,6 +66,7 @@
 						{form}
 						updateAction="?/updatePub"
 						pubId={pub.pubId}
+						pubKey={pairs.get(pub.pubId)}
 						{pub}
 						themes={$themes}
 						{themeIds}

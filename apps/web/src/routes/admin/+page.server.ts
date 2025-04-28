@@ -5,14 +5,12 @@ import type { Actions, PageServerLoad } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
 import { themeSchema } from '$lib/schemas/themeSchema';
 import { pubSchema } from '$lib/schemas/pubSchema';
-import { pubKeyIdPairSchema } from '$lib/schemas/pubKeyIdPairSchema';
 import {
 	CreatePub,
 	CreateTheme,
 	RemovePub,
 	RemoveTheme,
 	UpdatePub,
-	UpdatePubKey,
 	UpdateTheme
 } from '$lib/graphql/types';
 
@@ -23,30 +21,6 @@ export const load: PageServerLoad = async ({ cookies }) => {
 };
 
 export const actions: Actions = {
-	updatePubKeyIdPair: async ({ request, cookies }) => {
-		if (cookies.get('adminKey') !== env.ADMIN_KEY) {
-			return fail(401, { message: 'Unauthorized' });
-		}
-
-		const formData = Object.fromEntries(await request.formData());
-
-		const result = pubKeyIdPairSchema.safeParse(formData);
-
-		if (!result.success) {
-			const { fieldErrors } = result.error.flatten();
-
-			return fail(400, {
-				errors: fieldErrors,
-				values: result.data
-			});
-		}
-
-		const { pubKey, oldPubKey } = result.data;
-
-		if (!oldPubKey) return fail(400, { message: 'No key to update' });
-
-		await UpdatePubKey({ variables: { pubKey, oldPubKey } });
-	},
 	randomizePubKeyIdPairPubKeys: async () => {
 		await randomizePubKeys();
 	},
@@ -60,7 +34,6 @@ export const actions: Actions = {
 		const result = pubSchema
 			.pick({
 				pubId: true,
-				occupancy: true,
 				capacity: true,
 				themeId: true
 			})
@@ -79,7 +52,7 @@ export const actions: Actions = {
 			variables: {
 				pubId: result.data.pubId,
 				pubKey: generatePubKeyString(),
-				occupancy: result.data.occupancy,
+				occupancy: 0,
 				capacity: result.data.capacity,
 				queueStatus: QueueStatus.EMPTY,
 				isActive: true,
@@ -116,7 +89,8 @@ export const actions: Actions = {
 					capacity: result.data.capacity,
 					queueStatus: QueueStatus.EMPTY,
 					isActive: true,
-					themeId: result.data.themeId
+					themeId: result.data.themeId,
+					pubKey: result.data.pubKey
 				}
 			}
 		});

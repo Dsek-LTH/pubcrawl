@@ -1,4 +1,4 @@
-import { GetPubKeysDoc, type GetPubKeysQuery, RegeneratePubKeys } from '$lib/graphql/types';
+import { GetPubsDoc, type GetPubsQuery, RegeneratePubKeys } from '$lib/graphql/types';
 import { createApolloServerClient } from '$lib/graphql/apollo-client.server';
 
 export const generatePubKeyString = (length: number = 5) => {
@@ -11,7 +11,7 @@ export const generatePubKeyString = (length: number = 5) => {
 
 export const randomizePubKeys = async () => {
 	const apolloServerClient = createApolloServerClient();
-	const result = await apolloServerClient.query<GetPubKeysQuery>({ query: GetPubKeysDoc });
+	const result = await apolloServerClient.query<GetPubsQuery>({ query: GetPubsDoc });
 
 	if (!result.data.pubs.length) return;
 
