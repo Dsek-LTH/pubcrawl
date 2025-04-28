@@ -29,7 +29,7 @@
 
 <div class="card bg-base-300">
 	<div class="card-body">
-		<form method="POST">
+		<form method="POST" use:enhance>
 			{#if theme}
 				<div class="flex flex-row justify-between">
 					<h1 class="card-title">
@@ -55,7 +55,8 @@
 						<ul
 							class="menu dropdown-content bg-base-100 rounded-box dropdown-right z-1 w-52 p-2 shadow-sm"
 						>
-							<button class="btn btn-warning mb-1 w-full" formaction="?/reset">Reset</button>
+						    <div class="flex flex-row w-full"><input class="input mr-1" name="occupancy" type="text"><button formaction="?/updatePub" class="btn btn-secondary mb-1">Set occupancy</button></div>
+							<button class="btn btn-warning my-1 w-full" formaction="?/reset">Reset</button>
 							<button class="btn btn-primary mt-1 w-full" formaction="?/logout">Logout</button>
 						</ul>
 					</details>
@@ -72,11 +73,11 @@
 		>
 			<div class="join join-vertical">
 				<button
-					class="join-item btn btn-xl btn-success h-24 w-60 text-5xl sm:w-24"
+					class="join-item btn btn-xl btn-success h-40 w-60 text-5xl sm:h-24 sm:w-24"
 					formaction="?/increment">+</button
 				>
 				<button
-					class="join-item btn btn-xl btn-error h-24 w-60 text-5xl sm:w-24"
+					class="join-item btn btn-xl btn-error h-40 w-60 text-5xl sm:h-24 sm:w-24"
 					formaction="?/decrement">-</button
 				>
 			</div>
