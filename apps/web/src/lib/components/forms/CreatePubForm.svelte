@@ -22,13 +22,6 @@
 				{/if}
 			</div>
 			<div class="input w-full">
-				<span class="label">Occupancy:</span>
-				<input type="text" name="occupancy" />
-				{#if form?.errors?.occupancy}
-					<p class="error">{form.errors.occupancy[0]}</p>
-				{/if}
-			</div>
-			<div class="input w-full">
 				<span class="label">Capacity:</span>
 				<input type="text" name="capacity" />
 				{#if form?.errors?.capacity}
