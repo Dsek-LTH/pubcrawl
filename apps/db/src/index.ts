@@ -161,7 +161,7 @@ const schema = new GraphQLSchema({
             results.push(result[0]);
           }
           await pubsub.publish(PUBS_UPDATED, {
-            pubKeysSubscription: results,
+            pubsSubscription: results,
           });
           return results;
         },
