@@ -12,6 +12,7 @@ export const themes = pgTable("themes", {
 export const pubs = pgTable("pubs", {
   id: serial("id").primaryKey(),
   pubId: text("pub_id").notNull().unique(),
+  pubKey: text("pub_key").notNull().unique(),
   occupancy: integer("occupancy").notNull(),
   capacity: integer("capacity").notNull(),
   queueStatus: integer("queue_status").notNull(),
@@ -24,14 +25,6 @@ export const pubs = pgTable("pubs", {
     }),
 });
 
-export const pubKeys = pgTable("pub_keys", {
-  id: serial("id").primaryKey(),
-  pubId: text("pub_id")
-    .notNull()
-    .references(() => pubs.pubId, { onDelete: "cascade", onUpdate: "cascade" }),
-  key: text("key").notNull(),
-});
-
 // Relations
 export const themesRelations = relations(themes, ({ many }) => ({
   pubs: many(pubs),
@@ -39,8 +32,4 @@ export const themesRelations = relations(themes, ({ many }) => ({
 
 export const pubsRelations = relations(pubs, ({ one }) => ({
   theme: one(themes, { fields: [pubs.themeId], references: [themes.themeId] }),
-}));
-
-export const pubKeysRelations = relations(pubKeys, ({ one }) => ({
-  pub: one(pubs, { fields: [pubKeys.pubId], references: [pubs.pubId] }),
 }));

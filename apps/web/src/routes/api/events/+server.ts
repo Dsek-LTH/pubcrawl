@@ -31,14 +31,14 @@ export const POST = async ({ cookies }) => {
 						GetPubKeysDoc,
 						EVENTS.pubKeysUpdated,
 						emit,
-						'pubKeys'
+						'pubs'
 					),
 					createSubscription<PubKeysSubscriptionSubscription>(
 						apolloServerClient,
 						PubKeysSubscriptionDoc,
 						EVENTS.pubKeysUpdated,
 						emit,
-						'pubKeysSubscription'
+						'pubsSubscription'
 					)
 				]
 			: [];

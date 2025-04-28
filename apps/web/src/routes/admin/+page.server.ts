@@ -1,5 +1,5 @@
 import { env } from '$env/dynamic/private';
-import { randomizePubKeys } from '$lib/server/utils';
+import { generatePubKeyString, randomizePubKeys } from '$lib/server/utils';
 import { QueueStatus } from '$lib/types';
 import type { Actions, PageServerLoad } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
@@ -8,10 +8,8 @@ import { pubSchema } from '$lib/schemas/pubSchema';
 import { pubKeyIdPairSchema } from '$lib/schemas/pubKeyIdPairSchema';
 import {
 	CreatePub,
-	CreatePubKey,
 	CreateTheme,
 	RemovePub,
-	RemovePubKey,
 	RemoveTheme,
 	UpdatePub,
 	UpdatePubKey,
@@ -25,32 +23,6 @@ export const load: PageServerLoad = async ({ cookies }) => {
 };
 
 export const actions: Actions = {
-	createPubKeyIdPair: async ({ request, cookies }) => {
-		if (cookies.get('adminKey') !== env.ADMIN_KEY) {
-			return fail(401, { message: 'Unauthorized' });
-		}
-
-		const formData = Object.fromEntries(await request.formData());
-
-		const result = pubKeyIdPairSchema
-			.pick({
-				pubKey: true,
-				pubId: true
-			})
-			.safeParse(formData);
-
-		if (!result.success) {
-			const { fieldErrors } = result.error.flatten();
-
-			return fail(400, {
-				errors: fieldErrors,
-				values: result.data
-			});
-		}
-
-		const { pubKey, pubId } = result.data;
-		await CreatePubKey({ variables: { pubKey, pubId } });
-	},
 	updatePubKeyIdPair: async ({ request, cookies }) => {
 		if (cookies.get('adminKey') !== env.ADMIN_KEY) {
 			return fail(401, { message: 'Unauthorized' });
@@ -74,30 +46,6 @@ export const actions: Actions = {
 		if (!oldPubKey) return fail(400, { message: 'No key to update' });
 
 		await UpdatePubKey({ variables: { pubKey, oldPubKey } });
-	},
-	deletePubKeyIdPair: async ({ request, cookies }) => {
-		if (cookies.get('adminKey') !== env.ADMIN_KEY) {
-			return fail(401, { message: 'Unauthorized' });
-		}
-
-		const formData = Object.fromEntries(await request.formData());
-
-		const result = pubKeyIdPairSchema
-			.pick({
-				pubKey: true
-			})
-			.safeParse(formData);
-
-		if (!result.success) {
-			const { fieldErrors } = result.error.flatten();
-
-			return fail(400, {
-				errors: fieldErrors,
-				values: result.data
-			});
-		}
-
-		await RemovePubKey({ variables: { pubKey: result.data.pubKey } });
 	},
 	randomizePubKeyIdPairPubKeys: async () => {
 		await randomizePubKeys();
@@ -130,6 +78,7 @@ export const actions: Actions = {
 		await CreatePub({
 			variables: {
 				pubId: result.data.pubId,
+				pubKey: generatePubKeyString(),
 				occupancy: result.data.occupancy,
 				capacity: result.data.capacity,
 				queueStatus: QueueStatus.EMPTY,

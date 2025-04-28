@@ -1,8 +1,7 @@
 subscription PubKeysSubscription {
-	pubKeysSubscription {
-		id
-		key
+	pubsSubscription {
 		pubId
+		pubKey
 	}
 }
 

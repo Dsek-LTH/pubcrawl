@@ -54,18 +54,14 @@ export type InnerOrder = {
 export type Mutation = {
 	__typename?: 'Mutation';
 	decrementPubOccupancy?: Maybe<Array<PubsItem>>;
-	deleteFromPubKeys: Array<PubKeysItem>;
 	deleteFromPubs: Array<PubsItem>;
 	deleteFromThemes: Array<ThemesItem>;
 	incrementPubOccupancy?: Maybe<Array<PubsItem>>;
-	insertIntoPubKeys: Array<PubKeysItem>;
-	insertIntoPubKeysSingle?: Maybe<PubKeysItem>;
 	insertIntoPubs: Array<PubsItem>;
 	insertIntoPubsSingle?: Maybe<PubsItem>;
 	insertIntoThemes: Array<ThemesItem>;
 	insertIntoThemesSingle?: Maybe<ThemesItem>;
-	regeneratePubKeys?: Maybe<Array<PubKeysItem>>;
-	updatePubKeys: Array<PubKeysItem>;
+	regeneratePubKeys?: Maybe<Array<PubsItem>>;
 	updatePubs: Array<PubsItem>;
 	updateThemes: Array<ThemesItem>;
 };
@@ -73,10 +69,6 @@ export type Mutation = {
 export type MutationDecrementPubOccupancyArgs = {
 	values: DecrementPubOccupancyValues;
 	where: DecrementPubOccupancyWhere;
-};
-
-export type MutationDeleteFromPubKeysArgs = {
-	where?: InputMaybe<PubKeysFilters>;
 };
 
 export type MutationDeleteFromPubsArgs = {
@@ -90,14 +82,6 @@ export type MutationDeleteFromThemesArgs = {
 export type MutationIncrementPubOccupancyArgs = {
 	values: IncrementPubOccupancyValues;
 	where: IncrementPubOccupancyWhere;
-};
-
-export type MutationInsertIntoPubKeysArgs = {
-	values: Array<PubKeysInsertInput>;
-};
-
-export type MutationInsertIntoPubKeysSingleArgs = {
-	values: PubKeysInsertInput;
 };
 
 export type MutationInsertIntoPubsArgs = {
@@ -120,11 +104,6 @@ export type MutationRegeneratePubKeysArgs = {
 	input: Array<RegeneratePubKeysInput>;
 };
 
-export type MutationUpdatePubKeysArgs = {
-	set: PubKeysUpdateInput;
-	where?: InputMaybe<PubKeysFilters>;
-};
-
 export type MutationUpdatePubsArgs = {
 	set: PubsUpdateInput;
 	where?: InputMaybe<PubsFilters>;
@@ -142,217 +121,6 @@ export enum OrderDirection {
 	/** Descending order */
 	Desc = 'desc'
 }
-
-export type PubKeysFilters = {
-	OR?: InputMaybe<Array<PubKeysFiltersOr>>;
-	id?: InputMaybe<PubKeysIdFilters>;
-	key?: InputMaybe<PubKeysKeyFilters>;
-	pubId?: InputMaybe<PubKeysPubIdFilters>;
-};
-
-export type PubKeysFiltersOr = {
-	id?: InputMaybe<PubKeysIdFilters>;
-	key?: InputMaybe<PubKeysKeyFilters>;
-	pubId?: InputMaybe<PubKeysPubIdFilters>;
-};
-
-export type PubKeysIdFilters = {
-	OR?: InputMaybe<Array<PubKeysIdfiltersOr>>;
-	eq?: InputMaybe<Scalars['Int']['input']>;
-	gt?: InputMaybe<Scalars['Int']['input']>;
-	gte?: InputMaybe<Scalars['Int']['input']>;
-	ilike?: InputMaybe<Scalars['String']['input']>;
-	/** Array<undefined> */
-	inArray?: InputMaybe<Array<Scalars['Int']['input']>>;
-	isNotNull?: InputMaybe<Scalars['Boolean']['input']>;
-	isNull?: InputMaybe<Scalars['Boolean']['input']>;
-	like?: InputMaybe<Scalars['String']['input']>;
-	lt?: InputMaybe<Scalars['Int']['input']>;
-	lte?: InputMaybe<Scalars['Int']['input']>;
-	ne?: InputMaybe<Scalars['Int']['input']>;
-	notIlike?: InputMaybe<Scalars['String']['input']>;
-	/** Array<undefined> */
-	notInArray?: InputMaybe<Array<Scalars['Int']['input']>>;
-	notLike?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type PubKeysIdfiltersOr = {
-	eq?: InputMaybe<Scalars['Int']['input']>;
-	gt?: InputMaybe<Scalars['Int']['input']>;
-	gte?: InputMaybe<Scalars['Int']['input']>;
-	ilike?: InputMaybe<Scalars['String']['input']>;
-	/** Array<undefined> */
-	inArray?: InputMaybe<Array<Scalars['Int']['input']>>;
-	isNotNull?: InputMaybe<Scalars['Boolean']['input']>;
-	isNull?: InputMaybe<Scalars['Boolean']['input']>;
-	like?: InputMaybe<Scalars['String']['input']>;
-	lt?: InputMaybe<Scalars['Int']['input']>;
-	lte?: InputMaybe<Scalars['Int']['input']>;
-	ne?: InputMaybe<Scalars['Int']['input']>;
-	notIlike?: InputMaybe<Scalars['String']['input']>;
-	/** Array<undefined> */
-	notInArray?: InputMaybe<Array<Scalars['Int']['input']>>;
-	notLike?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type PubKeysInsertInput = {
-	id?: InputMaybe<Scalars['Int']['input']>;
-	key: Scalars['String']['input'];
-	pubId: Scalars['String']['input'];
-};
-
-export type PubKeysItem = {
-	__typename?: 'PubKeysItem';
-	id: Scalars['Int']['output'];
-	key: Scalars['String']['output'];
-	pubId: Scalars['String']['output'];
-};
-
-export type PubKeysKeyFilters = {
-	OR?: InputMaybe<Array<PubKeysKeyfiltersOr>>;
-	eq?: InputMaybe<Scalars['String']['input']>;
-	gt?: InputMaybe<Scalars['String']['input']>;
-	gte?: InputMaybe<Scalars['String']['input']>;
-	ilike?: InputMaybe<Scalars['String']['input']>;
-	/** Array<undefined> */
-	inArray?: InputMaybe<Array<Scalars['String']['input']>>;
-	isNotNull?: InputMaybe<Scalars['Boolean']['input']>;
-	isNull?: InputMaybe<Scalars['Boolean']['input']>;
-	like?: InputMaybe<Scalars['String']['input']>;
-	lt?: InputMaybe<Scalars['String']['input']>;
-	lte?: InputMaybe<Scalars['String']['input']>;
-	ne?: InputMaybe<Scalars['String']['input']>;
-	notIlike?: InputMaybe<Scalars['String']['input']>;
-	/** Array<undefined> */
-	notInArray?: InputMaybe<Array<Scalars['String']['input']>>;
-	notLike?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type PubKeysKeyfiltersOr = {
-	eq?: InputMaybe<Scalars['String']['input']>;
-	gt?: InputMaybe<Scalars['String']['input']>;
-	gte?: InputMaybe<Scalars['String']['input']>;
-	ilike?: InputMaybe<Scalars['String']['input']>;
-	/** Array<undefined> */
-	inArray?: InputMaybe<Array<Scalars['String']['input']>>;
-	isNotNull?: InputMaybe<Scalars['Boolean']['input']>;
-	isNull?: InputMaybe<Scalars['Boolean']['input']>;
-	like?: InputMaybe<Scalars['String']['input']>;
-	lt?: InputMaybe<Scalars['String']['input']>;
-	lte?: InputMaybe<Scalars['String']['input']>;
-	ne?: InputMaybe<Scalars['String']['input']>;
-	notIlike?: InputMaybe<Scalars['String']['input']>;
-	/** Array<undefined> */
-	notInArray?: InputMaybe<Array<Scalars['String']['input']>>;
-	notLike?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type PubKeysOrderBy = {
-	id?: InputMaybe<InnerOrder>;
-	key?: InputMaybe<InnerOrder>;
-	pubId?: InputMaybe<InnerOrder>;
-};
-
-export type PubKeysPubIdFilters = {
-	OR?: InputMaybe<Array<PubKeysPubIdfiltersOr>>;
-	eq?: InputMaybe<Scalars['String']['input']>;
-	gt?: InputMaybe<Scalars['String']['input']>;
-	gte?: InputMaybe<Scalars['String']['input']>;
-	ilike?: InputMaybe<Scalars['String']['input']>;
-	/** Array<undefined> */
-	inArray?: InputMaybe<Array<Scalars['String']['input']>>;
-	isNotNull?: InputMaybe<Scalars['Boolean']['input']>;
-	isNull?: InputMaybe<Scalars['Boolean']['input']>;
-	like?: InputMaybe<Scalars['String']['input']>;
-	lt?: InputMaybe<Scalars['String']['input']>;
-	lte?: InputMaybe<Scalars['String']['input']>;
-	ne?: InputMaybe<Scalars['String']['input']>;
-	notIlike?: InputMaybe<Scalars['String']['input']>;
-	/** Array<undefined> */
-	notInArray?: InputMaybe<Array<Scalars['String']['input']>>;
-	notLike?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type PubKeysPubIdfiltersOr = {
-	eq?: InputMaybe<Scalars['String']['input']>;
-	gt?: InputMaybe<Scalars['String']['input']>;
-	gte?: InputMaybe<Scalars['String']['input']>;
-	ilike?: InputMaybe<Scalars['String']['input']>;
-	/** Array<undefined> */
-	inArray?: InputMaybe<Array<Scalars['String']['input']>>;
-	isNotNull?: InputMaybe<Scalars['Boolean']['input']>;
-	isNull?: InputMaybe<Scalars['Boolean']['input']>;
-	like?: InputMaybe<Scalars['String']['input']>;
-	lt?: InputMaybe<Scalars['String']['input']>;
-	lte?: InputMaybe<Scalars['String']['input']>;
-	ne?: InputMaybe<Scalars['String']['input']>;
-	notIlike?: InputMaybe<Scalars['String']['input']>;
-	/** Array<undefined> */
-	notInArray?: InputMaybe<Array<Scalars['String']['input']>>;
-	notLike?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type PubKeysPubRelation = {
-	__typename?: 'PubKeysPubRelation';
-	capacity: Scalars['Int']['output'];
-	id: Scalars['Int']['output'];
-	isActive: Scalars['Boolean']['output'];
-	occupancy: Scalars['Int']['output'];
-	pubId: Scalars['String']['output'];
-	queueStatus: Scalars['Int']['output'];
-	theme?: Maybe<PubKeysPubRelationThemeRelation>;
-	themeId: Scalars['String']['output'];
-};
-
-export type PubKeysPubRelationThemeArgs = {
-	where?: InputMaybe<ThemesFilters>;
-};
-
-export type PubKeysPubRelationThemeRelation = {
-	__typename?: 'PubKeysPubRelationThemeRelation';
-	color: Scalars['String']['output'];
-	displayName: Scalars['String']['output'];
-	id: Scalars['Int']['output'];
-	logo: Scalars['String']['output'];
-	pubs: Array<PubKeysPubRelationThemeRelationPubsRelation>;
-	themeId: Scalars['String']['output'];
-};
-
-export type PubKeysPubRelationThemeRelationPubsArgs = {
-	limit?: InputMaybe<Scalars['Int']['input']>;
-	offset?: InputMaybe<Scalars['Int']['input']>;
-	orderBy?: InputMaybe<PubsOrderBy>;
-	where?: InputMaybe<PubsFilters>;
-};
-
-export type PubKeysPubRelationThemeRelationPubsRelation = {
-	__typename?: 'PubKeysPubRelationThemeRelationPubsRelation';
-	capacity: Scalars['Int']['output'];
-	id: Scalars['Int']['output'];
-	isActive: Scalars['Boolean']['output'];
-	occupancy: Scalars['Int']['output'];
-	pubId: Scalars['String']['output'];
-	queueStatus: Scalars['Int']['output'];
-	themeId: Scalars['String']['output'];
-};
-
-export type PubKeysSelectItem = {
-	__typename?: 'PubKeysSelectItem';
-	id: Scalars['Int']['output'];
-	key: Scalars['String']['output'];
-	pub?: Maybe<PubKeysPubRelation>;
-	pubId: Scalars['String']['output'];
-};
-
-export type PubKeysSelectItemPubArgs = {
-	where?: InputMaybe<PubsFilters>;
-};
-
-export type PubKeysUpdateInput = {
-	id?: InputMaybe<Scalars['Int']['input']>;
-	key?: InputMaybe<Scalars['String']['input']>;
-	pubId?: InputMaybe<Scalars['String']['input']>;
-};
 
 export type PubsCapacityFilters = {
 	OR?: InputMaybe<Array<PubsCapacityfiltersOr>>;
@@ -400,6 +168,7 @@ export type PubsFilters = {
 	isActive?: InputMaybe<PubsIsActiveFilters>;
 	occupancy?: InputMaybe<PubsOccupancyFilters>;
 	pubId?: InputMaybe<PubsPubIdFilters>;
+	pubKey?: InputMaybe<PubsPubKeyFilters>;
 	queueStatus?: InputMaybe<PubsQueueStatusFilters>;
 	themeId?: InputMaybe<PubsThemeIdFilters>;
 };
@@ -410,6 +179,7 @@ export type PubsFiltersOr = {
 	isActive?: InputMaybe<PubsIsActiveFilters>;
 	occupancy?: InputMaybe<PubsOccupancyFilters>;
 	pubId?: InputMaybe<PubsPubIdFilters>;
+	pubKey?: InputMaybe<PubsPubKeyFilters>;
 	queueStatus?: InputMaybe<PubsQueueStatusFilters>;
 	themeId?: InputMaybe<PubsThemeIdFilters>;
 };
@@ -459,6 +229,7 @@ export type PubsInsertInput = {
 	isActive: Scalars['Boolean']['input'];
 	occupancy: Scalars['Int']['input'];
 	pubId: Scalars['String']['input'];
+	pubKey: Scalars['String']['input'];
 	queueStatus: Scalars['Int']['input'];
 	themeId: Scalars['String']['input'];
 };
@@ -509,6 +280,7 @@ export type PubsItem = {
 	isActive: Scalars['Boolean']['output'];
 	occupancy: Scalars['Int']['output'];
 	pubId: Scalars['String']['output'];
+	pubKey: Scalars['String']['output'];
 	queueStatus: Scalars['Int']['output'];
 	themeId: Scalars['String']['output'];
 };
@@ -558,6 +330,7 @@ export type PubsOrderBy = {
 	isActive?: InputMaybe<InnerOrder>;
 	occupancy?: InputMaybe<InnerOrder>;
 	pubId?: InputMaybe<InnerOrder>;
+	pubKey?: InputMaybe<InnerOrder>;
 	queueStatus?: InputMaybe<InnerOrder>;
 	themeId?: InputMaybe<InnerOrder>;
 };
@@ -583,6 +356,45 @@ export type PubsPubIdFilters = {
 };
 
 export type PubsPubIdfiltersOr = {
+	eq?: InputMaybe<Scalars['String']['input']>;
+	gt?: InputMaybe<Scalars['String']['input']>;
+	gte?: InputMaybe<Scalars['String']['input']>;
+	ilike?: InputMaybe<Scalars['String']['input']>;
+	/** Array<undefined> */
+	inArray?: InputMaybe<Array<Scalars['String']['input']>>;
+	isNotNull?: InputMaybe<Scalars['Boolean']['input']>;
+	isNull?: InputMaybe<Scalars['Boolean']['input']>;
+	like?: InputMaybe<Scalars['String']['input']>;
+	lt?: InputMaybe<Scalars['String']['input']>;
+	lte?: InputMaybe<Scalars['String']['input']>;
+	ne?: InputMaybe<Scalars['String']['input']>;
+	notIlike?: InputMaybe<Scalars['String']['input']>;
+	/** Array<undefined> */
+	notInArray?: InputMaybe<Array<Scalars['String']['input']>>;
+	notLike?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type PubsPubKeyFilters = {
+	OR?: InputMaybe<Array<PubsPubKeyfiltersOr>>;
+	eq?: InputMaybe<Scalars['String']['input']>;
+	gt?: InputMaybe<Scalars['String']['input']>;
+	gte?: InputMaybe<Scalars['String']['input']>;
+	ilike?: InputMaybe<Scalars['String']['input']>;
+	/** Array<undefined> */
+	inArray?: InputMaybe<Array<Scalars['String']['input']>>;
+	isNotNull?: InputMaybe<Scalars['Boolean']['input']>;
+	isNull?: InputMaybe<Scalars['Boolean']['input']>;
+	like?: InputMaybe<Scalars['String']['input']>;
+	lt?: InputMaybe<Scalars['String']['input']>;
+	lte?: InputMaybe<Scalars['String']['input']>;
+	ne?: InputMaybe<Scalars['String']['input']>;
+	notIlike?: InputMaybe<Scalars['String']['input']>;
+	/** Array<undefined> */
+	notInArray?: InputMaybe<Array<Scalars['String']['input']>>;
+	notLike?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type PubsPubKeyfiltersOr = {
 	eq?: InputMaybe<Scalars['String']['input']>;
 	gt?: InputMaybe<Scalars['String']['input']>;
 	gte?: InputMaybe<Scalars['String']['input']>;
@@ -647,6 +459,7 @@ export type PubsSelectItem = {
 	isActive: Scalars['Boolean']['output'];
 	occupancy: Scalars['Int']['output'];
 	pubId: Scalars['String']['output'];
+	pubKey: Scalars['String']['output'];
 	queueStatus: Scalars['Int']['output'];
 	theme?: Maybe<PubsThemeRelation>;
 	themeId: Scalars['String']['output'];
@@ -719,6 +532,7 @@ export type PubsThemeRelationPubsRelation = {
 	isActive: Scalars['Boolean']['output'];
 	occupancy: Scalars['Int']['output'];
 	pubId: Scalars['String']['output'];
+	pubKey: Scalars['String']['output'];
 	queueStatus: Scalars['Int']['output'];
 	themeId: Scalars['String']['output'];
 };
@@ -729,31 +543,17 @@ export type PubsUpdateInput = {
 	isActive?: InputMaybe<Scalars['Boolean']['input']>;
 	occupancy?: InputMaybe<Scalars['Int']['input']>;
 	pubId?: InputMaybe<Scalars['String']['input']>;
+	pubKey?: InputMaybe<Scalars['String']['input']>;
 	queueStatus?: InputMaybe<Scalars['Int']['input']>;
 	themeId?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Query = {
 	__typename?: 'Query';
-	pubKeys: Array<PubKeysSelectItem>;
-	pubKeysSingle?: Maybe<PubKeysSelectItem>;
 	pubs: Array<PubsSelectItem>;
 	pubsSingle?: Maybe<PubsSelectItem>;
 	themes: Array<ThemesSelectItem>;
 	themesSingle?: Maybe<ThemesSelectItem>;
-};
-
-export type QueryPubKeysArgs = {
-	limit?: InputMaybe<Scalars['Int']['input']>;
-	offset?: InputMaybe<Scalars['Int']['input']>;
-	orderBy?: InputMaybe<PubKeysOrderBy>;
-	where?: InputMaybe<PubKeysFilters>;
-};
-
-export type QueryPubKeysSingleArgs = {
-	offset?: InputMaybe<Scalars['Int']['input']>;
-	orderBy?: InputMaybe<PubKeysOrderBy>;
-	where?: InputMaybe<PubKeysFilters>;
 };
 
 export type QueryPubsArgs = {
@@ -792,12 +592,11 @@ export type RegeneratePubKeysValue = {
 };
 
 export type RegeneratePubKeysWhere = {
-	id: Scalars['Int']['input'];
+	pubId: Scalars['String']['input'];
 };
 
 export type Subscription = {
 	__typename?: 'Subscription';
-	pubKeysSubscription?: Maybe<Array<PubKeysItem>>;
 	pubsSubscription?: Maybe<Array<PubsItem>>;
 	themesSubscription?: Maybe<Array<ThemesItem>>;
 };
@@ -1007,6 +806,7 @@ export type ThemesPubsRelation = {
 	isActive: Scalars['Boolean']['output'];
 	occupancy: Scalars['Int']['output'];
 	pubId: Scalars['String']['output'];
+	pubKey: Scalars['String']['output'];
 	queueStatus: Scalars['Int']['output'];
 	theme?: Maybe<ThemesPubsRelationThemeRelation>;
 	themeId: Scalars['String']['output'];
@@ -1094,6 +894,7 @@ export type CreatePubMutationVariables = Exact<{
 	isActive: Scalars['Boolean']['input'];
 	occupancy: Scalars['Int']['input'];
 	pubId: Scalars['String']['input'];
+	pubKey: Scalars['String']['input'];
 	queueStatus: Scalars['Int']['input'];
 	themeId: Scalars['String']['input'];
 }>;
@@ -1107,19 +908,10 @@ export type CreatePubMutation = {
 		isActive: boolean;
 		occupancy: number;
 		pubId: string;
+		pubKey: string;
 		queueStatus: number;
 		themeId: string;
 	}>;
-};
-
-export type CreatePubKeyMutationVariables = Exact<{
-	pubKey: Scalars['String']['input'];
-	pubId: Scalars['String']['input'];
-}>;
-
-export type CreatePubKeyMutation = {
-	__typename?: 'Mutation';
-	insertIntoPubKeys: Array<{ __typename?: 'PubKeysItem'; pubId: string; key: string; id: number }>;
 };
 
 export type CreateThemeMutationVariables = Exact<{
@@ -1186,10 +978,10 @@ export type RegeneratePubKeysMutationVariables = Exact<{
 export type RegeneratePubKeysMutation = {
 	__typename?: 'Mutation';
 	regeneratePubKeys?: Array<{
-		__typename?: 'PubKeysItem';
+		__typename?: 'PubsItem';
 		id: number;
 		pubId: string;
-		key: string;
+		pubKey: string;
 	}> | null;
 };
 
@@ -1209,15 +1001,6 @@ export type RemovePubMutation = {
 		isActive: boolean;
 		themeId: string;
 	}>;
-};
-
-export type RemovePubKeyMutationVariables = Exact<{
-	pubKey: Scalars['String']['input'];
-}>;
-
-export type RemovePubKeyMutation = {
-	__typename?: 'Mutation';
-	deleteFromPubKeys: Array<{ __typename?: 'PubKeysItem'; id: number; pubId: string; key: string }>;
 };
 
 export type RemoveThemeMutationVariables = Exact<{
@@ -1262,7 +1045,7 @@ export type UpdatePubKeyMutationVariables = Exact<{
 
 export type UpdatePubKeyMutation = {
 	__typename?: 'Mutation';
-	updatePubKeys: Array<{ __typename?: 'PubKeysItem'; pubId: string; key: string; id: number }>;
+	updatePubs: Array<{ __typename?: 'PubsItem'; pubId: string; pubKey: string }>;
 };
 
 export type UpdateThemeMutationVariables = Exact<{
@@ -1286,7 +1069,7 @@ export type GetPubKeysQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetPubKeysQuery = {
 	__typename?: 'Query';
-	pubKeys: Array<{ __typename?: 'PubKeysSelectItem'; id: number; key: string; pubId: string }>;
+	pubs: Array<{ __typename?: 'PubsSelectItem'; pubKey: string; pubId: string }>;
 };
 
 export type GetPubsQueryVariables = Exact<{ [key: string]: never }>;
@@ -1323,12 +1106,7 @@ export type PubKeysSubscriptionSubscriptionVariables = Exact<{ [key: string]: ne
 
 export type PubKeysSubscriptionSubscription = {
 	__typename?: 'Subscription';
-	pubKeysSubscription?: Array<{
-		__typename?: 'PubKeysItem';
-		id: number;
-		key: string;
-		pubId: string;
-	}> | null;
+	pubsSubscription?: Array<{ __typename?: 'PubsItem'; pubId: string; pubKey: string }> | null;
 };
 
 export type PubsSubscriptionSubscriptionVariables = Exact<{ [key: string]: never }>;
@@ -1367,6 +1145,7 @@ export const CreatePubDoc = gql`
 		$isActive: Boolean!
 		$occupancy: Int!
 		$pubId: String!
+		$pubKey: String!
 		$queueStatus: Int!
 		$themeId: String!
 	) {
@@ -1376,6 +1155,7 @@ export const CreatePubDoc = gql`
 				isActive: $isActive
 				occupancy: $occupancy
 				pubId: $pubId
+				pubKey: $pubKey
 				queueStatus: $queueStatus
 				themeId: $themeId
 			}
@@ -1385,17 +1165,9 @@ export const CreatePubDoc = gql`
 			isActive
 			occupancy
 			pubId
+			pubKey
 			queueStatus
 			themeId
-		}
-	}
-`;
-export const CreatePubKeyDoc = gql`
-	mutation CreatePubKey($pubKey: String!, $pubId: String!) {
-		insertIntoPubKeys(values: { key: $pubKey, pubId: $pubId }) {
-			pubId
-			key
-			id
 		}
 	}
 `;
@@ -1443,7 +1215,7 @@ export const RegeneratePubKeysDoc = gql`
 		regeneratePubKeys(input: $input) {
 			id
 			pubId
-			key
+			pubKey
 		}
 	}
 `;
@@ -1457,15 +1229,6 @@ export const RemovePubDoc = gql`
 			queueStatus
 			isActive
 			themeId
-		}
-	}
-`;
-export const RemovePubKeyDoc = gql`
-	mutation RemovePubKey($pubKey: String!) {
-		deleteFromPubKeys(where: { key: { eq: $pubKey } }) {
-			id
-			pubId
-			key
 		}
 	}
 `;
@@ -1495,10 +1258,9 @@ export const UpdatePubDoc = gql`
 `;
 export const UpdatePubKeyDoc = gql`
 	mutation UpdatePubKey($pubKey: String!, $oldPubKey: String!) {
-		updatePubKeys(set: { key: $pubKey }, where: { key: { eq: $oldPubKey } }) {
+		updatePubs(set: { pubKey: $pubKey }, where: { pubKey: { eq: $oldPubKey } }) {
 			pubId
-			key
-			id
+			pubKey
 		}
 	}
 `;
@@ -1515,9 +1277,8 @@ export const UpdateThemeDoc = gql`
 `;
 export const GetPubKeysDoc = gql`
 	query GetPubKeys {
-		pubKeys {
-			id
-			key
+		pubs {
+			pubKey
 			pubId
 		}
 	}
@@ -1548,10 +1309,9 @@ export const GetThemesDoc = gql`
 `;
 export const PubKeysSubscriptionDoc = gql`
 	subscription PubKeysSubscription {
-		pubKeysSubscription {
-			id
-			key
+		pubsSubscription {
 			pubId
+			pubKey
 		}
 	}
 `;
@@ -1584,15 +1344,6 @@ export const CreatePub = (
 ) => {
 	const m = client.mutate<CreatePubMutation, CreatePubMutationVariables>({
 		mutation: CreatePubDoc,
-		...options
-	});
-	return m;
-};
-export const CreatePubKey = (
-	options: Omit<MutationOptions<any, CreatePubKeyMutationVariables>, 'mutation'>
-) => {
-	const m = client.mutate<CreatePubKeyMutation, CreatePubKeyMutationVariables>({
-		mutation: CreatePubKeyDoc,
 		...options
 	});
 	return m;
@@ -1638,15 +1389,6 @@ export const RemovePub = (
 ) => {
 	const m = client.mutate<RemovePubMutation, RemovePubMutationVariables>({
 		mutation: RemovePubDoc,
-		...options
-	});
-	return m;
-};
-export const RemovePubKey = (
-	options: Omit<MutationOptions<any, RemovePubKeyMutationVariables>, 'mutation'>
-) => {
-	const m = client.mutate<RemovePubKeyMutation, RemovePubKeyMutationVariables>({
-		mutation: RemovePubKeyDoc,
 		...options
 	});
 	return m;

@@ -13,12 +13,12 @@ export const randomizePubKeys = async () => {
 	const apolloServerClient = createApolloServerClient();
 	const result = await apolloServerClient.query<GetPubKeysQuery>({ query: GetPubKeysDoc });
 
-	if (!result.data.pubKeys.length) return;
+	if (!result.data.pubs.length) return;
 
 	return await RegeneratePubKeys({
 		variables: {
-			input: result.data.pubKeys.map((pubKey) => {
-				return { where: { id: pubKey.id }, value: { pubKey: generatePubKeyString() } };
+			input: result.data.pubs.map(({ pubId }) => {
+				return { where: { pubId }, value: { pubKey: generatePubKeyString() } };
 			})
 		}
 	});

@@ -14,10 +14,9 @@ const getPubKey = async (cookies: Cookies) => {
 
 const validatePubKey = async (pubKey: string) => {
 	const apolloServerClient = createApolloServerClient();
-	const { pubKeys } = (await apolloServerClient.query<GetPubKeysQuery>({ query: GetPubKeysDoc }))
-		.data;
+	const { pubs } = (await apolloServerClient.query<GetPubKeysQuery>({ query: GetPubKeysDoc })).data;
 
-	return !!pubKeys.find((key) => key.key === pubKey);
+	return !!pubs.find((pub) => pub.pubKey === pubKey);
 };
 
 export const load: PageServerLoad = async ({ cookies }) => {

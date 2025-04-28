@@ -1,7 +1,6 @@
 query GetPubKeys {
-	pubKeys {
-		id
-		key
+	pubs {
+		pubKey
 		pubId
 	}
 }

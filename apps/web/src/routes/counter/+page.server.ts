@@ -13,9 +13,8 @@ import { createApolloServerClient } from '$lib/graphql/apollo-client.server';
 const getPubKeyAndId = async (cookies: Cookies) => {
 	const pubKey = cookies.get('pubKey');
 	const apolloServerClient = createApolloServerClient();
-	const { pubKeys } = (await apolloServerClient.query<GetPubKeysQuery>({ query: GetPubKeysDoc }))
-		.data;
-	const pubId = pubKeys.find((key) => key.key === pubKey)?.pubId;
+	const { pubs } = (await apolloServerClient.query<GetPubKeysQuery>({ query: GetPubKeysDoc })).data;
+	const pubId = pubs.find((pub) => pub.pubKey === pubKey)?.pubId;
 
 	if (!pubKey || !pubId) {
 		return null;

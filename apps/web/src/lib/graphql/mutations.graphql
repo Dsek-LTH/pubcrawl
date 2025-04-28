@@ -3,6 +3,7 @@ mutation CreatePub(
 	$isActive: Boolean!
 	$occupancy: Int!
 	$pubId: String!
+	$pubKey: String!
 	$queueStatus: Int!
 	$themeId: String!
 ) {
@@ -12,6 +13,7 @@ mutation CreatePub(
 			isActive: $isActive
 			occupancy: $occupancy
 			pubId: $pubId
+			pubKey: $pubKey
 			queueStatus: $queueStatus
 			themeId: $themeId
 		}
@@ -21,16 +23,9 @@ mutation CreatePub(
 		isActive
 		occupancy
 		pubId
+		pubKey
 		queueStatus
 		themeId
-	}
-}
-
-mutation CreatePubKey($pubKey: String!, $pubId: String!) {
-	insertIntoPubKeys(values: { key: $pubKey, pubId: $pubId }) {
-		pubId
-		key
-		id
 	}
 }
 
@@ -74,7 +69,7 @@ mutation RegeneratePubKeys($input: [RegeneratePubKeysInput!]!) {
 	regeneratePubKeys(input: $input) {
 		id
 		pubId
-		key
+		pubKey
 	}
 }
 
@@ -87,14 +82,6 @@ mutation RemovePub($pubId: String!) {
 		queueStatus
 		isActive
 		themeId
-	}
-}
-
-mutation RemovePubKey($pubKey: String!) {
-	deleteFromPubKeys(where: { key: { eq: $pubKey } }) {
-		id
-		pubId
-		key
 	}
 }
 
@@ -121,10 +108,9 @@ mutation UpdatePub($pub: PubsUpdateInput!, $oldPubId: String!) {
 }
 
 mutation UpdatePubKey($pubKey: String!, $oldPubKey: String!) {
-	updatePubKeys(set: { key: $pubKey }, where: { key: { eq: $oldPubKey } }) {
+	updatePubs(set: { pubKey: $pubKey }, where: { pubKey: { eq: $oldPubKey } }) {
 		pubId
-		key
-		id
+		pubKey
 	}
 }
 

@@ -3,7 +3,6 @@
 	import { source } from 'sveltekit-sse';
 	import { type PageProps } from './$types';
 
-	import CreatePubKeyIdPairForm from '$lib/components/forms/CreatePubKeyIdPairForm.svelte';
 	import CreatePubForm from '$lib/components/forms/CreatePubForm.svelte';
 	import CreateThemeForm from '$lib/components/forms/CreateThemeForm.svelte';
 
@@ -11,16 +10,17 @@
 	import UpdatePubForm from '$lib/components/forms/UpdatePubForm.svelte';
 	import UpdateThemeForm from '$lib/components/forms/UpdateThemeForm.svelte';
 
-	import DeletePubKeyIdPairForm from '$lib/components/forms/DeletePubKeyIdPairForm.svelte';
 	import DeletePubForm from '$lib/components/forms/DeletePubForm.svelte';
 	import DeleteThemeForm from '$lib/components/forms/DeleteThemeForm.svelte';
 	import { API_ROUTES, EVENTS } from '$lib/api';
 	import type { Readable } from 'svelte/store';
-	import type { PubKeysItem, PubsItem, ThemesItem } from '$lib/graphql/types';
+	import type { PubKeysSubscriptionSubscription, PubsItem, ThemesItem } from '$lib/graphql/types';
 
 	let { form }: PageProps = $props();
 
-	const pubKeys: Readable<PubKeysItem[]> = source(API_ROUTES.EVENTS)
+	const pubKeys: Readable<PubKeysSubscriptionSubscription['pubsSubscription']> = source(
+		API_ROUTES.EVENTS
+	)
 		.select(EVENTS.pubKeysUpdated)
 		.json();
 	const pubs: Readable<PubsItem[]> = source(API_ROUTES.EVENTS).select(EVENTS.pubsUpdated).json();
@@ -43,35 +43,23 @@
 	<input type="radio" name="my_tabs_6" class="tab" aria-label="Pub keys" checked />
 	<div class="tab-content bg-base-100 border-base-300 p-6">
 		<p>
-			This is where login codes for the pubs are created. These can be randomly genererated or
+			This is where login codes for the pubs are specified. These can be randomly genererated or
 			manually typed, and are then used by the door guards to sign into the system. These will need
 			to be distributed manually.
 		</p>
 		<br />
-		<div class="flex flex-row gap-4">
-			<CreatePubKeyIdPairForm {form} createAction="?/createPubKeyIdPair" {pubIds}
-			></CreatePubKeyIdPairForm>
-			<br />
-
-			<DeletePubKeyIdPairForm
-				{form}
-				deleteAction="?/deletePubKeyIdPair"
-				pubKeys={($pubKeys || []).map(({ key }) => key)}
-			></DeletePubKeyIdPairForm>
-			<br />
-		</div>
 		<form method="POST" use:enhance action="?/randomizePubKeyIdPairPubKeys">
 			<button class="btn btn-info mt-2">Randomize Pub Keys</button>
 		</form>
 		{#if $pubKeys && $pubs}
 			<div class="mt-4 flex flex-col gap-2">
-				{#each $pubKeys as { key, pubId } (key)}
+				{#each $pubKeys as { pubKey, pubId } (pubKey)}
 					<UpdatePubKeyIdPairForm
 						{form}
 						updateAction="?/updatePubKeyIdPair"
 						pubs={$pubs}
 						themes={$themes}
-						pubKey={key}
+						{pubKey}
 						{pubId}
 						{pubIds}
 					></UpdatePubKeyIdPairForm>

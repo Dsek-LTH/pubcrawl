@@ -3,7 +3,6 @@ import { buildSchema } from "drizzle-graphql";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { ApolloServer } from "@apollo/server";
 import * as dbSchema from "./db/schema.js";
-import { pubKeys } from "./db/schema.js";
 import { createServer } from "http";
 import { WebSocketServer } from "ws";
 import { expressMiddleware } from "@apollo/server/express4";
@@ -40,7 +39,6 @@ const pubsub = new RedisPubSub({
     if (e) console.error(`Error connecting to Redis: ${e}`);
   },
 });
-const PUB_KEYS_UPDATED = "PUB_KEYS_UPDATED";
 const PUBS_UPDATED = "PUBS_UPDATED";
 const THEMES_UPDATED = "THEMES_UPDATED";
 
@@ -60,15 +58,9 @@ for (const [key, resolver] of Object.entries(originalMutations)) {
       const result = await resolver.resolve(...args);
 
       // TODO: Might want to do this in a smarter/more sophisticated way?
-      const touchesPubKeys = key.toLowerCase().includes("pubkey");
-      const touchesPubs = key.toLowerCase().includes("pub") && !touchesPubKeys;
+      const touchesPubs = key.toLowerCase().includes("pub");
       const touchesThemes = key.toLowerCase().includes("theme");
 
-      if (touchesPubKeys) {
-        await pubsub.publish(PUB_KEYS_UPDATED, {
-          pubKeysSubscription: await db.query.pubKeys.findMany(),
-        });
-      }
       if (touchesPubs) {
         await pubsub.publish(PUBS_UPDATED, {
           pubsSubscription: await db.query.pubs.findMany(),
@@ -89,13 +81,6 @@ const schema = new GraphQLSchema({
   subscription: new GraphQLObjectType({
     name: "Subscription",
     fields: {
-      pubKeysSubscription: {
-        type: new GraphQLList(new GraphQLNonNull(entities.types.PubKeysItem)),
-        subscribe: () => pubsub.asyncIterator([PUB_KEYS_UPDATED]),
-        resolve: async (payload) => {
-          return payload.pubKeysSubscription;
-        },
-      },
       pubsSubscription: {
         type: new GraphQLList(new GraphQLNonNull(entities.types.PubsItem)),
         subscribe: () => pubsub.asyncIterator([PUBS_UPDATED]),
@@ -123,7 +108,7 @@ const schema = new GraphQLSchema({
     fields: {
       ...wrappedMutations,
       regeneratePubKeys: {
-        type: new GraphQLList(new GraphQLNonNull(entities.types.PubKeysItem)),
+        type: new GraphQLList(new GraphQLNonNull(entities.types.PubsItem)),
         args: {
           input: {
             type: new GraphQLNonNull(
@@ -137,7 +122,9 @@ const schema = new GraphQLSchema({
                           new GraphQLInputObjectType({
                             name: "RegeneratePubKeysWhere",
                             fields: {
-                              id: { type: new GraphQLNonNull(GraphQLInt) },
+                              pubId: {
+                                type: new GraphQLNonNull(GraphQLString),
+                              },
                             },
                           }),
                         ),
@@ -164,16 +151,16 @@ const schema = new GraphQLSchema({
         resolve: async (_, args) => {
           const results = [];
           for (const item of args.input) {
-            const { id } = item.where;
+            const { pubId } = item.where;
             const { pubKey } = item.value;
             const result = await db
-              .update(pubKeys)
-              .set({ key: pubKey })
-              .where(eq(pubKeys.id, id))
+              .update(dbSchema.pubs)
+              .set({ pubKey })
+              .where(eq(dbSchema.pubs.pubId, pubId))
               .returning();
             results.push(result[0]);
           }
-          await pubsub.publish(PUB_KEYS_UPDATED, {
+          await pubsub.publish(PUBS_UPDATED, {
             pubKeysSubscription: results,
           });
           return results;
