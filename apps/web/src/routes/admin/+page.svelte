@@ -12,7 +12,7 @@
 	import DeletePubForm from '$lib/components/forms/DeletePubForm.svelte';
 	import DeleteThemeForm from '$lib/components/forms/DeleteThemeForm.svelte';
 	import { API_ROUTES, EVENTS } from '$lib/api';
-	import type { Readable } from 'svelte/store';
+	import { type Readable } from 'svelte/store';
 	import type { PubKeysSubscriptionSubscription, PubsItem, ThemesItem } from '$lib/graphql/types';
 
 	let { form }: PageProps = $props();
@@ -29,10 +29,10 @@
 
 	let pubIds = $derived(($pubs || []).map(({ pubId }) => pubId));
 	let themeIds = $derived(($themes || []).map(({ themeId }) => themeId));
-	let pubIdKeys = $derived(($pubKeys || []).map(({ pubId, pubKey }) => [pubId, pubKey]));
+	let pubIdKeys = $derived(
+		($pubKeys || []).map(({ pubId, pubKey }) => [pubId, pubKey] as [string, string])
+	);
 	let pairs = $derived(new Map(pubIdKeys));
-    pubIdKeys //do not remove, it will break
-
 </script>
 
 <svelte:head>
@@ -43,7 +43,6 @@
 	<button class="btn btn-info">Logout</button>
 </form>
 <div class="tabs tabs-border tabs-xl">
-
 	<input type="radio" name="my_tabs_6" class="tab" checked aria-label="Pubs" />
 	<div class="tab-content bg-base-100 border-base-300 p-6">
 		<p>
@@ -59,22 +58,24 @@
 
 			<DeletePubForm {form} deleteAction="?/deletePub" {pubIds}></DeletePubForm>
 		</div>
-		{#if $pubs && $themes}
-			<div class="mt-4 flex flex-col gap-2">
-				{#each $pubs as pub (pub.pubId)}
-					<UpdatePubForm
-						{form}
-						updateAction="?/updatePub"
-						pubId={pub.pubId}
-						pubKey={pairs.get(pub.pubId)}
-						{pub}
-						themes={$themes}
-						{themeIds}
-					></UpdatePubForm>
-					<br />
-				{/each}
-			</div>
-		{/if}
+		{#key pairs}
+			{#if $pubs && $themes}
+				<div class="mt-4 flex flex-col gap-2">
+					{#each $pubs as pub (pub.pubId)}
+						<UpdatePubForm
+							{form}
+							updateAction="?/updatePub"
+							pubId={pub.pubId}
+							pubKey={pairs.get(pub.pubId) ?? ''}
+							{pub}
+							themes={$themes}
+							{themeIds}
+						></UpdatePubForm>
+						<br />
+					{/each}
+				</div>
+			{/if}
+		{/key}
 	</div>
 
 	<input type="radio" name="my_tabs_6" class="tab" aria-label="Themes" />

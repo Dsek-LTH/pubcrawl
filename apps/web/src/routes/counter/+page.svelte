@@ -55,7 +55,12 @@
 						<ul
 							class="menu dropdown-content bg-base-100 rounded-box dropdown-right z-1 w-52 p-2 shadow-sm"
 						>
-						    <div class="flex flex-row w-full"><input class="input mr-1" name="occupancy" type="text"><button formaction="?/updatePub" class="btn btn-secondary mb-1">Set occupancy</button></div>
+							<div class="flex w-full flex-row">
+								<input class="input mr-1" name="occupancy" type="text" /><button
+									formaction="?/updatePub"
+									class="btn btn-secondary mb-1">Set occupancy</button
+								>
+							</div>
 							<button class="btn btn-warning my-1 w-full" formaction="?/reset">Reset</button>
 							<button class="btn btn-primary mt-1 w-full" formaction="?/logout">Logout</button>
 						</ul>

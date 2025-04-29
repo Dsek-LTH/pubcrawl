@@ -105,7 +105,6 @@
 						<p class="error">{form.errors.pubKey[0]}</p>
 					{/if}
 				</div>
-				
 			</div>
 			<button class="btn btn-secondary" type="submit">Update</button>
 		</form>
