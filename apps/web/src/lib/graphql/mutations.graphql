@@ -1,0 +1,120 @@
+mutation CreatePub(
+	$capacity: Int!
+	$isActive: Boolean!
+	$occupancy: Int!
+	$pubId: String!
+	$pubKey: String!
+	$queueStatus: Int!
+	$themeId: String!
+) {
+	insertIntoPubs(
+		values: {
+			capacity: $capacity
+			isActive: $isActive
+			occupancy: $occupancy
+			pubId: $pubId
+			pubKey: $pubKey
+			queueStatus: $queueStatus
+			themeId: $themeId
+		}
+	) {
+		capacity
+		id
+		isActive
+		occupancy
+		pubId
+		pubKey
+		queueStatus
+		themeId
+	}
+}
+
+mutation CreateTheme($themeId: String!, $color: String!, $logo: String!, $displayName: String!) {
+	insertIntoThemesSingle(
+		values: { themeId: $themeId, color: $color, logo: $logo, displayName: $displayName }
+	) {
+		id
+		themeId
+		displayName
+		logo
+		color
+	}
+}
+
+mutation DecrementPubOccupancy($pubId: String!, $decrement: Int!) {
+	decrementPubOccupancy(where: { pubId: $pubId }, values: { decrement: $decrement }) {
+		id
+		pubId
+		occupancy
+		capacity
+		queueStatus
+		isActive
+		themeId
+	}
+}
+
+mutation IncrementPubOccupancy($pubId: String!, $increment: Int!) {
+	incrementPubOccupancy(where: { pubId: $pubId }, values: { increment: $increment }) {
+		id
+		pubId
+		occupancy
+		capacity
+		queueStatus
+		isActive
+		themeId
+	}
+}
+
+mutation RegeneratePubKeys($input: [RegeneratePubKeysInput!]!) {
+	regeneratePubKeys(input: $input) {
+		id
+		pubId
+		pubKey
+	}
+}
+
+mutation RemovePub($pubId: String!) {
+	deleteFromPubs(where: { pubId: { eq: $pubId } }) {
+		id
+		pubId
+		pubKey
+		occupancy
+		capacity
+		queueStatus
+		isActive
+		themeId
+	}
+}
+
+mutation RemoveTheme($themeId: String!) {
+	deleteFromThemes(where: { themeId: { eq: $themeId } }) {
+		id
+		themeId
+		displayName
+		logo
+		color
+	}
+}
+
+mutation UpdatePub($pub: PubsUpdateInput!, $oldPubId: String!) {
+	updatePubs(set: $pub, where: { pubId: { eq: $oldPubId } }) {
+		id
+		pubId
+		pubKey
+		occupancy
+		capacity
+		queueStatus
+		isActive
+		themeId
+	}
+}
+
+mutation UpdateTheme($theme: ThemesUpdateInput!, $oldThemeId: String!) {
+	updateThemes(set: $theme, where: { themeId: { eq: $oldThemeId } }) {
+		id
+		themeId
+		displayName
+		logo
+		color
+	}
+}

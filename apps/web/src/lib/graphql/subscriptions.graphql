@@ -1,0 +1,28 @@
+subscription PubKeysSubscription {
+	pubsSubscription {
+		pubId
+		pubKey
+	}
+}
+
+subscription PubsSubscription {
+	pubsSubscription {
+		capacity
+		id
+		isActive
+		occupancy
+		pubId
+		queueStatus
+		themeId
+	}
+}
+
+subscription ThemesSubscription {
+	themesSubscription {
+		color
+		displayName
+		id
+		logo
+		themeId
+	}
+}

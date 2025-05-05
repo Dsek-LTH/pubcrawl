@@ -1,0 +1,28 @@
+query GetPubKeys {
+	pubs {
+		pubKey
+		pubId
+	}
+}
+
+query GetPubs {
+	pubs {
+		capacity
+		id
+		isActive
+		occupancy
+		pubId
+		queueStatus
+		themeId
+	}
+}
+
+query GetThemes {
+	themes {
+		color
+		displayName
+		id
+		logo
+		themeId
+	}
+}

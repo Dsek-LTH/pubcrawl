@@ -1,33 +1,10 @@
-node_modules
-
-# Output
-.output
-.vercel
-.netlify
-.wrangler
-/.svelte-kit
-/build
-
-# OS
+# MacOS
 .DS_Store
-Thumbs.db
-
-# Env
-.env
-.env.*
-!.env.example
-!.env.test
-
-# Svelte Kit
-.svelte-kit
-
-# Vite
-.vite
-vite.config.js.timestamp-*
-vite.config.ts.timestamp-*
-
-# SQLite
-db.sqlite*
 
 # Intellij
 .idea/
+
+# VS Code
+.vscode/
+
+node_modules/

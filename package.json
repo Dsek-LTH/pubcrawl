@@ -1,3 +1,14 @@
 {
-  "type": "module"
+  "name": "pubcrawl",
+  "devDependencies": {
+    "lefthook": "^1.11.10"
+  },
+  "scripts": {
+    "postinstall": "lefthook install"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
 }

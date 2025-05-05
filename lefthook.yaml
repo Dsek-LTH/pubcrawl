@@ -1,0 +1,26 @@
+pre-push:
+  parallel: true
+  commands:
+    check-web:
+      root: apps/web
+      run: pnpm check
+
+    lint-web:
+      root: apps/web
+      run: pnpm lint
+
+    format-check-web:
+      root: apps/web
+      run: pnpm format:check
+
+    check-db:
+      root: apps/db
+      run: pnpm check
+
+    lint-db:
+      root: apps/db
+      run: pnpm lint
+
+    format-check-db:
+      root: apps/db
+      run: pnpm format:check
