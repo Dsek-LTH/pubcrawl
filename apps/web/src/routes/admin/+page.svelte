@@ -14,6 +14,7 @@
 	import { API_ROUTES, EVENTS } from '$lib/api';
 	import { type Readable } from 'svelte/store';
 	import type { PubKeysSubscriptionSubscription, PubsItem, ThemesItem } from '$lib/graphql/types';
+	import toast, { Toaster } from 'svelte-french-toast';
 
 	let { form }: PageProps = $props();
 
@@ -33,16 +34,18 @@
 		($pubKeys || []).map(({ pubId, pubKey }) => [pubId, pubKey] as [string, string])
 	);
 	let pairs = $derived(new Map(pubIdKeys));
+
+	$effect(() => {
+		if (form) {toast.error((Object.values(form.errors as object)[0] as string[])[0])}
+	});
 </script>
 
 <svelte:head>
 	<title>Pubcrawl - Admin</title>
 </svelte:head>
+<Toaster/>
 
-<form method="POST" action="?/logout" use:enhance>
-	<button class="btn btn-info">Logout</button>
-</form>
-<div class="tabs tabs-border tabs-xl">
+<div class="tabs tabs-border tabs-xl justify-center sm:justify-normal">
 	<input type="radio" name="my_tabs_6" class="tab" checked aria-label="Pubs" />
 	<div class="tab-content bg-base-100 border-base-300 p-6">
 		<p>
@@ -50,10 +53,14 @@
 			by the theme. Only pubs marked as Active are shown on the front-facing main page.
 		</p>
 		<br />
-		<form method="POST" use:enhance action="?/randomizePubKeyIdPairPubKeys">
-			<button class="btn btn-info mt-2">Randomize Pub Keys</button>
+		<form method="POST" use:enhance={() => {
+			return async ({ result }) => {
+				if (result.type == 'success') {toast.success("Randomized pub keys")};
+			};
+		}} action="?/randomizePubKeyIdPairPubKeys">
+			<button class="btn btn-secondary my-2">Randomize Pub Keys</button>
 		</form>
-		<div class="flex flex-row gap-4">
+		<div class="flex flex-col sm:items-baseline items-center sm:flex-row gap-4">
 			<CreatePubForm {form} createAction="?/createPub" {themeIds}></CreatePubForm>
 
 			<DeletePubForm {form} deleteAction="?/deletePub" {pubIds}></DeletePubForm>
@@ -82,7 +89,7 @@
 	<div class="tab-content bg-base-100 border-base-300 p-6">
 		<p>This is where themes are created. Themes determine the name, color and logo of the pubs.</p>
 		<br />
-		<div class="flex flex-row gap-4">
+		<div class="flex flex-col sm:items-baseline items-center sm:flex-row gap-4">
 			<CreateThemeForm {form} createAction="?/createTheme"></CreateThemeForm>
 			<br />
 
@@ -100,4 +107,7 @@
 			</div>
 		{/if}
 	</div>
+	<form method="POST" class="self-center ml-auto" action="?/logout" use:enhance>
+		<button class="btn btn-info">Logout</button>
+	</form>
 </div>

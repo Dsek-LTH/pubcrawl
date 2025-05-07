@@ -2,31 +2,30 @@
 	import { enhance } from '$app/forms';
 	import { type ActionData } from './$types';
 	import type { ThemesItem } from '$lib/graphql/types';
+	import toast from 'svelte-french-toast';
 
 	let {
-		form,
 		createAction,
 		themeIds
 	}: { form: ActionData; createAction: string; themeIds: ThemesItem['themeId'][] } = $props();
 </script>
 
-<div class="card bg-base-300 w-6/12">
+<div class="card bg-base-300 sm:w-6/12 w-full">
 	<div class="card-body">
 		<h2 class="card-title">Create pub</h2>
-		<form class="flex flex-col gap-1" method="POST" action={createAction} use:enhance>
+		<form class="flex flex-col gap-1" method="POST" action={createAction} use:enhance={() => {
+			return async ({ result, update}) => {
+				update({ reset: true });
+				if (result.type == 'success') {toast.success("Pub Successfully Created")};
+			};
+		}}>
 			<div class="input w-full">
 				<span class="label">Id:</span>
 				<input type="text" name="pubId" />
-				{#if form?.errors?.pubId}
-					<p class="error">{form.errors.pubId[0]}</p>
-				{/if}
 			</div>
 			<div class="input w-full">
 				<span class="label">Capacity:</span>
 				<input type="text" name="capacity" />
-				{#if form?.errors?.capacity}
-					<p class="error">{form.errors.capacity[0]}</p>
-				{/if}
 			</div>
 			<div>
 				<select class="select w-full" name="themeId">
@@ -35,14 +34,8 @@
 						<option value={themeIdOption}>{themeIdOption}</option>
 					{/each}
 				</select>
-				{#if form?.errors?.themeId}
-					<p class="error">{form.errors.themeId[0]}</p>
-				{/if}
 			</div>
-			{#if form?.errors?.general}
-				<p class="error">{form.errors.general[0]}</p>
-			{/if}
-			<button class="btn btn-primary w-full" type="submit">Create</button>
+			<button class="btn btn-success w-full" type="submit">Create</button>
 		</form>
 	</div>
 </div>

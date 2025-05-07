@@ -7,6 +7,7 @@
 	import { API_ROUTES, EVENTS } from '$lib/api';
 	import type { PubsItem, ThemesItem } from '$lib/graphql/types';
 	import type { Readable } from 'svelte/store';
+	import toast, { Toaster } from 'svelte-french-toast';
 
 	let { data, form }: PageProps = $props();
 
@@ -21,12 +22,15 @@
 	let theme: ThemesItem | undefined = $derived(
 		($themes || []).find(({ themeId }) => themeId === pub?.themeId)
 	);
+	$effect(() => {
+		if (form) {toast.error((Object.values(form.errors as object)[0] as string[])[0])}
+	});
 </script>
 
 <svelte:head>
 	<title>Pubcrawl - Counter</title>
 </svelte:head>
-
+<Toaster/>
 <div class="card bg-base-300">
 	<div class="card-body">
 		<form method="POST" use:enhance>
@@ -74,7 +78,7 @@
 		<form
 			method="POST"
 			use:enhance
-			class="flex flex-col items-center gap-4 sm:flex-row sm:items-start"
+			class="flex flex-col sm:flex-row items-center gap-4"
 		>
 			<div class="join join-vertical">
 				<button

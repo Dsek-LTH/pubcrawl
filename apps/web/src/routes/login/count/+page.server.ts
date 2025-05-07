@@ -22,7 +22,7 @@ const validatePubKey = async (pubKey: string) => {
 export const load: PageServerLoad = async ({ cookies }) => {
 	const result = await getPubKey(cookies);
 
-	if (result) return redirect(303, '/counter');
+	if (result) return redirect(303, '/count');
 
 	return null;
 };
@@ -58,6 +58,6 @@ export const actions: Actions = {
 			maxAge: 48 * 60 * 60
 		});
 
-		throw redirect(303, '/counter');
+		throw redirect(303, '/count');
 	}
 };

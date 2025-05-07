@@ -29,7 +29,7 @@ const unauthorized = () => {
 
 export const load: PageServerLoad = async ({ cookies }) => {
 	const result = await getPubKeyAndId(cookies);
-	if (!result) return redirect(302, '/login/counter');
+	if (!result) return redirect(302, '/login/count');
 
 	return { pubId: result.pubId };
 };

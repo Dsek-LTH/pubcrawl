@@ -4,13 +4,12 @@
 	import type { ThemesItem } from '$lib/graphql/types';
 
 	let {
-		form,
 		deleteAction,
 		themeIds
 	}: { form: ActionData; deleteAction: string; themeIds: ThemesItem['themeId'][] } = $props();
 </script>
 
-<div class="card bg-base-300 w-6/12">
+<div class="card bg-base-300 sm:w-6/12 w-full">
 	<div class="card-body">
 		<h2 class="card-title">Delete theme</h2>
 		<form method="POST" class="flex flex-col gap-1" action={deleteAction} use:enhance>
@@ -21,13 +20,7 @@
 						<option value={themeIdOption}>{themeIdOption}</option>
 					{/each}
 				</select>
-				{#if form?.errors?.themeId}
-					<p class="error">{form.errors.themeId[0]}</p>
-				{/if}
 			</div>
-			{#if form?.errors?.general}
-				<p class="error">{form.errors.general[0]}</p>
-			{/if}
 			<button class="btn btn-error" type="submit">Delete</button>
 		</form>
 	</div>

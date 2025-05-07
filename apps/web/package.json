@@ -55,6 +55,7 @@
 		"graphql-tag": "^2.12.6",
 		"graphql-ws": "^6.0.4",
 		"postgres": "^3.4.5",
-		"svelte-apollo": "^0.5.0"
+		"svelte-apollo": "^0.5.0",
+		"svelte-french-toast": "github:seriousm4x/svelte-french-toast#fix-72-build"
 	}
 }

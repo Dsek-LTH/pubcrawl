@@ -30,7 +30,7 @@
 <div class="card card-sm bg-base-300 border-l-6" style="border-color:{theme.color};">
 	<div class="card-body">
 		<form
-			class="flex flex-row gap-1"
+			class="flex flex-col md:flex-row gap-1"
 			method="POST"
 			action={updateAction}
 			use:enhance={() => {
@@ -89,7 +89,7 @@
 					<img class="h-[4.5lh] w-auto! rounded-lg bg-white p-1" src={logo} alt="" />
 				</div>
 			{/if}
-			<button class="btn btn-secondary self-center" type="submit">Update</button>
+			<button class="btn btn-secondary self-center" type="submit">Save</button>
 		</form>
 	</div>
 </div>
