@@ -5,14 +5,16 @@
 
 	let { form }: { form: ActionData } = $props();
 	$effect(() => {
-		if (form) {toast.error((Object.values(form.errors as object)[0] as string[])[0])}
+		if (form) {
+			toast.error((Object.values(form.errors as object)[0] as string[])[0]);
+		}
 	});
 </script>
 
 <svelte:head>
 	<title>Pubcrawl - Login Admin</title>
 </svelte:head>
-<Toaster/>
+<Toaster />
 <div class="flex flex-grow items-center">
 	<LoginAdminForm {form} loginAction="?/login"></LoginAdminForm>
 </div>

@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { type ActionData } from './$types';
 
-	let { form, loginAction }: { form: ActionData; loginAction: string } = $props();
+	let { loginAction }: { loginAction: string } = $props();
 </script>
 
 <form class="flex w-full flex-row justify-center" method="POST" action={loginAction} use:enhance>
