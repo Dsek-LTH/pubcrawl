@@ -27,7 +27,7 @@
 			<a class="btn btn-ghost" href="/about">About</a>
 		</div>
 		<div class="navbar-end">
-			<a class="btn btn-ghost" href="/counter">Counter</a>
+			<a class="btn btn-ghost" href="/count">Counter</a>
 			<a class="btn btn-ghost" href="/admin">Admin</a>
 		</div>
 	</nav>

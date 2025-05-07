@@ -9,7 +9,7 @@
 		.select(EVENTS.themesUpdated)
 		.json();
 
-	let activePubs = $derived(($pubs || []).filter(({ isActive }) => isActive));
+	let activePubs = $derived(($pubs || []).filter(({ isActive }) => isActive).sort((a, b) => (b.capacity/b.occupancy)-(a.capacity/a.occupancy)));
 </script>
 
 <svelte:head>
@@ -17,7 +17,7 @@
 </svelte:head>
 
 {#if $themes?.length + $pubs?.length > 0}
-	<table class="table">
+	<table class="table md:text-lg">
 		<thead>
 			<tr>
 				<th>Pub</th>
@@ -30,12 +30,12 @@
 			{#each activePubs as pub (pub.pubId)}
 				<tr>
 					<td
-						class="border-l-6"
+						class="border-l-6 font-semibold"
 						style="border-color:{$themes.find(({ themeId }) => themeId === pub.themeId)?.color}"
 					>
 						{$themes.find(({ themeId }) => themeId === pub.themeId)?.displayName || 'Unknown'}
 					</td>
-					<td>{pub.occupancy}</td>
+					<td>{pub.occupancy}<span class="sm:hidden">/{pub.capacity}</span></td>
 					<td class="hidden sm:table-cell">{pub.capacity}</td>
 					<td>
 						<progress
