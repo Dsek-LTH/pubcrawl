@@ -36,14 +36,16 @@
 	let pairs = $derived(new Map(pubIdKeys));
 
 	$effect(() => {
-		if (form) {toast.error((Object.values(form.errors as object)[0] as string[])[0])}
+		if (form) {
+			toast.error((Object.values(form.errors as object)[0] as string[])[0]);
+		}
 	});
 </script>
 
 <svelte:head>
 	<title>Pubcrawl - Admin</title>
 </svelte:head>
-<Toaster/>
+<Toaster />
 
 <div class="tabs tabs-border tabs-xl justify-center sm:justify-normal">
 	<input type="radio" name="my_tabs_6" class="tab" checked aria-label="Pubs" />
@@ -53,14 +55,20 @@
 			by the theme. Only pubs marked as Active are shown on the front-facing main page.
 		</p>
 		<br />
-		<form method="POST" use:enhance={() => {
-			return async ({ result }) => {
-				if (result.type == 'success') {toast.success("Randomized pub keys")};
-			};
-		}} action="?/randomizePubKeyIdPairPubKeys">
+		<form
+			method="POST"
+			use:enhance={() => {
+				return async ({ result }) => {
+					if (result.type == 'success') {
+						toast.success('Randomized pub keys');
+					}
+				};
+			}}
+			action="?/randomizePubKeyIdPairPubKeys"
+		>
 			<button class="btn btn-secondary my-2">Randomize Pub Keys</button>
 		</form>
-		<div class="flex flex-col sm:items-baseline items-center sm:flex-row gap-4">
+		<div class="flex flex-col items-center gap-4 sm:flex-row sm:items-baseline">
 			<CreatePubForm {form} createAction="?/createPub" {themeIds}></CreatePubForm>
 
 			<DeletePubForm {form} deleteAction="?/deletePub" {pubIds}></DeletePubForm>
@@ -89,7 +97,7 @@
 	<div class="tab-content bg-base-100 border-base-300 p-6">
 		<p>This is where themes are created. Themes determine the name, color and logo of the pubs.</p>
 		<br />
-		<div class="flex flex-col sm:items-baseline items-center sm:flex-row gap-4">
+		<div class="flex flex-col items-center gap-4 sm:flex-row sm:items-baseline">
 			<CreateThemeForm {form} createAction="?/createTheme"></CreateThemeForm>
 			<br />
 
@@ -107,7 +115,7 @@
 			</div>
 		{/if}
 	</div>
-	<form method="POST" class="self-center ml-auto" action="?/logout" use:enhance>
+	<form method="POST" class="ml-auto self-center" action="?/logout" use:enhance>
 		<button class="btn btn-info">Logout</button>
 	</form>
 </div>

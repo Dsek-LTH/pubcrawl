@@ -3,13 +3,11 @@
 	import { type ActionData } from './$types';
 	import type { ThemesItem } from '$lib/graphql/types';
 
-	let {
-		deleteAction,
-		themeIds
-	}: { form: ActionData; deleteAction: string; themeIds: ThemesItem['themeId'][] } = $props();
+	let { deleteAction, themeIds }: { deleteAction: string; themeIds: ThemesItem['themeId'][] } =
+		$props();
 </script>
 
-<div class="card bg-base-300 sm:w-6/12 w-full">
+<div class="card bg-base-300 w-full sm:w-6/12">
 	<div class="card-body">
 		<h2 class="card-title">Delete theme</h2>
 		<form method="POST" class="flex flex-col gap-1" action={deleteAction} use:enhance>

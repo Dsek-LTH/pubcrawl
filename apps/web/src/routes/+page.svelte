@@ -9,7 +9,11 @@
 		.select(EVENTS.themesUpdated)
 		.json();
 
-	let activePubs = $derived(($pubs || []).filter(({ isActive }) => isActive).sort((a, b) => (b.capacity/b.occupancy)-(a.capacity/a.occupancy)));
+	let activePubs = $derived(
+		($pubs || [])
+			.filter(({ isActive }) => isActive)
+			.sort((a, b) => b.capacity / b.occupancy - a.capacity / a.occupancy)
+	);
 </script>
 
 <svelte:head>

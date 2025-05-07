@@ -23,14 +23,16 @@
 		($themes || []).find(({ themeId }) => themeId === pub?.themeId)
 	);
 	$effect(() => {
-		if (form) {toast.error((Object.values(form.errors as object)[0] as string[])[0])}
+		if (form) {
+			toast.error((Object.values(form.errors as object)[0] as string[])[0]);
+		}
 	});
 </script>
 
 <svelte:head>
 	<title>Pubcrawl - Counter</title>
 </svelte:head>
-<Toaster/>
+<Toaster />
 <div class="card bg-base-300">
 	<div class="card-body">
 		<form method="POST" use:enhance>
@@ -75,11 +77,7 @@
 
 		<br />
 
-		<form
-			method="POST"
-			use:enhance
-			class="flex flex-col sm:flex-row items-center gap-4"
-		>
+		<form method="POST" use:enhance class="flex flex-col items-center gap-4 sm:flex-row">
 			<div class="join join-vertical">
 				<button
 					class="join-item btn btn-xl btn-success h-40 w-60 text-5xl sm:h-24 sm:w-24"

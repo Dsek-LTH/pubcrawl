@@ -5,7 +5,6 @@
 	import toast from 'svelte-french-toast';
 
 	let {
-		form,
 		updateAction,
 		pubId,
 		pubKey,
@@ -13,7 +12,6 @@
 		pub,
 		themeIds
 	}: {
-		form: ActionData;
 		updateAction: string;
 		pubId: PubsItem['pubId'];
 		pub: PubsItem;
@@ -26,21 +24,21 @@
 		themes?.find((theme) => theme.themeId === pub.themeId)?.color ?? '#999'
 	);
 
-
 	//$effect(() => {console.log(form.errors)})
-	
 </script>
 
 <div class="card card-sm bg-base-300 border-l-6" style="border-color:{themeColor};">
 	<div class="card-body">
 		<form
-			class="flex flex-col md:flex-row gap-1"
+			class="flex flex-col gap-1 md:flex-row"
 			method="POST"
 			action={updateAction}
 			use:enhance={() => {
 				return async ({ update, result }) => {
 					update({ reset: false });
-					if (result.type == 'success') {toast.success("Successfully updated Pub")};
+					if (result.type == 'success') {
+						toast.success('Successfully updated Pub');
+					}
 				};
 			}}
 		>

@@ -4,21 +4,26 @@
 	import type { ThemesItem } from '$lib/graphql/types';
 	import toast from 'svelte-french-toast';
 
-	let {
-		createAction,
-		themeIds
-	}: { form: ActionData; createAction: string; themeIds: ThemesItem['themeId'][] } = $props();
+	let { createAction, themeIds }: { createAction: string; themeIds: ThemesItem['themeId'][] } =
+		$props();
 </script>
 
-<div class="card bg-base-300 sm:w-6/12 w-full">
+<div class="card bg-base-300 w-full sm:w-6/12">
 	<div class="card-body">
 		<h2 class="card-title">Create pub</h2>
-		<form class="flex flex-col gap-1" method="POST" action={createAction} use:enhance={() => {
-			return async ({ result, update}) => {
-				update({ reset: true });
-				if (result.type == 'success') {toast.success("Pub Successfully Created")};
-			};
-		}}>
+		<form
+			class="flex flex-col gap-1"
+			method="POST"
+			action={createAction}
+			use:enhance={() => {
+				return async ({ result, update }) => {
+					update({ reset: true });
+					if (result.type == 'success') {
+						toast.success('Pub Successfully Created');
+					}
+				};
+			}}
+		>
 			<div class="input w-full">
 				<span class="label">Id:</span>
 				<input type="text" name="pubId" />

@@ -15,7 +15,9 @@
 	use:enhance={() => {
 		return async ({ update, result }) => {
 			update({ reset: false });
-			if (result.type == 'success') {toast.success("Successful")};
+			if (result.type == 'success') {
+				toast.success('Successful');
+			}
 		};
 	}}
 >

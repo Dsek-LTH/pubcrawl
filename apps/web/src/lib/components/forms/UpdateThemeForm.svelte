@@ -30,7 +30,7 @@
 <div class="card card-sm bg-base-300 border-l-6" style="border-color:{theme.color};">
 	<div class="card-body">
 		<form
-			class="flex flex-col md:flex-row gap-1"
+			class="flex flex-col gap-1 md:flex-row"
 			method="POST"
 			action={updateAction}
 			use:enhance={() => {
