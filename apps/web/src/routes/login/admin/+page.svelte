@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { type ActionData } from './$types';
 	import LoginAdminForm from '$lib/components/forms/LoginAdminForm.svelte';
 	import toast, { Toaster } from 'svelte-french-toast';
+	import type { ActionData } from './$types';
 
 	let { form }: { form: ActionData } = $props();
 	$effect(() => {
@@ -16,5 +16,5 @@
 </svelte:head>
 <Toaster />
 <div class="flex flex-grow items-center">
-	<LoginAdminForm {form} loginAction="?/login"></LoginAdminForm>
+	<LoginAdminForm loginAction="?/login"></LoginAdminForm>
 </div>
