@@ -23,13 +23,18 @@
 <div class="card bg-base-300 w-full sm:w-6/12">
 	<div class="card-body">
 		<h2 class="card-title">Create theme</h2>
-		<form method="POST" class="flex flex-col gap-1" action={createAction} use:enhance={() => {
-			return async ({ result }) => {
-				if (result.type == 'success') {
-					toast.success('Theme successfully created!');
-				}
-			};
-		}}>
+		<form
+			method="POST"
+			class="flex flex-col gap-1"
+			action={createAction}
+			use:enhance={() => {
+				return async ({ result }) => {
+					if (result.type == 'success') {
+						toast.success('Theme successfully created!');
+					}
+				};
+			}}
+		>
 			<div class="input w-full">
 				<span class="label">Id:</span>
 				<input type="text" name="themeId" />

@@ -7,8 +7,7 @@
 		updateAction,
 		themeId,
 		theme
-	}: { updateAction: string; themeId: ThemesItem['themeId']; theme: ThemesItem } =
-		$props();
+	}: { updateAction: string; themeId: ThemesItem['themeId']; theme: ThemesItem } = $props();
 
 	let logo = $state(theme.logo);
 

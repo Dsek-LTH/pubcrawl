@@ -9,13 +9,18 @@
 <div class="card bg-base-300 w-full sm:w-6/12">
 	<div class="card-body">
 		<h2 class="card-title">Delete pub</h2>
-		<form method="POST" class="flex flex-col gap-1" action={deleteAction} use:enhance={() => {
-			return async ({ result }) => {
-				if (result.type == 'success') {
-					toast.success('Pub successfully deleted!');
-				}
-			};
-		}}>
+		<form
+			method="POST"
+			class="flex flex-col gap-1"
+			action={deleteAction}
+			use:enhance={() => {
+				return async ({ result }) => {
+					if (result.type == 'success') {
+						toast.success('Pub successfully deleted!');
+					}
+				};
+			}}
+		>
 			<div>
 				<select class="select w-full" name="pubId">
 					<option value="" selected disabled hidden>Select pub</option>

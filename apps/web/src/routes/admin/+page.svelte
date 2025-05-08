@@ -69,16 +69,15 @@
 			<button class="btn btn-secondary my-2">Randomize Pub Keys</button>
 		</form>
 		<div class="flex flex-col items-center gap-4 sm:flex-row sm:items-baseline">
-			<CreatePubForm {form} createAction="?/createPub" {themeIds}></CreatePubForm>
+			<CreatePubForm createAction="?/createPub" {themeIds}></CreatePubForm>
 
-			<DeletePubForm {form} deleteAction="?/deletePub" {pubIds}></DeletePubForm>
+			<DeletePubForm deleteAction="?/deletePub" {pubIds}></DeletePubForm>
 		</div>
 		{#key pairs}
 			{#if $pubs && $themes}
 				<div class="mt-4 flex flex-col gap-2">
 					{#each $pubs as pub (pub.pubId)}
 						<UpdatePubForm
-							{form}
 							updateAction="?/updatePub"
 							pubId={pub.pubId}
 							pubKey={pairs.get(pub.pubId) ?? ''}
@@ -98,17 +97,17 @@
 		<p>This is where themes are created. Themes determine the name, color and logo of the pubs.</p>
 		<br />
 		<div class="flex flex-col items-center gap-4 sm:flex-row sm:items-baseline">
-			<CreateThemeForm {form} createAction="?/createTheme"></CreateThemeForm>
+			<CreateThemeForm createAction="?/createTheme"></CreateThemeForm>
 			<br />
 
-			<DeleteThemeForm {form} deleteAction="?/deleteTheme" {themeIds}></DeleteThemeForm>
+			<DeleteThemeForm deleteAction="?/deleteTheme" {themeIds}></DeleteThemeForm>
 			<br />
 		</div>
 
 		{#if $themes}
 			<div class="mt-4 flex flex-col gap-2">
 				{#each $themes as theme (theme.themeId)}
-					<UpdateThemeForm {form} updateAction="?/updateTheme" themeId={theme.themeId} {theme}
+					<UpdateThemeForm updateAction="?/updateTheme" themeId={theme.themeId} {theme}
 					></UpdateThemeForm>
 					<br />
 				{/each}
