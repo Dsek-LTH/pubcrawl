@@ -1,14 +1,13 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { type ActionData } from './$types';
 	import type { ThemesItem } from '$lib/graphql/types';
+	import toast from 'svelte-french-toast';
 
 	let {
-		form,
 		updateAction,
 		themeId,
 		theme
-	}: { form: ActionData; updateAction: string; themeId: ThemesItem['themeId']; theme: ThemesItem } =
+	}: { updateAction: string; themeId: ThemesItem['themeId']; theme: ThemesItem } =
 		$props();
 
 	let logo = $state(theme.logo);
@@ -34,8 +33,11 @@
 			method="POST"
 			action={updateAction}
 			use:enhance={() => {
-				return async ({ update }) => {
+				return async ({ update, result }) => {
 					update({ reset: false });
+					if (result.type == 'success') {
+						toast.success('Successfully updated!');
+					}
 				};
 			}}
 		>
@@ -44,16 +46,10 @@
 					<span class="label">Id:</span>
 					<input type="hidden" name="oldThemeId" value={themeId} />
 					<input type="text" class="card-title" name="themeId" value={themeId} />
-					{#if form?.errors?.themeId}
-						<p class="error">{form.errors.themeId[0]}</p>
-					{/if}
 				</div>
 				<div class="input w-full">
 					<span class="label">Display Name:</span>
 					<input name="displayName" value={theme.displayName} />
-					{#if form?.errors?.displayName}
-						<p class="error">{form.errors.displayName[0]}</p>
-					{/if}
 				</div>
 			</div>
 
@@ -66,23 +62,13 @@
 						onchange={handleFileChange}
 					/>
 					<input type="hidden" name="logo" value={logo} />
-					{#if form?.errors?.logo}
-						<p class="error">{form.errors.logo[0]}</p>
-					{/if}
 				</div>
 
 				<div class="input w-full">
 					<span class="label">Color:</span>
 					<input type="color" name="color" value={theme.color} />
-					{#if form?.errors?.color}
-						<p class="error">{form.errors.color[0]}</p>
-					{/if}
 				</div>
 			</div>
-
-			{#if form?.errors?.general}
-				<p class="error">{form.errors.general[0]}</p>
-			{/if}
 
 			{#if logo}
 				<div class="flex flex-col">

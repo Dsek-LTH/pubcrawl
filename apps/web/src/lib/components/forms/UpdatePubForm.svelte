@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { type ActionData } from './$types';
 	import type { PubsItem, ThemesItem } from '$lib/graphql/types';
 	import toast from 'svelte-french-toast';
 
@@ -37,7 +36,7 @@
 				return async ({ update, result }) => {
 					update({ reset: false });
 					if (result.type == 'success') {
-						toast.success('Successfully updated Pub');
+						toast.success('Successfully updated!');
 					}
 				};
 			}}
