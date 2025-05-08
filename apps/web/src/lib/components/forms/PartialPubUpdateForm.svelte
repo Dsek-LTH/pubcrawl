@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { type ActionData } from './$types';
 	import type { PubsItem } from '$lib/graphql/types';
 	import toast from 'svelte-french-toast';
+	import type { ActionData } from '../../../routes/count/$types';
 
 	let { form, updateAction, pub }: { form: ActionData; updateAction: string; pub: PubsItem } =
 		$props();
