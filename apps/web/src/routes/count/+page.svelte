@@ -28,13 +28,13 @@
 		}
 	});
 
-	function onKeyDown(key: { key: any; }) {
+	function onKeyDown(key: { key: any }) {
 		switch (key.key) {
-			case "ArrowUp":
-				document.getElementById("increment")?.click();
+			case 'ArrowUp':
+				document.getElementById('increment')?.click();
 				break;
-			case "ArrowDown":
-				document.getElementById("decrement")?.click();
+			case 'ArrowDown':
+				document.getElementById('decrement')?.click();
 		}
 	}
 </script>
@@ -102,7 +102,7 @@
 				>
 			</div>
 			{#if pub}
-				<PartialPubUpdateForm {form} updateAction="?/updatePub" {pub}></PartialPubUpdateForm>
+				<PartialPubUpdateForm updateAction="?/updatePub" {pub}></PartialPubUpdateForm>
 			{/if}
 		</form>
 		<br />

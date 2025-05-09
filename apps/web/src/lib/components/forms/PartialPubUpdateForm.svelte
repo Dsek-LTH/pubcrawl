@@ -2,10 +2,8 @@
 	import { enhance } from '$app/forms';
 	import type { PubsItem } from '$lib/graphql/types';
 	import toast from 'svelte-french-toast';
-	import type { ActionData } from '../../../routes/count/$types';
 
-	let { updateAction, pub }: { updateAction: string; pub: PubsItem } =
-		$props();
+	let { updateAction, pub }: { updateAction: string; pub: PubsItem } = $props();
 </script>
 
 <form
@@ -24,6 +22,10 @@
 	<div class="stats min-w-60 bg-white shadow dark:bg-black">
 		<div class="stat text-center">
 			<span class="stat-title">Occupancy</span>
-			<span class="stat-value text-5xl font-bold {pub.occupancy > pub.capacity ? "text-red-500" : ""}">{pub.occupancy} / {pub.capacity}</span>
+			<span
+				class="stat-value text-5xl font-bold {pub.occupancy > pub.capacity ? 'text-red-500' : ''}"
+				>{pub.occupancy} / {pub.capacity}</span
+			>
 		</div>
+	</div>
 </form>
