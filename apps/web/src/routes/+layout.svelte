@@ -3,14 +3,14 @@
 </script>
 
 <div class="m-0 flex min-h-screen w-screen flex-col p-0">
-	<nav class="navbar bg-base-300">
+	<nav class="navbar bg-base-200 dark:bg-base-300 shadow-lg">
 		<div class="navbar-start">
 			<a href="/"
 				><img
 					class="dark:hidden"
 					src="/icons/favicon-512x512.png"
 					alt="Pubcrawl logo"
-					width="64"
+					width="54"
 				/></a
 			>
 			<a href="/"
@@ -18,7 +18,7 @@
 					class="hidden dark:block"
 					src="/icons/favicon-white-512x512.png"
 					alt="Pubcrawl logo"
-					width="64"
+					width="54"
 				/></a
 			>
 			<a class="btn btn-ghost" href="/">Home</a>
