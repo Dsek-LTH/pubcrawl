@@ -4,7 +4,7 @@
 	import toast from 'svelte-french-toast';
 	import type { ActionData } from '../../../routes/count/$types';
 
-	let { form, updateAction, pub }: { form: ActionData; updateAction: string; pub: PubsItem } =
+	let { updateAction, pub }: { updateAction: string; pub: PubsItem } =
 		$props();
 </script>
 

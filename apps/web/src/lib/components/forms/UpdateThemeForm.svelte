@@ -11,7 +11,7 @@
 
 	let logo = $state(theme.logo);
 
-	function handleFileChange(event) {
+	function handleFileChange(event: any) {
 		const file = event.target.files[0];
 		const reader = new FileReader();
 
