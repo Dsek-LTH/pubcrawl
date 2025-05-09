@@ -4,7 +4,4 @@
 # Intellij
 .idea/
 
-# VS Code
-.vscode/
-
 node_modules/
