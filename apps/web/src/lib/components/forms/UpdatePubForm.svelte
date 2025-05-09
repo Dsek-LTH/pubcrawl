@@ -22,8 +22,6 @@
 	let themeColor = $derived(
 		themes?.find((theme) => theme.themeId === pub.themeId)?.color ?? '#999'
 	);
-
-	//$effect(() => {console.log(form.errors)})
 </script>
 
 <div class="card card-sm bg-base-300 border-l-6" style="border-color:{themeColor};">

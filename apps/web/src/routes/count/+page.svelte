@@ -37,6 +37,8 @@
 				document.getElementById('decrement')?.click();
 		}
 	}
+
+	let themeColor = $derived(theme?.color ?? '#999');
 </script>
 
 <svelte:head>
@@ -44,13 +46,14 @@
 </svelte:head>
 <svelte:window on:keydown={onKeyDown} />
 <Toaster />
-<div class="card bg-base-300">
+<div class="card bg-base-300 border-t-6" style="border-color:{themeColor};">
 	<div class="card-body">
 		<form method="POST" use:enhance>
 			{#if theme}
 				<div class="flex flex-row justify-between">
 					<h1 class="card-title">
-						{theme.displayName} <span class="text-sm">(id: {data?.pubId})</span>
+						<span class="text-xl font-bold">{theme.displayName}</span>
+						<span class="text-sm">(id: {data?.pubId})</span>
 					</h1>
 
 					<details class="dropdown dropdown-end">
@@ -78,15 +81,13 @@
 									class="btn btn-primary mb-1">Set occupancy</button
 								>
 							</div>
-							<button class="btn btn-warning my-1 w-full" formaction="?/reset">Reset</button>
+							<button class="btn btn-warning my-1 w-full" formaction="?/reset">Reset to 0</button>
 							<button class="btn btn-secondary mt-1 w-full" formaction="?/logout">Logout</button>
 						</ul>
 					</details>
 				</div>
 			{/if}
 		</form>
-
-		<br />
 
 		<form method="POST" use:enhance class="flex flex-col items-center gap-4 sm:flex-row">
 			<div class="join join-vertical">
