@@ -27,8 +27,8 @@ importers:
         specifier: ^0.5.0
         version: 0.5.0(@apollo/client@3.13.8(graphql-ws@6.0.4(graphql@16.10.0)(ws@8.18.1))(graphql@16.10.0))(graphql@16.10.0)(svelte@5.27.3)
       svelte-french-toast:
-        specifier: github:seriousm4x/svelte-french-toast#fix-72-build
-        version: https://codeload.github.com/seriousm4x/svelte-french-toast/tar.gz/fbf89b9952cf11e15174b1841a6eb1ad23770349(svelte@5.27.3)
+        specifier: ^2.0.0-alpha.0
+        version: 2.0.0-alpha.0(svelte@5.27.3)
     devDependencies:
       '@eslint/compat':
         specifier: ^1.2.5
@@ -2746,9 +2746,8 @@ packages:
       svelte:
         optional: true
 
-  svelte-french-toast@https://codeload.github.com/seriousm4x/svelte-french-toast/tar.gz/fbf89b9952cf11e15174b1841a6eb1ad23770349:
-    resolution: {tarball: https://codeload.github.com/seriousm4x/svelte-french-toast/tar.gz/fbf89b9952cf11e15174b1841a6eb1ad23770349}
-    version: 2.0.0-alpha.0
+  svelte-french-toast@2.0.0-alpha.0:
+    resolution: {integrity: sha512-81wcVaY9UZ/0JuzLEizMSoIXqNbX7yhfTZavBuw94T3cnT2HmJ9O+qXY/c91h9FkeMwboo0KHZVmzOEQVTXDFg==}
     peerDependencies:
       svelte: ^5.0.0
 
@@ -5892,7 +5891,7 @@ snapshots:
     optionalDependencies:
       svelte: 5.27.3
 
-  svelte-french-toast@https://codeload.github.com/seriousm4x/svelte-french-toast/tar.gz/fbf89b9952cf11e15174b1841a6eb1ad23770349(svelte@5.27.3):
+  svelte-french-toast@2.0.0-alpha.0(svelte@5.27.3):
     dependencies:
       svelte: 5.27.3
       svelte-writable-derived: 3.1.1(svelte@5.27.3)
