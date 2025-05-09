@@ -14,7 +14,7 @@ const httpLink = new HttpLink({
 
 const wsLink = new GraphQLWsLink(
 	createClient({
-		url: env.GRAPHQL_SUBSCRIPTIONS_URL
+		url: env.GRAPHQL_SUBSCRIPTIONS_URL as string
 	})
 );
 
