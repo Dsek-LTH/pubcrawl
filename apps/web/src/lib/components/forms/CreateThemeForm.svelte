@@ -6,16 +6,20 @@
 
 	let logo = $state('');
 
-	function handleFileChange(event: any) {
-		const file = event.target.files[0];
-		const reader = new FileReader();
+	function handleFileChange(event: Event) {
+		const target = event.target as HTMLInputElement;
+		if (target.files) {
+			const file = target.files[0];
 
-		reader.onload = () => {
-			logo = reader.result as string;
-		};
+			const reader = new FileReader();
 
-		if (file) {
-			reader.readAsDataURL(file);
+			reader.onload = () => {
+				logo = reader.result as string;
+			};
+
+			if (file) {
+				reader.readAsDataURL(file);
+			}
 		}
 	}
 </script>

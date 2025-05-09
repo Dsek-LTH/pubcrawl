@@ -28,7 +28,7 @@
 		}
 	});
 
-	function onKeyDown(key: { key: any }) {
+	function onKeyDown(key: { key: string }) {
 		switch (key.key) {
 			case 'ArrowUp':
 				document.getElementById('increment')?.click();
