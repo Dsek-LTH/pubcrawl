@@ -14,3 +14,11 @@
 	--color-secondary: teal;
 	--color-secondary-content: #ffffff;
 }
+
+@plugin "daisyui/theme" {
+	name: 'dark';
+	prefersdark: true;
+	--radius-box: 1rem;
+	--radius-field: 0.5rem;
+	--radius-selector: 1rem;
+}
