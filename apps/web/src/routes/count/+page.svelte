@@ -64,11 +64,11 @@
 							<div class="flex w-full flex-row">
 								<input class="input mr-1" name="occupancy" type="text" /><button
 									formaction="?/updatePub"
-									class="btn btn-secondary mb-1">Set occupancy</button
+									class="btn btn-primary mb-1">Set occupancy</button
 								>
 							</div>
 							<button class="btn btn-warning my-1 w-full" formaction="?/reset">Reset</button>
-							<button class="btn btn-primary mt-1 w-full" formaction="?/logout">Logout</button>
+							<button class="btn btn-secondary mt-1 w-full" formaction="?/logout">Logout</button>
 						</ul>
 					</details>
 				</div>
