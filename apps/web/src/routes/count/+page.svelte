@@ -27,11 +27,22 @@
 			toast.error((Object.values(form.errors as object)[0] as string[])[0]);
 		}
 	});
+
+	function onKeyDown(key: { key: any; }) {
+		switch (key.key) {
+			case "ArrowUp":
+				document.getElementById("increment")?.click();
+				break;
+			case "ArrowDown":
+				document.getElementById("decrement")?.click();
+		}
+	}
 </script>
 
 <svelte:head>
 	<title>Pubcrawl - Counter</title>
 </svelte:head>
+<svelte:window on:keydown={onKeyDown} />
 <Toaster />
 <div class="card bg-base-300">
 	<div class="card-body">
@@ -81,11 +92,13 @@
 			<div class="join join-vertical">
 				<button
 					class="join-item btn btn-xl btn-success h-40 w-60 text-5xl sm:h-24 sm:w-24"
-					formaction="?/increment">+</button
+					formaction="?/increment"
+					id="increment">+</button
 				>
 				<button
 					class="join-item btn btn-xl btn-error h-40 w-60 text-5xl sm:h-24 sm:w-24"
-					formaction="?/decrement">-</button
+					formaction="?/decrement"
+					id="decrement">-</button
 				>
 			</div>
 			{#if pub}
