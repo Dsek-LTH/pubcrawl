@@ -22,3 +22,11 @@
 	--radius-field: 0.5rem;
 	--radius-selector: 1rem;
 }
+
+.toaster .status {
+	all: unset !important;
+}
+
+.indicator > div:first-child {
+	display: none !important;
+}
