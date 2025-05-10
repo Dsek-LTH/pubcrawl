@@ -60,8 +60,9 @@ for (const [key, resolver] of Object.entries(originalMutations)) {
       // TODO: Might want to do this in a smarter/more sophisticated way?
       const touchesPubs = key.toLowerCase().includes("pub");
       const touchesThemes = key.toLowerCase().includes("theme");
+      const deletes = key.toLowerCase().includes("delete");
 
-      if (touchesPubs) {
+      if (touchesPubs || (touchesThemes && deletes)) {
         await pubsub.publish(PUBS_UPDATED, {
           pubsSubscription: await db.query.pubs.findMany(),
         });

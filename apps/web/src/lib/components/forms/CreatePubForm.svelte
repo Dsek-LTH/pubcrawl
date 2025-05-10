@@ -7,7 +7,7 @@
 		$props();
 </script>
 
-<div class="card bg-base-300 w-full sm:w-6/12">
+<div class="card bg-base-300 w-full">
 	<div class="card-body">
 		<h2 class="card-title">Create pub</h2>
 		<form
@@ -33,7 +33,7 @@
 			</div>
 			<div>
 				<select class="select w-full" name="themeId">
-					<option value="" selected disabled hidden>Select theme</option>
+					<option value="" selected disabled>Select theme</option>
 					{#each themeIds as themeIdOption (themeIdOption)}
 						<option value={themeIdOption}>{themeIdOption}</option>
 					{/each}

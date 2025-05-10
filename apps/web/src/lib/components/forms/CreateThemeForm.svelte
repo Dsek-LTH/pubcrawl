@@ -24,7 +24,7 @@
 	}
 </script>
 
-<div class="card bg-base-300 w-full sm:w-6/12">
+<div class="card bg-base-300 w-full">
 	<div class="card-body">
 		<h2 class="card-title">Create theme</h2>
 		<form
