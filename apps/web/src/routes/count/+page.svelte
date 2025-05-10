@@ -28,13 +28,16 @@
 		}
 	});
 
+	let incrementElement: HTMLButtonElement;
+	let decrementElement: HTMLButtonElement;
+
 	function onKeyDown(key: { key: string }) {
 		switch (key.key) {
 			case 'ArrowUp':
-				document.getElementById('increment')?.click();
+				incrementElement.click();
 				break;
 			case 'ArrowDown':
-				document.getElementById('decrement')?.click();
+				decrementElement?.click();
 		}
 	}
 
@@ -92,14 +95,14 @@
 		<form method="POST" use:enhance class="flex flex-col items-center gap-4 sm:flex-row">
 			<div class="join join-vertical">
 				<button
+					bind:this={incrementElement}
 					class="join-item btn btn-xl btn-success h-40 w-60 text-5xl sm:h-24 sm:w-24"
-					formaction="?/increment"
-					id="increment">+</button
+					formaction="?/increment">+</button
 				>
 				<button
+					bind:this={decrementElement}
 					class="join-item btn btn-xl btn-error h-40 w-60 text-5xl sm:h-24 sm:w-24"
-					formaction="?/decrement"
-					id="decrement">-</button
+					formaction="?/decrement">-</button
 				>
 			</div>
 			{#if pub}
