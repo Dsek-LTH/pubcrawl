@@ -62,7 +62,7 @@ for (const [key, resolver] of Object.entries(originalMutations)) {
       const touchesThemes = key.toLowerCase().includes("theme");
       const deletes = key.toLowerCase().includes("delete");
 
-      if (touchesPubs || touchesThemes && deletes) {
+      if (touchesPubs || (touchesThemes && deletes)) {
         await pubsub.publish(PUBS_UPDATED, {
           pubsSubscription: await db.query.pubs.findMany(),
         });
