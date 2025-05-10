@@ -9,8 +9,6 @@
 	import UpdatePubForm from '$lib/components/forms/UpdatePubForm.svelte';
 	import UpdateThemeForm from '$lib/components/forms/UpdateThemeForm.svelte';
 
-	import DeletePubForm from '$lib/components/forms/DeletePubForm.svelte';
-	import DeleteThemeForm from '$lib/components/forms/DeleteThemeForm.svelte';
 	import { API_ROUTES, EVENTS } from '$lib/api';
 	import { type Readable } from 'svelte/store';
 	import type { PubKeysSubscriptionSubscription, PubsItem, ThemesItem } from '$lib/graphql/types';
@@ -28,7 +26,6 @@
 		.select(EVENTS.themesUpdated)
 		.json();
 
-	let pubIds = $derived(($pubs || []).map(({ pubId }) => pubId));
 	let themeIds = $derived(($themes || []).map(({ themeId }) => themeId));
 	let pubIdKeys = $derived(
 		($pubKeys || []).map(({ pubId, pubKey }) => [pubId, pubKey] as [string, string])
@@ -68,17 +65,14 @@
 		>
 			<button class="btn btn-secondary my-2">Randomize Pub Keys</button>
 		</form>
-		<div class="flex flex-col items-center gap-4 sm:flex-row sm:items-baseline">
-			<CreatePubForm createAction="?/createPub" {themeIds}></CreatePubForm>
-
-			<DeletePubForm deleteAction="?/deletePub" {pubIds}></DeletePubForm>
-		</div>
+		<CreatePubForm createAction="?/createPub" {themeIds}></CreatePubForm>
 		{#key pairs}
 			{#if $pubs && $themes}
 				<div class="mt-4 flex flex-col gap-2">
 					{#each $pubs as pub (pub.pubId)}
 						<UpdatePubForm
 							updateAction="?/updatePub"
+							deleteAction="?/deletePub"
 							pubId={pub.pubId}
 							pubKey={pairs.get(pub.pubId) ?? ''}
 							{pub}
@@ -96,18 +90,16 @@
 	<div class="tab-content bg-base-100 border-base-300 p-6">
 		<p>This is where themes are created. Themes determine the name, color and logo of the pubs.</p>
 		<br />
-		<div class="flex flex-col items-center gap-4 sm:flex-row sm:items-baseline">
-			<CreateThemeForm createAction="?/createTheme"></CreateThemeForm>
-			<br />
-
-			<DeleteThemeForm deleteAction="?/deleteTheme" {themeIds}></DeleteThemeForm>
-			<br />
-		</div>
+		<CreateThemeForm createAction="?/createTheme"></CreateThemeForm>
 
 		{#if $themes}
 			<div class="mt-4 flex flex-col gap-2">
 				{#each $themes as theme (theme.themeId)}
-					<UpdateThemeForm updateAction="?/updateTheme" themeId={theme.themeId} {theme}
+					<UpdateThemeForm
+						updateAction="?/updateTheme"
+						deleteAction="?/deleteTheme"
+						themeId={theme.themeId}
+						{theme}
 					></UpdateThemeForm>
 					<br />
 				{/each}

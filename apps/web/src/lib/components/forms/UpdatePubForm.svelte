@@ -5,6 +5,7 @@
 
 	let {
 		updateAction,
+		deleteAction,
 		pubId,
 		pubKey,
 		themes,
@@ -12,6 +13,7 @@
 		themeIds
 	}: {
 		updateAction: string;
+		deleteAction: string;
 		pubId: PubsItem['pubId'];
 		pub: PubsItem;
 		pubKey: PubsItem['pubKey'];
@@ -22,10 +24,20 @@
 	let themeColor = $derived(
 		themes?.find((theme) => theme.themeId === pub.themeId)?.color ?? '#999'
 	);
+
+	let showConfirmModal = $state(false);
+
+	function confirmDelete() {
+		showConfirmModal = true;
+	}
+
+	function cancelDelete() {
+		showConfirmModal = false;
+	}
 </script>
 
 <div class="card card-sm bg-base-300 border-l-6" style="border-color:{themeColor};">
-	<div class="card-body">
+	<div class="card-body items-center md:flex-row">
 		<form
 			class="flex flex-col gap-1 md:flex-row"
 			method="POST"
@@ -89,7 +101,34 @@
 					<input type="text" name="pubKey" value={pubKey} />
 				</div>
 			</div>
-			<button class="btn btn-secondary self-center" type="submit">Save</button>
+			<button class="btn btn-secondary self-center not-md:w-full" type="submit">Save</button>
 		</form>
+		<button class="btn btn-error self-center not-md:w-full" onclick={confirmDelete}>Delete</button>
+
+		{#if showConfirmModal}
+			<div class="modal modal-open">
+				<div class="modal-box">
+					<h3 class="text-lg font-bold">Confirm Deletion</h3>
+					<p>Are you sure you want to delete this pub?</p>
+					<div class="modal-action">
+						<form
+							method="POST"
+							action={deleteAction}
+							use:enhance={() => {
+								return async ({ result }) => {
+									if (result.type == 'success') {
+										toast.success('Pub successfully deleted!');
+									}
+								};
+							}}
+						>
+							<input type="hidden" name="pubId" value={pubId} />
+							<button class="btn btn-error" type="submit">Yes</button>
+						</form>
+						<button class="btn btn-soft" onclick={cancelDelete}>Cancel</button>
+					</div>
+				</div>
+			</div>
+		{/if}
 	</div>
 </div>

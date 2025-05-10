@@ -12,7 +12,7 @@
 	let activePubs = $derived(
 		($pubs || [])
 			.filter(({ isActive }) => isActive)
-			.sort((a, b) => (a.occupancy / a.capacity) - (b.occupancy / b.capacity))
+			.sort((a, b) => a.occupancy / a.capacity - b.occupancy / b.capacity)
 	);
 </script>
 
