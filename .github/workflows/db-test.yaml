@@ -4,8 +4,6 @@ on:
   pull_request:
     branches:
       - test
-    paths:
-      - apps/db/**
 
 jobs:
   ci-check:
