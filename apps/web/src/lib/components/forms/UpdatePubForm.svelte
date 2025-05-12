@@ -39,7 +39,7 @@
 <div class="card card-sm bg-base-300 border-l-6" style="border-color:{themeColor};">
 	<div class="card-body items-center md:flex-row">
 		<form
-			class="flex flex-col gap-1 md:flex-row"
+			class="flex w-full flex-col justify-between gap-1 md:flex-row"
 			method="POST"
 			action={updateAction}
 			use:enhance={() => {
@@ -51,7 +51,7 @@
 				};
 			}}
 		>
-			<div class="flex flex-col">
+			<div class="flex w-full flex-col">
 				<div class="input w-full">
 					<span class="label">Id:</span>
 					<input type="hidden" name="oldPubId" value={pubId} />
@@ -72,19 +72,19 @@
 				</div>
 			</div>
 
-			<div class="flex flex-col">
+			<div class="flex w-full flex-col">
 				<div class="flex flex-col">
-					<div class="input w-full sm:w-50">
+					<div class="input w-full">
 						<span class="label">Occupancy:</span>
 						<input type="text" name="occupancy" value={pub.occupancy} />
 					</div>
-					<div class="input w-full sm:w-50">
+					<div class="input w-full">
 						<span class="label">Capacity:</span>
 						<input type="text" name="capacity" value={pub.capacity} />
 					</div>
 				</div>
 			</div>
-			<div class="flex flex-col">
+			<div class="flex w-full flex-col">
 				<div class="input">
 					<span class="label">Active:</span>
 					<input
@@ -101,9 +101,15 @@
 					<input type="text" name="pubKey" value={pubKey} />
 				</div>
 			</div>
-			<button class="btn btn-secondary self-center not-md:w-full" type="submit">Save</button>
+			<div class="flex w-full flex-col items-center justify-center gap-2 self-center sm:flex-row">
+				<button class="btn btn-secondary self-center not-md:w-full" type="submit">Save</button>
+				<button
+					type="button"
+					class="btn btn-error self-center not-md:w-full"
+					onclick={confirmDelete}>Delete</button
+				>
+			</div>
 		</form>
-		<button class="btn btn-error self-center not-md:w-full" onclick={confirmDelete}>Delete</button>
 
 		{#if showConfirmModal}
 			<div class="modal modal-open">
