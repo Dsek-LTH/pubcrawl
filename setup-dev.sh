@@ -21,7 +21,7 @@ fi
 echo -e "${GREEN}Bringing up Docker containers...${RESET}\n"
 #docker-compose -f compose.dev.yaml up -d --remove-orphans
 
-if docker-compose -f compose.dev.yaml up -d --remove-orphans; then
+if docker compose -f compose.dev.yaml up -d --remove-orphans; then
     echo -e "\n${GREEN}Docker containers are up and running!${RESET}"
 else
     echo -e "\n${RED}Failed to start Docker containers.${RESET}"
