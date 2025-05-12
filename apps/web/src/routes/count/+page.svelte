@@ -3,7 +3,6 @@
 	import { source } from 'sveltekit-sse';
 	import { type PageProps } from './$types';
 
-	import PartialPubUpdateForm from '$lib/components/forms/PartialPubUpdateForm.svelte';
 	import { API_ROUTES, EVENTS } from '$lib/api';
 	import type { PubsItem, ThemesItem } from '$lib/graphql/types';
 	import type { Readable } from 'svelte/store';
@@ -45,11 +44,11 @@
 </script>
 
 <svelte:head>
-	<title>Pubcrawl - Counter</title>
+	<title>Pubcrawl - Count</title>
 </svelte:head>
 <svelte:window on:keydown={onKeyDown} />
 <Toaster />
-<div class="card bg-base-300 border-t-6" style="border-color:{themeColor};">
+<div class="card bg-base-300 border-t-6 sm:h-128" style="border-color:{themeColor};">
 	<div class="card-body">
 		<form method="POST" use:enhance>
 			{#if theme}
@@ -92,21 +91,31 @@
 			{/if}
 		</form>
 
-		<form method="POST" use:enhance class="flex flex-col items-center gap-4 sm:flex-row">
-			<div class="join join-vertical">
+		<form method="POST" use:enhance class="flex flex-col items-center gap-4 sm:h-full sm:flex-row">
+			<div class="join join-vertical sm:h-full">
 				<button
 					bind:this={incrementElement}
-					class="join-item btn btn-xl btn-success h-40 w-60 text-5xl sm:h-24 sm:w-24"
+					class="join-item btn btn-xl btn-success h-40 w-60 text-5xl sm:h-1/2 sm:w-128 sm:text-6xl"
 					formaction="?/increment">+</button
 				>
 				<button
 					bind:this={decrementElement}
-					class="join-item btn btn-xl btn-error h-40 w-60 text-5xl sm:h-24 sm:w-24"
+					class="join-item btn btn-xl btn-error h-40 w-60 text-5xl sm:h-1/2 sm:w-128 sm:text-6xl"
 					formaction="?/decrement">-</button
 				>
 			</div>
 			{#if pub}
-				<PartialPubUpdateForm updateAction="?/updatePub" {pub}></PartialPubUpdateForm>
+				<div class="stats w-full bg-white shadow sm:h-full dark:bg-black">
+					<div class="stat text-center">
+						<span class="stat-title sm:text-xl">Occupancy</span>
+						<span
+							class="stat-value text-5xl font-bold sm:text-8xl {0 > pub.occupancy ||
+							pub.occupancy > pub.capacity
+								? 'text-red-500'
+								: ''}">{pub.occupancy} / {pub.capacity}</span
+						>
+					</div>
+				</div>
 			{/if}
 		</form>
 		<br />
