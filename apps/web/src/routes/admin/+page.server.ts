@@ -49,7 +49,8 @@ export const actions: Actions = {
 		}
 
 		await CreatePub({
-			variables: { pubId: result.data.pubId,
+			variables: {
+				pubId: result.data.pubId,
 				pubKey: generatePubKeyString(),
 				occupancy: 0,
 				capacity: result.data.capacity,
