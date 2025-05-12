@@ -5,9 +5,15 @@
 
 	let {
 		updateAction,
+		deleteAction,
 		themeId,
 		theme
-	}: { updateAction: string; themeId: ThemesItem['themeId']; theme: ThemesItem } = $props();
+	}: {
+		updateAction: string;
+		deleteAction: string;
+		themeId: ThemesItem['themeId'];
+		theme: ThemesItem;
+	} = $props();
 
 	let logo = $state(theme.logo);
 
@@ -27,10 +33,20 @@
 			}
 		}
 	}
+
+	let showConfirmModal = $state(false);
+
+	function confirmDelete() {
+		showConfirmModal = true;
+	}
+
+	function cancelDelete() {
+		showConfirmModal = false;
+	}
 </script>
 
 <div class="card card-sm bg-base-300 border-l-6" style="border-color:{theme.color};">
-	<div class="card-body">
+	<div class="card-body items-center md:flex-row">
 		<form
 			class="flex flex-col gap-1 md:flex-row"
 			method="POST"
@@ -78,7 +94,38 @@
 					<img class="h-[4.5lh] w-auto! rounded-lg bg-white p-1" src={logo} alt="" />
 				</div>
 			{/if}
-			<button class="btn btn-secondary self-center" type="submit">Save</button>
+			<button class="btn btn-secondary self-center not-md:w-full" type="submit">Save</button>
 		</form>
+		<button class="btn btn-error self-center not-md:w-full" onclick={confirmDelete}>Delete</button>
+
+		{#if showConfirmModal}
+			<div class="modal modal-open">
+				<div class="modal-box">
+					<h3 class="text-lg font-bold">Confirm Deletion</h3>
+					<p>Are you sure you want to delete this theme?</p>
+					<br />
+					<p class="text-error font-bold">
+						Warning: This action cannot be undone. All pubs using this theme will also be deleted.
+					</p>
+					<div class="modal-action">
+						<form
+							method="POST"
+							action={deleteAction}
+							use:enhance={() => {
+								return async ({ result }) => {
+									if (result.type == 'success') {
+										toast.success('Theme successfully deleted!');
+									}
+								};
+							}}
+						>
+							<input type="hidden" name="themeId" value={themeId} />
+							<button class="btn btn-error" type="submit">Yes</button>
+						</form>
+						<button class="btn btn-soft" onclick={cancelDelete}>Cancel</button>
+					</div>
+				</div>
+			</div>
+		{/if}
 	</div>
 </div>

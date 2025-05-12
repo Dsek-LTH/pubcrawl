@@ -20,7 +20,7 @@ export const pubs = pgTable("pubs", {
   themeId: text("theme_id")
     .notNull()
     .references(() => themes.themeId, {
-      onDelete: "set null",
+      onDelete: "cascade",
       onUpdate: "cascade",
     }),
 });
