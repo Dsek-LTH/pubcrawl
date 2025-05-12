@@ -88,7 +88,7 @@ export const actions: Actions = {
 					occupancy: result.data.occupancy,
 					capacity: result.data.capacity,
 					queueStatus: QueueStatus.EMPTY,
-					isActive: true,
+					isActive: result.data.isActive,
 					themeId: result.data.themeId,
 					pubKey: result.data.pubKey
 				}
