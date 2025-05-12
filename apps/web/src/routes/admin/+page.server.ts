@@ -49,8 +49,7 @@ export const actions: Actions = {
 		}
 
 		await CreatePub({
-			variables: {
-				pubId: result.data.pubId,
+			variables: { pubId: result.data.pubId,
 				pubKey: generatePubKeyString(),
 				occupancy: 0,
 				capacity: result.data.capacity,
@@ -88,7 +87,7 @@ export const actions: Actions = {
 					occupancy: result.data.occupancy,
 					capacity: result.data.capacity,
 					queueStatus: QueueStatus.EMPTY,
-					isActive: true,
+					isActive: result.data.isActive,
 					themeId: result.data.themeId,
 					pubKey: result.data.pubKey
 				}
