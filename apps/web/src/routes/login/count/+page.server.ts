@@ -1,5 +1,5 @@
 import { counterLoginSchema } from '$lib/schemas/counterLoginSchema';
-import { type Cookies, fail, redirect } from '@sveltejs/kit';
+import { type Cookies, error, fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { GetPubKeysDoc, type GetPubKeysQuery } from '$lib/graphql/types';
 import { createApolloServerClient } from '$lib/graphql/apollo-client.server';
@@ -20,6 +20,12 @@ const validatePubKey = async (pubKey: string) => {
 };
 
 export const load: PageServerLoad = async ({ cookies }) => {
+	const failNum: number = (cookies.get('limit') as unknown as number) ?? 0;
+	console.log(failNum);
+	if (failNum > 9) {
+		error(429, { message: 'Too many requests' });
+	}
+
 	const result = await getPubKey(cookies);
 
 	if (result) return redirect(303, '/count');
@@ -35,6 +41,11 @@ export const actions: Actions = {
 
 		if (!result.success) {
 			const { fieldErrors } = result.error.flatten();
+
+			let failNum: number = (cookies.get('limit') as unknown as number) ?? 0;
+			failNum++;
+			const failString = failNum as unknown as string;
+			cookies.set('limit', failString, { path: '/', maxAge: 10 * 60 });
 
 			return fail(400, {
 				errors: fieldErrors
