@@ -21,7 +21,7 @@ const validatePubKey = async (pubKey: string) => {
 
 export const load: PageServerLoad = async ({ cookies }) => {
 	const failNum: number = (cookies.get('limit') as unknown as number) ?? 0;
-	console.log(failNum);
+
 	if (failNum > 9) {
 		error(429, { message: 'Too many requests' });
 	}
@@ -44,6 +44,11 @@ export const actions: Actions = {
 
 			let failNum: number = (cookies.get('limit') as unknown as number) ?? 0;
 			failNum++;
+
+			if (failNum > 10) {
+				error(429, { message: 'Too many requests' });
+			}
+
 			const failString = failNum as unknown as string;
 			cookies.set('limit', failString, { path: '/', maxAge: 10 * 60 });
 
