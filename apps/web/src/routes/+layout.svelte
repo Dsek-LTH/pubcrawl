@@ -28,7 +28,6 @@
 		</div>
 		<div class="navbar-end">
 			<a class="btn btn-ghost" href="/count">Count</a>
-			<a class="btn btn-ghost" href="/admin">Admin</a>
 		</div>
 	</nav>
 
