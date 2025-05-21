@@ -96,7 +96,7 @@
 					/>
 				</div>
 				<div class="input">
-					<span class="label">Counter Key:</span>
+					<span class="label">Count Key:</span>
 					<input type="hidden" name="oldPubKey" value={pubKey} />
 					<input type="text" name="pubKey" value={pubKey} />
 				</div>
