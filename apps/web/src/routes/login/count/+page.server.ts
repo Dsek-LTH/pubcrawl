@@ -1,4 +1,4 @@
-import { counterLoginSchema } from '$lib/schemas/counterLoginSchema';
+import { countLoginSchema } from '$lib/schemas/countLoginSchema';
 import { type Cookies, error, fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { GetPubKeysDoc, type GetPubKeysQuery } from '$lib/graphql/types';
@@ -37,7 +37,7 @@ export const actions: Actions = {
 	login: async ({ request, cookies }) => {
 		const formData = Object.fromEntries(await request.formData());
 
-		const result = counterLoginSchema.safeParse(formData);
+		const result = countLoginSchema.safeParse(formData);
 
 		if (!result.success) {
 			const { fieldErrors } = result.error.flatten();
