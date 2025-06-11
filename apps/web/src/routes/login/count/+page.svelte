@@ -1,5 +1,5 @@
 <script lang="ts">
-	import LoginCounterForm from '$lib/components/forms/LoginCounterForm.svelte';
+	import LoginCountForm from '$lib/components/forms/LoginCountForm.svelte';
 	import toast, { Toaster } from 'svelte-french-toast';
 	import type { ActionData } from './$types';
 
@@ -12,9 +12,9 @@
 </script>
 
 <svelte:head>
-	<title>Pubcrawl - Login Counter</title>
+	<title>Pubcrawl - Login Count</title>
 </svelte:head>
 <Toaster />
 <div class="flex flex-grow items-center">
-	<LoginCounterForm loginAction="?/login"></LoginCounterForm>
+	<LoginCountForm loginAction="?/login"></LoginCountForm>
 </div>
