@@ -27,16 +27,18 @@
 </script>
 
 <div
-	class={twMerge('card bg-base-300 m-1 border-l-6 shadow backdrop-blur-2xl', textColor)}
-	style="border-color: {darkBg}; background-color: {bg + 'DD'}"
+	class={twMerge(
+		'card bg-base-300 dark:bg-opacity-100 bg-opacity-80 m-1 border-l-6 shadow backdrop-blur-2xl',
+		textColor
+	)}
+	style="border-color: {darkBg}; background-color: {bg}"
 >
 	<div class="card-body">
 		<div class="card-header flex flex-row justify-between">
-			<h2 class={twMerge('card-title', textColor)}>
+			<h2 class={twMerge('card-title text-xl', textColor)}>
 				{$themes.find(({ themeId }) => themeId === pub.themeId)?.displayName || 'Unknown'}
 			</h2>
 			<div class="flex flex-col">
-				<!--<div>Occupancy</div>-->
 				<span class="text-2xl font-bold">{pub.occupancy}/{pub.capacity}</span>
 			</div>
 		</div>
