@@ -30,7 +30,7 @@
 
 	let incrementElement: HTMLButtonElement | undefined = $state();
 	let decrementElement: HTMLButtonElement | undefined = $state();
-	// svelte-ignore non_reactive_update
+
 	let submitStatus: HTMLButtonElement;
 	let inputStatus: HTMLInputElement | undefined = $state();
 
@@ -103,18 +103,17 @@
 				</div>
 			{/if}
 		</form>
-
-		<form
-			method="POST"
-			use:enhance={() => {
-				return async ({ update }) => {
-					update({ reset: false });
-				};
-			}}
-			class="flex flex-col items-center sm:h-full"
-		>
-			{#if pub}
-				<div class="flex min-h-60 flex-col gap-4 sm:flex-row">
+		<div class="flex flex-col items-center sm:gap-2">
+			<form
+				method="POST"
+				use:enhance={() => {
+					return async ({ update }) => {
+						update({ reset: false });
+					};
+				}}
+				class="flex min-h-60 flex-col gap-4 sm:h-full sm:flex-row"
+			>
+				{#if pub}
 					<div class="join join-vertical sm:h-full">
 						<button
 							bind:this={incrementElement}
@@ -139,7 +138,19 @@
 							>
 						</div>
 					</div>
-				</div>
+				{/if}
+			</form>
+			<form
+				method="POST"
+				action="?/setQueueStatus"
+				use:enhance={() => {
+					return async ({ result }) => {
+						if (result.type == 'success') {
+							toast.success('Queue Status updated');
+						}
+					};
+				}}
+			>
 				{#snippet tab(n: number)}
 					<input
 						type="button"
@@ -170,8 +181,7 @@
 						>button</button
 					>
 				</div>
-			{/if}
-		</form>
-		<br />
+			</form>
+		</div>
 	</div>
 </div>
