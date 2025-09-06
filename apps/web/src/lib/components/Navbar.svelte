@@ -4,7 +4,7 @@
 
 <nav class="navbar dark:bg-base-300 bg-blue-800 text-white shadow-lg">
 	<div class="navbar-start">
-		<a href="/"><PubcrawlLogo size={54} /></a>
+		<a href="/"><PubcrawlLogo forceDark size={54} /></a>
 		<a class="btn btn-ghost text-2xl font-bold" href="/">Pubcrawl</a>
 	</div>
 	<div class="navbar-middle hidden lg:inline-flex">
