@@ -23,7 +23,7 @@
 	const darkBg = `rgb(${hexToRgb(bg)!.r * darkFactor}, ${hexToRgb(bg)!.g * darkFactor}, ${hexToRgb(bg)!.b * darkFactor})`;
 	const textColor = brightness > 125 ? 'text-black' : 'text-white';
 	const statusStrings = ['Short', 'Medium', 'Long'];
-	//const statusClasses = ['status-success', 'status-warning', 'status-error'];
+	const statusClasses = ['bg-success', 'bg-warning', 'bg-error'];
 </script>
 
 <div
@@ -50,13 +50,18 @@
 					/>-->
 			<div class="flex flex-row items-center">
 				<span class="text-nowrap">Queue: {statusStrings[pub.queueStatus]}</span>
-				<!--<span class={twMerge('status m-1', statusClasses[pub.queueStatus])}></span>-->
+				<span
+					class={twMerge(
+						'status-shadow m-1 rounded-4xl p-1 shadow-lg',
+						statusClasses[pub.queueStatus]
+					)}
+				></span>
 			</div>
-			<!--<progress
+			<progress
 				class={twMerge('progress h-3 flex-grow-1', textColor)}
 				value={pub.occupancy}
 				max={pub.capacity}
-			></progress>-->
+			></progress>
 		</div>
 		<!--<svg
 			class="self-center"

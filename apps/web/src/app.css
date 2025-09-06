@@ -30,3 +30,6 @@
 .indicator > div:first-child {
 	display: none !important;
 }
+.status-shadow {
+	box-shadow: inset #aaaaaaee 0 0 2px 0;
+}
