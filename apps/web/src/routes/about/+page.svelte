@@ -1,10 +1,9 @@
+<script>
+	import PubcrawlLogo from '$lib/components/PubcrawlLogo.svelte';
+</script>
+
 <main class="mb-4 flex flex-col items-center text-center">
-	<img class="w-6/12 sm:w-4/12 dark:hidden" src="/icons/favicon-512x512.png" alt="Pubcrawl logo" />
-	<img
-		class="hidden w-6/12 sm:w-4/12 dark:block"
-		src="/icons/favicon-white-512x512.png"
-		alt="Pubcrawl logo"
-	/>
+	<PubcrawlLogo class="w-6/12 text-center sm:w-4/12" />
 
 	<h1 class="text-2xl font-bold">Pubcrawl</h1>
 
