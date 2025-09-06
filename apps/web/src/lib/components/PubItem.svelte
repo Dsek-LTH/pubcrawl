@@ -5,7 +5,7 @@
 
 	let { pub, themes }: { pub: PubsItem; themes: Readable<ThemesItem[]> } = $props();
 
-	function hexToRgb(hex: string | undefined) {
+	/*function hexToRgb(hex: string | undefined) {
 		var result = hex ? /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex) : null;
 		return result
 			? {
@@ -21,9 +21,12 @@
 		: 0;
 	const darkFactor = 0.9;
 	const darkBg = `rgb(${hexToRgb(bg)!.r * darkFactor}, ${hexToRgb(bg)!.g * darkFactor}, ${hexToRgb(bg)!.b * darkFactor})`;
-	const textColor = brightness > 125 ? 'text-black' : 'text-white';
+	const textColor = brightness > 125 ? 'text-black' : 'text-white';*/
 	const statusStrings = ['Short', 'Medium', 'Long'];
 	const statusClasses = ['status-success', 'status-warning', 'status-error'];
+	const textColor = 'text-black';
+	const bg = '#F280A1';
+	const darkBg = '#F280A1';
 </script>
 
 <div
