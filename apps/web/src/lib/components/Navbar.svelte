@@ -21,7 +21,9 @@
 					/></svg
 				>
 			</div>
+			<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 			<ul
+				tabindex="0"
 				class="menu menu-sm dropdown-content rounded-box dark:bg-base-300 z-1 mt-3 w-52 bg-blue-800 p-2 text-white shadow"
 			>
 				<li><a class="btn btn-outline m-1" href="/about">About</a></li>
