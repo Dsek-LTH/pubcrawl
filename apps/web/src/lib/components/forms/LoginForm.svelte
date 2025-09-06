@@ -12,7 +12,7 @@
 	<div class="card bg-base-300">
 		<div class="card-body">
 			<h1 class="card-title">{loginType}</h1>
-			<input class="input mr-1" type="password" name="adminKey" {placeholder} />
+			<input class="input mr-1" type="password" name="key" {placeholder} />
 			<button class="btn btn-primary ml-1">Login</button>
 		</div>
 	</div>
