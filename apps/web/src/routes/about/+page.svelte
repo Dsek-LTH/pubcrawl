@@ -16,7 +16,7 @@
 	<p class="mt-10 mb-4">
 		Created by the <a class="link" href="https://dsek.se/committees/cpu">CPU</a> Committee, of the
 		<a class="link" href="https://dsek.se">D-guild</a>. The source code is publicly available on
-		<a class="link" href="https://github.com/dsek-lth/pubcrawl">GitHub</a>.
+		<a class="link" href="https://github.com/Dsek-LTH/pubcrawl">GitHub</a>.
 	</p>
 	<div class="my-20 w-screen skew-y-10 overflow-hidden bg-[#2e2e2e] p-2 py-8 dark:bg-[#e8e8e8]">
 		<a class="" href="https://dsek.se/committees/cpu">
