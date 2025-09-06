@@ -87,7 +87,7 @@ export const actions: Actions = {
 					pubId: result.data.pubId,
 					occupancy: result.data.occupancy,
 					capacity: result.data.capacity,
-					queueStatus: QueueStatus.EMPTY,
+					queueStatus: result.data.queueStatus,
 					isActive: result.data.isActive,
 					themeId: result.data.themeId,
 					pubKey: result.data.pubKey

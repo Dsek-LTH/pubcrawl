@@ -19,16 +19,18 @@
 		<a class="link" href="https://dsek.se">D-guild</a>. The source code is publicly available on
 		<a class="link" href="https://github.com/dsek-lth/pubcrawl">GitHub</a>.
 	</p>
-	<a href="https://dsek.se/committees/cpu">
-		<img
-			class="inline w-5/12 sm:w-2/12 dark:hidden"
-			src="https://raw.githubusercontent.com/Dsek-LTH/grafik/refs/heads/main/committee_logos/cpu/PNG/full/light.png"
-			alt="Pubcrawl logo"
-		/>
-		<img
-			class="hidden w-5/12 sm:w-2/12 dark:inline"
-			src="https://raw.githubusercontent.com/Dsek-LTH/grafik/refs/heads/main/committee_logos/cpu/PNG/full/dark.png"
-			alt="Pubcrawl logo"
-		/>
-	</a>
+	<div class="my-20 w-[120vw] rotate-10 overflow-hidden bg-[#2e2e2e] p-2 py-8 dark:bg-[#e8e8e8]">
+		<a class="" href="https://dsek.se/committees/cpu">
+			<img
+				class="hidden w-5/12 -rotate-10 sm:w-2/12 dark:inline"
+				src="https://raw.githubusercontent.com/Dsek-LTH/grafik/refs/heads/main/committee_logos/cpu/PNG/full/light.png"
+				alt="Pubcrawl logo"
+			/>
+			<img
+				class="inline w-5/12 -rotate-10 sm:w-2/12 dark:hidden"
+				src="https://raw.githubusercontent.com/Dsek-LTH/grafik/refs/heads/main/committee_logos/cpu/PNG/full/dark.png"
+				alt="Pubcrawl logo"
+			/>
+		</a>
+	</div>
 </main>

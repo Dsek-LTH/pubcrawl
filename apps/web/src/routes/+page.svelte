@@ -3,6 +3,7 @@
 	import type { PubsItem, ThemesItem } from '$lib/graphql/types';
 	import type { Readable } from 'svelte/store';
 	import { API_ROUTES, EVENTS } from '$lib/api';
+	import PubItem from '$lib/components/PubItem.svelte';
 
 	const pubs: Readable<PubsItem[]> = source(API_ROUTES.EVENTS).select(EVENTS.pubsUpdated).json();
 	const themes: Readable<ThemesItem[]> = source(API_ROUTES.EVENTS)
@@ -21,36 +22,24 @@
 </svelte:head>
 
 {#if $themes?.length + $pubs?.length > 0}
-	<table class="table md:text-lg">
-		<thead>
-			<tr>
-				<th>Pub</th>
-				<th>Occupancy</th>
-				<th class="hidden sm:table-cell">Capacity</th>
-				<th>Full %</th>
-			</tr>
-		</thead>
-		<tbody>
-			{#each activePubs as pub (pub.pubId)}
-				<tr>
-					<td
-						class="border-l-6 font-semibold"
-						style="border-color:{$themes.find(({ themeId }) => themeId === pub.themeId)?.color}"
-					>
-						{$themes.find(({ themeId }) => themeId === pub.themeId)?.displayName || 'Unknown'}
-					</td>
-					<td>{pub.occupancy}<span class="sm:hidden">/{pub.capacity}</span></td>
-					<td class="hidden sm:table-cell">{pub.capacity}</td>
-					<td>
-						<progress
-							class="progress"
-							style="color:{$themes.find(({ themeId }) => themeId === pub.themeId)?.color}"
-							value={pub.occupancy}
-							max={pub.capacity}
-						></progress>
-					</td>
-				</tr>
-			{/each}
-		</tbody>
-	</table>
+	{#each activePubs as pub (pub.pubId)}
+		<PubItem {pub} {themes} />
+	{/each}
 {/if}
+<!--<div
+	class="border-l-6 font-semibold"
+	style="border-color:{$themes.find(({ themeId }) => themeId === pub.themeId)?.color}"
+>
+	{$themes.find(({ themeId }) => themeId === pub.themeId)?.displayName || 'Unknown'}
+</div>
+<div>{pub.occupancy}<span class="sm:hidden">/{pub.capacity}</span></div>
+<div class="hidden sm:table-cell">{pub.capacity}</div>
+<div>
+	<progress
+		class="progress"
+		style="color:{$themes.find(({ themeId }) => themeId === pub.themeId)?.color}"
+		value={pub.occupancy}
+		max={pub.capacity}
+	></progress>
+</div>
+-->

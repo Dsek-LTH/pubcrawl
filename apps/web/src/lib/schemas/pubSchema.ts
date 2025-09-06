@@ -22,5 +22,6 @@ export const pubSchema = z.object({
 		.nonnegative({ message: 'Capacity must be non-negative' }),
 	isActive: z.coerce.boolean({ required_error: 'Active status is required' }),
 	themeId: themeIdSchema,
-	pubKey: pubKeySchema
+	pubKey: pubKeySchema,
+	queueStatus: z.coerce.number().int()
 });
