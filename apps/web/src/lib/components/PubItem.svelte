@@ -49,7 +49,7 @@
 						alt=""
 					/>-->
 			<div class="flex flex-row items-center">
-				<span class="text-nowrap">Queue: {statusStrings[pub.queueStatus]}</span>
+				<span class="text-nowrap whitespace-pre">Queue: {statusStrings[pub.queueStatus]}</span>
 				<span
 					class={twMerge(
 						'status-shadow m-1 rounded-4xl p-1 shadow-lg',
