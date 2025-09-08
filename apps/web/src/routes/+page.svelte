@@ -26,20 +26,3 @@
 		<PubItem {pub} {themes} />
 	{/each}
 {/if}
-<!--<div
-	class="border-l-6 font-semibold"
-	style="border-color:{$themes.find(({ themeId }) => themeId === pub.themeId)?.color}"
->
-	{$themes.find(({ themeId }) => themeId === pub.themeId)?.displayName || 'Unknown'}
-</div>
-<div>{pub.occupancy}<span class="sm:hidden">/{pub.capacity}</span></div>
-<div class="hidden sm:table-cell">{pub.capacity}</div>
-<div>
-	<progress
-		class="progress"
-		style="color:{$themes.find(({ themeId }) => themeId === pub.themeId)?.color}"
-		value={pub.occupancy}
-		max={pub.capacity}
-	></progress>
-</div>
--->
