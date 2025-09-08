@@ -7,6 +7,7 @@
 	import type { PubsItem, ThemesItem } from '$lib/graphql/types';
 	import type { Readable } from 'svelte/store';
 	import toast, { Toaster } from 'svelte-french-toast';
+	import { twMerge } from 'tailwind-merge';
 
 	let { data, form }: PageProps = $props();
 
@@ -27,13 +28,16 @@
 		}
 	});
 
-	let incrementElement: HTMLButtonElement;
-	let decrementElement: HTMLButtonElement;
+	let incrementElement: HTMLButtonElement | undefined = $state();
+	let decrementElement: HTMLButtonElement | undefined = $state();
+
+	let submitStatus: HTMLButtonElement;
+	let inputStatus: HTMLInputElement | undefined = $state();
 
 	function onKeyDown(key: { key: string }) {
 		switch (key.key) {
 			case 'ArrowUp':
-				incrementElement.click();
+				incrementElement?.click();
 				break;
 			case 'ArrowDown':
 				decrementElement?.click();
@@ -41,6 +45,15 @@
 	}
 
 	let themeColor = $derived(theme?.color ?? '#999');
+	let queueStatus = $derived(pub?.queueStatus);
+	const statusNames = ['Short', 'Medium', 'Long'];
+	const statusClasses = ['bg-success', 'bg-warning', 'bg-error'];
+
+	$effect(() => {
+		if (pub?.queueStatus != queueStatus) {
+			submitStatus.click();
+		}
+	});
 </script>
 
 <svelte:head>
@@ -90,34 +103,85 @@
 				</div>
 			{/if}
 		</form>
-
-		<form method="POST" use:enhance class="flex flex-col items-center gap-4 sm:h-full sm:flex-row">
-			<div class="join join-vertical sm:h-full">
-				<button
-					bind:this={incrementElement}
-					class="join-item btn btn-xl btn-success h-40 w-60 text-5xl sm:h-1/2 sm:w-128 sm:text-6xl"
-					formaction="?/increment">+</button
-				>
-				<button
-					bind:this={decrementElement}
-					class="join-item btn btn-xl btn-error h-40 w-60 text-5xl sm:h-1/2 sm:w-128 sm:text-6xl"
-					formaction="?/decrement">-</button
-				>
-			</div>
-			{#if pub}
-				<div class="stats w-full bg-white shadow sm:h-full dark:bg-black">
-					<div class="stat text-center">
-						<span class="stat-title sm:text-xl">Occupancy</span>
-						<span
-							class="stat-value text-5xl font-bold sm:text-8xl {0 > pub.occupancy ||
-							pub.occupancy > pub.capacity
-								? 'text-red-500'
-								: ''}">{pub.occupancy} / {pub.capacity}</span
+		<div class="flex flex-col items-center sm:gap-2">
+			<form
+				method="POST"
+				use:enhance={() => {
+					return async ({ update }) => {
+						update({ reset: false });
+					};
+				}}
+				class="flex min-h-80 flex-col gap-4 sm:h-full xl:flex-row"
+			>
+				{#if pub}
+					<div class="join join-vertical sm:h-full">
+						<button
+							bind:this={incrementElement}
+							class="join-item btn btn-xl btn-success h-40 w-60 text-5xl sm:h-1/2 sm:w-128 sm:text-6xl"
+							formaction="?/increment">+</button
+						>
+						<button
+							bind:this={decrementElement}
+							class="join-item btn btn-xl btn-error h-40 w-60 text-5xl sm:h-1/2 sm:w-128 sm:text-6xl"
+							formaction="?/decrement">-</button
 						>
 					</div>
+
+					<div class="stats h-full w-full bg-white shadow dark:bg-black">
+						<div class="stat text-center">
+							<span class="stat-title sm:text-xl">Occupancy</span>
+							<span
+								class="stat-value text-5xl font-bold sm:text-8xl {0 > pub.occupancy ||
+								pub.occupancy > pub.capacity
+									? 'text-red-500'
+									: ''}">{pub.occupancy} / {pub.capacity}</span
+							>
+						</div>
+					</div>
+				{/if}
+			</form>
+			<form
+				method="POST"
+				action="?/setQueueStatus"
+				use:enhance={() => {
+					return async ({ result }) => {
+						if (result.type == 'success') {
+							toast.success('Queue Status updated');
+						}
+					};
+				}}
+			>
+				{#snippet tab(n: number)}
+					<input
+						type="button"
+						value={statusNames[n]}
+						class={twMerge('tab text-base-content! btn', queueStatus == n ? statusClasses[n] : '')}
+						onclick={() => {
+							inputStatus!.value = '' + n;
+							submitStatus.click();
+						}}
+					/>
+				{/snippet}
+				<div class="join join-vertical">
+					<span class="text-md join-item m-2 font-bold">Queue Status</span>
+					<div class="tabs tabs-box join-item">
+						{#each [0, 1, 2] as n (n)}
+							{@render tab(n)}
+						{/each}
+					</div>
+
+					<input
+						hidden
+						type="number"
+						name="queueStatus"
+						bind:this={inputStatus}
+						value={queueStatus}
+					/>
+					<button hidden formaction="?/setQueueStatus" bind:this={submitStatus} type="submit"
+						>button</button
+					>
 				</div>
-			{/if}
-		</form>
-		<br />
+			</form>
+		</div>
 	</div>
 </div>

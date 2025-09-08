@@ -39,7 +39,7 @@
 <div class="card card-sm bg-base-300 border-l-6" style="border-color:{themeColor};">
 	<div class="card-body items-center md:flex-row">
 		<form
-			class="flex w-full flex-col justify-between gap-1 md:flex-row"
+			class="flex w-full flex-col justify-between gap-0 md:flex-row md:gap-1"
 			method="POST"
 			action={updateAction}
 			use:enhance={() => {
@@ -101,13 +101,23 @@
 					<input type="text" name="pubKey" value={pubKey} />
 				</div>
 			</div>
-			<div class="flex w-full flex-col items-center justify-center gap-2 self-center sm:flex-row">
-				<button class="btn btn-secondary self-center not-md:w-full" type="submit">Save</button>
-				<button
-					type="button"
-					class="btn btn-error self-center not-md:w-full"
-					onclick={confirmDelete}>Delete</button
-				>
+			<div class="flex w-full flex-col">
+				<div class="input">
+					<span class="label">Queue:</span>
+					<select name="queueStatus" class="select min-w-6">
+						<option selected={pub.queueStatus == 0} value="0">Short</option>
+						<option selected={pub.queueStatus == 1} value="1">Medium</option>
+						<option selected={pub.queueStatus == 2} value="2">Long</option>
+					</select>
+				</div>
+				<div class="flex w-full flex-col items-center justify-center gap-2 self-center sm:flex-row">
+					<button class="btn btn-secondary self-center not-md:w-full" type="submit">Save</button>
+					<button
+						type="button"
+						class="btn btn-error self-center not-md:w-full"
+						onclick={confirmDelete}>Delete</button
+					>
+				</div>
 			</div>
 		</form>
 

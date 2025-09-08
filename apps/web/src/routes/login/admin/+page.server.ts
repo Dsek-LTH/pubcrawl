@@ -25,7 +25,7 @@ export const actions: Actions = {
 			});
 		}
 
-		const adminKey: string = result.data.adminKey;
+		const adminKey: string = result.data.key;
 
 		if (adminKey !== env.ADMIN_KEY) {
 			return fail(401, {

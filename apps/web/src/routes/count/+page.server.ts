@@ -56,6 +56,29 @@ export const actions: Actions = {
 
 		await UpdatePub({ variables: { oldPubId: pubId, pub: { occupancy: 0 } } });
 	},
+	setQueueStatus: async ({ request, cookies }) => {
+		const pubKeyAndIdResult = await getPubKeyAndId(cookies);
+		if (!pubKeyAndIdResult) return unauthorized();
+		const { pubId } = pubKeyAndIdResult;
+
+		const formData = Object.fromEntries(await request.formData());
+
+		const result = pubSchema.pick({ queueStatus: true }).safeParse(formData);
+
+		if (!result.success) {
+			const { fieldErrors } = result.error.flatten();
+
+			return fail(400, {
+				errors: fieldErrors,
+				values: result.data
+			});
+		}
+
+		await UpdatePub({
+			variables: { oldPubId: pubId, pub: { queueStatus: result.data.queueStatus } }
+		});
+		return { pubId: pubKeyAndIdResult.pubId };
+	},
 	updatePub: async ({ request, cookies }) => {
 		const pubKeyAndIdResult = await getPubKeyAndId(cookies);
 		if (!pubKeyAndIdResult) return unauthorized();

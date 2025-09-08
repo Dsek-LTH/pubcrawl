@@ -57,7 +57,7 @@ export const actions: Actions = {
 			});
 		}
 
-		const pubKey: string = result.data.pubKey;
+		const pubKey: string = result.data.key;
 		const pubKeyExists = validatePubKey(pubKey);
 
 		if (!pubKeyExists) {
