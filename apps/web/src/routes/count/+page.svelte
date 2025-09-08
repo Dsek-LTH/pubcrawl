@@ -111,7 +111,7 @@
 						update({ reset: false });
 					};
 				}}
-				class="flex min-h-60 flex-col gap-4 sm:h-full sm:flex-row"
+				class="flex min-h-80 flex-col gap-4 sm:h-full xl:flex-row"
 			>
 				{#if pub}
 					<div class="join join-vertical sm:h-full">
@@ -127,7 +127,7 @@
 						>
 					</div>
 
-					<div class="stats w-full bg-white shadow sm:h-full dark:bg-black">
+					<div class="stats h-full w-full bg-white shadow dark:bg-black">
 						<div class="stat text-center">
 							<span class="stat-title sm:text-xl">Occupancy</span>
 							<span
