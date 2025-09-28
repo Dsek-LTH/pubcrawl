@@ -8,6 +8,7 @@ mutation CreatePub(
 	$displayName: String!
 	$logo: String!
 	$color: String!
+	$isOpen: Boolean!
 ) {
 	insertIntoPubs(
 		values: {
@@ -20,6 +21,7 @@ mutation CreatePub(
 			displayName: $displayName
 			logo: $logo
 			color: $color
+			isOpen: $isOpen
 		}
 	) {
 		capacity
@@ -32,6 +34,7 @@ mutation CreatePub(
 		displayName
 		logo
 		color
+		isOpen
 	}
 }
 
@@ -46,6 +49,7 @@ mutation DecrementPubOccupancy($pubId: String!, $decrement: Int!) {
 		displayName
 		logo
 		color
+		isOpen
 	}
 }
 
@@ -60,6 +64,7 @@ mutation IncrementPubOccupancy($pubId: String!, $increment: Int!) {
 		displayName
 		logo
 		color
+		isOpen
 	}
 }
 
@@ -83,6 +88,7 @@ mutation RemovePub($pubId: String!) {
 		displayName
 		logo
 		color
+		isOpen
 	}
 }
 
@@ -98,5 +104,6 @@ mutation UpdatePub($pub: PubsUpdateInput!, $oldPubId: String!) {
 		displayName
 		logo
 		color
+		isOpen
 	}
 }

@@ -225,6 +225,7 @@ export type PubsFilters = {
 	displayName?: InputMaybe<PubsDisplayNameFilters>;
 	id?: InputMaybe<PubsIdFilters>;
 	isActive?: InputMaybe<PubsIsActiveFilters>;
+	isOpen?: InputMaybe<PubsIsOpenFilters>;
 	logo?: InputMaybe<PubsLogoFilters>;
 	occupancy?: InputMaybe<PubsOccupancyFilters>;
 	pubId?: InputMaybe<PubsPubIdFilters>;
@@ -238,6 +239,7 @@ export type PubsFiltersOr = {
 	displayName?: InputMaybe<PubsDisplayNameFilters>;
 	id?: InputMaybe<PubsIdFilters>;
 	isActive?: InputMaybe<PubsIsActiveFilters>;
+	isOpen?: InputMaybe<PubsIsOpenFilters>;
 	logo?: InputMaybe<PubsLogoFilters>;
 	occupancy?: InputMaybe<PubsOccupancyFilters>;
 	pubId?: InputMaybe<PubsPubIdFilters>;
@@ -290,6 +292,7 @@ export type PubsInsertInput = {
 	displayName: Scalars['String']['input'];
 	id?: InputMaybe<Scalars['Int']['input']>;
 	isActive: Scalars['Boolean']['input'];
+	isOpen: Scalars['Boolean']['input'];
 	logo: Scalars['String']['input'];
 	occupancy: Scalars['Int']['input'];
 	pubId: Scalars['String']['input'];
@@ -336,6 +339,45 @@ export type PubsIsActivefiltersOr = {
 	notLike?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type PubsIsOpenFilters = {
+	OR?: InputMaybe<Array<PubsIsOpenfiltersOr>>;
+	eq?: InputMaybe<Scalars['Boolean']['input']>;
+	gt?: InputMaybe<Scalars['Boolean']['input']>;
+	gte?: InputMaybe<Scalars['Boolean']['input']>;
+	ilike?: InputMaybe<Scalars['String']['input']>;
+	/** Array<undefined> */
+	inArray?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+	isNotNull?: InputMaybe<Scalars['Boolean']['input']>;
+	isNull?: InputMaybe<Scalars['Boolean']['input']>;
+	like?: InputMaybe<Scalars['String']['input']>;
+	lt?: InputMaybe<Scalars['Boolean']['input']>;
+	lte?: InputMaybe<Scalars['Boolean']['input']>;
+	ne?: InputMaybe<Scalars['Boolean']['input']>;
+	notIlike?: InputMaybe<Scalars['String']['input']>;
+	/** Array<undefined> */
+	notInArray?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+	notLike?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type PubsIsOpenfiltersOr = {
+	eq?: InputMaybe<Scalars['Boolean']['input']>;
+	gt?: InputMaybe<Scalars['Boolean']['input']>;
+	gte?: InputMaybe<Scalars['Boolean']['input']>;
+	ilike?: InputMaybe<Scalars['String']['input']>;
+	/** Array<undefined> */
+	inArray?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+	isNotNull?: InputMaybe<Scalars['Boolean']['input']>;
+	isNull?: InputMaybe<Scalars['Boolean']['input']>;
+	like?: InputMaybe<Scalars['String']['input']>;
+	lt?: InputMaybe<Scalars['Boolean']['input']>;
+	lte?: InputMaybe<Scalars['Boolean']['input']>;
+	ne?: InputMaybe<Scalars['Boolean']['input']>;
+	notIlike?: InputMaybe<Scalars['String']['input']>;
+	/** Array<undefined> */
+	notInArray?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+	notLike?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type PubsItem = {
 	__typename?: 'PubsItem';
 	capacity: Scalars['Int']['output'];
@@ -343,6 +385,7 @@ export type PubsItem = {
 	displayName: Scalars['String']['output'];
 	id: Scalars['Int']['output'];
 	isActive: Scalars['Boolean']['output'];
+	isOpen: Scalars['Boolean']['output'];
 	logo: Scalars['String']['output'];
 	occupancy: Scalars['Int']['output'];
 	pubId: Scalars['String']['output'];
@@ -434,6 +477,7 @@ export type PubsOrderBy = {
 	displayName?: InputMaybe<InnerOrder>;
 	id?: InputMaybe<InnerOrder>;
 	isActive?: InputMaybe<InnerOrder>;
+	isOpen?: InputMaybe<InnerOrder>;
 	logo?: InputMaybe<InnerOrder>;
 	occupancy?: InputMaybe<InnerOrder>;
 	pubId?: InputMaybe<InnerOrder>;
@@ -565,6 +609,7 @@ export type PubsSelectItem = {
 	displayName: Scalars['String']['output'];
 	id: Scalars['Int']['output'];
 	isActive: Scalars['Boolean']['output'];
+	isOpen: Scalars['Boolean']['output'];
 	logo: Scalars['String']['output'];
 	occupancy: Scalars['Int']['output'];
 	pubId: Scalars['String']['output'];
@@ -578,6 +623,7 @@ export type PubsUpdateInput = {
 	displayName?: InputMaybe<Scalars['String']['input']>;
 	id?: InputMaybe<Scalars['Int']['input']>;
 	isActive?: InputMaybe<Scalars['Boolean']['input']>;
+	isOpen?: InputMaybe<Scalars['Boolean']['input']>;
 	logo?: InputMaybe<Scalars['String']['input']>;
 	occupancy?: InputMaybe<Scalars['Int']['input']>;
 	pubId?: InputMaybe<Scalars['String']['input']>;
@@ -632,6 +678,7 @@ export type CreatePubMutationVariables = Exact<{
 	displayName: Scalars['String']['input'];
 	logo: Scalars['String']['input'];
 	color: Scalars['String']['input'];
+	isOpen: Scalars['Boolean']['input'];
 }>;
 
 export type CreatePubMutation = {
@@ -648,6 +695,7 @@ export type CreatePubMutation = {
 		displayName: string;
 		logo: string;
 		color: string;
+		isOpen: boolean;
 	}>;
 };
 
@@ -669,6 +717,7 @@ export type DecrementPubOccupancyMutation = {
 		displayName: string;
 		logo: string;
 		color: string;
+		isOpen: boolean;
 	}> | null;
 };
 
@@ -690,6 +739,7 @@ export type IncrementPubOccupancyMutation = {
 		displayName: string;
 		logo: string;
 		color: string;
+		isOpen: boolean;
 	}> | null;
 };
 
@@ -725,6 +775,7 @@ export type RemovePubMutation = {
 		displayName: string;
 		logo: string;
 		color: string;
+		isOpen: boolean;
 	}>;
 };
 
@@ -747,6 +798,7 @@ export type UpdatePubMutation = {
 		displayName: string;
 		logo: string;
 		color: string;
+		isOpen: boolean;
 	}>;
 };
 
@@ -772,6 +824,7 @@ export type GetPubsQuery = {
 		displayName: string;
 		logo: string;
 		color: string;
+		isOpen: boolean;
 	}>;
 };
 
@@ -797,6 +850,7 @@ export type PubsSubscriptionSubscription = {
 		displayName: string;
 		logo: string;
 		color: string;
+		isOpen: boolean;
 	}> | null;
 };
 
@@ -811,6 +865,7 @@ export const CreatePubDoc = gql`
 		$displayName: String!
 		$logo: String!
 		$color: String!
+		$isOpen: Boolean!
 	) {
 		insertIntoPubs(
 			values: {
@@ -823,6 +878,7 @@ export const CreatePubDoc = gql`
 				displayName: $displayName
 				logo: $logo
 				color: $color
+				isOpen: $isOpen
 			}
 		) {
 			capacity
@@ -835,6 +891,7 @@ export const CreatePubDoc = gql`
 			displayName
 			logo
 			color
+			isOpen
 		}
 	}
 `;
@@ -850,6 +907,7 @@ export const DecrementPubOccupancyDoc = gql`
 			displayName
 			logo
 			color
+			isOpen
 		}
 	}
 `;
@@ -865,6 +923,7 @@ export const IncrementPubOccupancyDoc = gql`
 			displayName
 			logo
 			color
+			isOpen
 		}
 	}
 `;
@@ -890,6 +949,7 @@ export const RemovePubDoc = gql`
 			displayName
 			logo
 			color
+			isOpen
 		}
 	}
 `;
@@ -906,6 +966,7 @@ export const UpdatePubDoc = gql`
 			displayName
 			logo
 			color
+			isOpen
 		}
 	}
 `;
@@ -929,6 +990,7 @@ export const GetPubsDoc = gql`
 			displayName
 			logo
 			color
+			isOpen
 		}
 	}
 `;
@@ -952,6 +1014,7 @@ export const PubsSubscriptionDoc = gql`
 			displayName
 			logo
 			color
+			isOpen
 		}
 	}
 `;

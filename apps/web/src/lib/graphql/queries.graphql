@@ -16,5 +16,6 @@ query GetPubs {
 		displayName
 		logo
 		color
+		isOpen
 	}
 }

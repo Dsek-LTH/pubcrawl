@@ -16,5 +16,6 @@ subscription PubsSubscription {
 		displayName
 		logo
 		color
+		isOpen
 	}
 }
