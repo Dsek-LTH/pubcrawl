@@ -34,5 +34,6 @@ export const pubSchema = z.object({
 		.toUpperCase()
 		.regex(new RegExp('^#[0-9A-F]{6}[0-9A-F]{0,2}$'), {
 			message: 'Must be a valid hex format.'
-		}) // Maybe drop alpha support?
+		}), // Maybe drop alpha support?
+	isOpen: z.coerce.boolean().default(false)
 });

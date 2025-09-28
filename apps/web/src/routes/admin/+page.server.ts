@@ -29,7 +29,8 @@ export const actions: Actions = {
 				capacity: true,
 				displayName: true,
 				logo: true,
-				color: true
+				color: true,
+				isOpen: true
 			})
 			.safeParse(formData);
 
@@ -52,7 +53,8 @@ export const actions: Actions = {
 				isActive: true,
 				displayName: result.data.displayName,
 				logo: result.data.logo,
-				color: result.data.color
+				color: result.data.color,
+				isOpen: result.data.isOpen
 			}
 		});
 	},
@@ -88,7 +90,8 @@ export const actions: Actions = {
 					pubKey: result.data.pubKey,
 					displayName: result.data.displayName,
 					logo: result.data.logo,
-					color: result.data.color
+					color: result.data.color,
+					isOpen: result.data.isOpen
 				}
 			}
 		});
