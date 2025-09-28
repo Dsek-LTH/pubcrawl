@@ -11,4 +11,5 @@ export const pubs = pgTable("pubs", {
   displayName: text("display_name").notNull(),
   logo: text("logo").notNull(), // Base64 encoded
   color: text("color").notNull(), // Hex
+  isOpen: boolean("is_open").notNull(),
 });
