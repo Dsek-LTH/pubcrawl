@@ -13,16 +13,8 @@ query GetPubs {
 		occupancy
 		pubId
 		queueStatus
-		themeId
-	}
-}
-
-query GetThemes {
-	themes {
-		color
 		displayName
-		id
 		logo
-		themeId
+		color
 	}
 }
