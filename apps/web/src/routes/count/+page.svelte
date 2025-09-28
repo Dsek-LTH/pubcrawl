@@ -4,7 +4,7 @@
 	import { type PageProps } from './$types';
 
 	import { API_ROUTES, EVENTS } from '$lib/api';
-	import type { PubsItem, ThemesItem } from '$lib/graphql/types';
+	import type { PubsItem } from '$lib/graphql/types';
 	import type { Readable } from 'svelte/store';
 	import toast, { Toaster } from 'svelte-french-toast';
 	import { twMerge } from 'tailwind-merge';
@@ -12,15 +12,9 @@
 	let { data, form }: PageProps = $props();
 
 	const pubs: Readable<PubsItem[]> = source(API_ROUTES.EVENTS).select(EVENTS.pubsUpdated).json();
-	const themes: Readable<ThemesItem[]> = source(API_ROUTES.EVENTS)
-		.select(EVENTS.themesUpdated)
-		.json();
 
 	let pub: PubsItem | undefined = $derived(
 		($pubs || []).find(({ pubId }) => pubId === data?.pubId)
-	);
-	let theme: ThemesItem | undefined = $derived(
-		($themes || []).find(({ themeId }) => themeId === pub?.themeId)
 	);
 	$effect(() => {
 		if (form) {
@@ -44,7 +38,7 @@
 		}
 	}
 
-	let themeColor = $derived(theme?.color ?? '#999');
+	let pubColor = $derived(pub?.color ?? '#999');
 	let queueStatus = $derived(pub?.queueStatus);
 	const statusNames = ['Short', 'Medium', 'Long'];
 	const statusClasses = ['bg-success', 'bg-warning', 'bg-error'];
@@ -61,13 +55,13 @@
 </svelte:head>
 <svelte:window on:keydown={onKeyDown} />
 <Toaster />
-<div class="card bg-base-300 border-t-6 sm:h-128" style="border-color:{themeColor};">
+<div class="card bg-base-300 border-t-6 sm:h-128" style="border-color:{pubColor};">
 	<div class="card-body">
 		<form method="POST" use:enhance>
-			{#if theme}
+			{#if pub}
 				<div class="flex flex-row justify-between">
 					<h1 class="card-title">
-						<span class="text-xl font-bold">{theme.displayName}</span>
+						<span class="text-xl font-bold">{pub.displayName}</span>
 						<span class="text-sm">(id: {data?.pubId})</span>
 					</h1>
 

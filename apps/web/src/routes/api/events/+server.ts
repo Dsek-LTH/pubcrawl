@@ -5,14 +5,10 @@ import {
 	type GetPubKeysQuery,
 	GetPubsDoc,
 	type GetPubsQuery,
-	GetThemesDoc,
-	type GetThemesQuery,
 	PubKeysSubscriptionDoc,
 	type PubKeysSubscriptionSubscription,
 	PubsSubscriptionDoc,
-	type PubsSubscriptionSubscription,
-	ThemesSubscriptionDoc,
-	type ThemesSubscriptionSubscription
+	type PubsSubscriptionSubscription
 } from '$lib/graphql/types';
 import { EVENTS } from '$lib/api';
 import type { ApolloClient, DocumentNode, NormalizedCacheObject } from '@apollo/client/core';
@@ -51,20 +47,6 @@ export const POST = async ({ cookies }) => {
 				EVENTS.pubsUpdated,
 				emit,
 				'pubsSubscription'
-			),
-			queryAndEmit<GetThemesQuery>(
-				apolloServerClient,
-				GetThemesDoc,
-				EVENTS.themesUpdated,
-				emit,
-				'themes'
-			),
-			createSubscription<ThemesSubscriptionSubscription>(
-				apolloServerClient,
-				ThemesSubscriptionDoc,
-				EVENTS.themesUpdated,
-				emit,
-				'themesSubscription'
 			),
 			...adminPromises
 		]);

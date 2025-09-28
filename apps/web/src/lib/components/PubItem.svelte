@@ -1,9 +1,8 @@
 <script lang="ts">
-	import type { PubsItem, ThemesItem } from '$lib/graphql/types';
-	import type { Readable } from 'svelte/store';
+	import type { PubsItem } from '$lib/graphql/types';
 	import { twMerge } from 'tailwind-merge';
 
-	let { pub, themes }: { pub: PubsItem; themes: Readable<ThemesItem[]> } = $props();
+	let { pub }: { pub: PubsItem } = $props();
 
 	function hexToRgb(hex: string | undefined) {
 		var result = hex ? /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex) : null;
@@ -15,7 +14,7 @@
 				}
 			: null;
 	}
-	const bg = $themes.find(({ themeId }) => themeId === pub.themeId)?.color;
+	const bg = pub.color;
 	const brightness = hexToRgb(bg)
 		? Math.round((hexToRgb(bg)!.r * 299 + hexToRgb(bg)!.g * 587 + hexToRgb(bg)!.b * 114) / 1000)
 		: 0;
@@ -36,7 +35,7 @@
 	<div class="card-body">
 		<div class="card-header flex flex-row justify-between">
 			<h2 class={twMerge('card-title text-xl', textColor)}>
-				{$themes.find(({ themeId }) => themeId === pub.themeId)?.displayName || 'Unknown'}
+				{pub.displayName}
 			</h2>
 			<div class="flex flex-col">
 				<span class="text-2xl font-bold">{pub.occupancy}/{pub.capacity}</span>

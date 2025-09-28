@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import type { PubsItem, ThemesItem } from '$lib/graphql/types';
+	import type { PubsItem } from '$lib/graphql/types';
 	import toast from 'svelte-french-toast';
 
 	let {
@@ -8,22 +8,33 @@
 		deleteAction,
 		pubId,
 		pubKey,
-		themes,
-		pub,
-		themeIds
+		pub
 	}: {
 		updateAction: string;
 		deleteAction: string;
 		pubId: PubsItem['pubId'];
 		pub: PubsItem;
 		pubKey: PubsItem['pubKey'];
-		themes: ThemesItem[];
-		themeIds: ThemesItem['themeId'][];
 	} = $props();
 
-	let themeColor = $derived(
-		themes?.find((theme) => theme.themeId === pub.themeId)?.color ?? '#999'
-	);
+	let logo = $state(pub.logo);
+
+	const handleFileChange = (event: Event) => {
+		const target = event.target as HTMLInputElement;
+		if (target.files) {
+			const file = target.files[0];
+
+			const reader = new FileReader();
+
+			reader.onload = () => {
+				logo = reader.result as string;
+			};
+
+			if (file) {
+				reader.readAsDataURL(file);
+			}
+		}
+	};
 
 	let showConfirmModal = $state(false);
 
@@ -36,7 +47,7 @@
 	}
 </script>
 
-<div class="card card-sm bg-base-300 border-l-6" style="border-color:{themeColor};">
+<div class="card card-sm bg-base-300 border-l-6" style="border-color:{pub.color};">
 	<div class="card-body items-center md:flex-row">
 		<form
 			class="flex w-full flex-col justify-between gap-0 md:flex-row md:gap-1"
@@ -51,6 +62,7 @@
 				};
 			}}
 		>
+			<!-- Id -->
 			<div class="flex w-full flex-col">
 				<div class="input w-full">
 					<span class="label">Id:</span>
@@ -60,18 +72,9 @@
 						<p class="error">{form.errors.pubId[0]}</p>
 					{/if}-->
 				</div>
-				<div class="select w-full">
-					<span class="label">Theme</span>
-					<select class="w-full" name="themeId">
-						{#each themeIds as themeIdOption (themeIdOption)}
-							<option value={themeIdOption} selected={themeIdOption === pub.themeId}
-								>{themeIdOption}</option
-							>
-						{/each}
-					</select>
-				</div>
 			</div>
 
+			<!-- Occupancy & Capacity -->
 			<div class="flex w-full flex-col">
 				<div class="flex flex-col">
 					<div class="input w-full">
@@ -84,6 +87,39 @@
 					</div>
 				</div>
 			</div>
+
+			<!-- Display Name -->
+			<div class="flex w-full flex-col">
+				<div class="input w-full">
+					<span class="label">Display Name:</span>
+					<input name="displayName" value={pub.displayName} />
+				</div>
+			</div>
+
+			<!-- Logo & Color -->
+			<div class="flex w-full flex-col">
+				<div>
+					<input
+						class="file-input w-full"
+						type="file"
+						accept="image/*"
+						onchange={handleFileChange}
+					/>
+					<input type="hidden" name="logo" value={logo} />
+				</div>
+
+				<div class="input w-full">
+					<span class="label">Color:</span>
+					<input type="color" name="color" value={pub.color} />
+				</div>
+			</div>
+			{#if logo}
+				<div class="flex w-full flex-col">
+					<img class="h-[4.5lh] w-auto! rounded-lg bg-white p-1" src={logo} alt="" />
+				</div>
+			{/if}
+
+			<!-- Active & Pub Key -->
 			<div class="flex w-full flex-col">
 				<div class="input">
 					<span class="label">Active:</span>
@@ -101,6 +137,8 @@
 					<input type="text" name="pubKey" value={pubKey} />
 				</div>
 			</div>
+
+			<!-- Queue Status & Buttons -->
 			<div class="flex w-full flex-col">
 				<div class="input">
 					<span class="label">Queue:</span>
