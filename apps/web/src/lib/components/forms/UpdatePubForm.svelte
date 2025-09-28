@@ -62,7 +62,7 @@
 				};
 			}}
 		>
-			<!-- Id -->
+			<!-- Id & Display Name -->
 			<div class="flex w-full flex-col">
 				<div class="input w-full">
 					<span class="label">Id:</span>
@@ -71,6 +71,10 @@
 					<!--{#if form?.errors?.pubId}
 						<p class="error">{form.errors.pubId[0]}</p>
 					{/if}-->
+				</div>
+				<div class="input w-full">
+					<span class="label">Display Name:</span>
+					<input name="displayName" value={pub.displayName} />
 				</div>
 			</div>
 
@@ -85,14 +89,6 @@
 						<span class="label">Capacity:</span>
 						<input type="text" name="capacity" value={pub.capacity} />
 					</div>
-				</div>
-			</div>
-
-			<!-- Display Name -->
-			<div class="flex w-full flex-col">
-				<div class="input w-full">
-					<span class="label">Display Name:</span>
-					<input name="displayName" value={pub.displayName} />
 				</div>
 			</div>
 
