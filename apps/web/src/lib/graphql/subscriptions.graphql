@@ -13,16 +13,9 @@ subscription PubsSubscription {
 		occupancy
 		pubId
 		queueStatus
-		themeId
-	}
-}
-
-subscription ThemesSubscription {
-	themesSubscription {
-		color
 		displayName
-		id
 		logo
-		themeId
+		color
+		isOpen
 	}
 }

@@ -5,7 +5,10 @@ mutation CreatePub(
 	$pubId: String!
 	$pubKey: String!
 	$queueStatus: Int!
-	$themeId: String!
+	$displayName: String!
+	$logo: String!
+	$color: String!
+	$isOpen: Boolean!
 ) {
 	insertIntoPubs(
 		values: {
@@ -15,7 +18,10 @@ mutation CreatePub(
 			pubId: $pubId
 			pubKey: $pubKey
 			queueStatus: $queueStatus
-			themeId: $themeId
+			displayName: $displayName
+			logo: $logo
+			color: $color
+			isOpen: $isOpen
 		}
 	) {
 		capacity
@@ -25,19 +31,10 @@ mutation CreatePub(
 		pubId
 		pubKey
 		queueStatus
-		themeId
-	}
-}
-
-mutation CreateTheme($themeId: String!, $color: String!, $logo: String!, $displayName: String!) {
-	insertIntoThemesSingle(
-		values: { themeId: $themeId, color: $color, logo: $logo, displayName: $displayName }
-	) {
-		id
-		themeId
 		displayName
 		logo
 		color
+		isOpen
 	}
 }
 
@@ -49,7 +46,10 @@ mutation DecrementPubOccupancy($pubId: String!, $decrement: Int!) {
 		capacity
 		queueStatus
 		isActive
-		themeId
+		displayName
+		logo
+		color
+		isOpen
 	}
 }
 
@@ -61,7 +61,10 @@ mutation IncrementPubOccupancy($pubId: String!, $increment: Int!) {
 		capacity
 		queueStatus
 		isActive
-		themeId
+		displayName
+		logo
+		color
+		isOpen
 	}
 }
 
@@ -82,17 +85,10 @@ mutation RemovePub($pubId: String!) {
 		capacity
 		queueStatus
 		isActive
-		themeId
-	}
-}
-
-mutation RemoveTheme($themeId: String!) {
-	deleteFromThemes(where: { themeId: { eq: $themeId } }) {
-		id
-		themeId
 		displayName
 		logo
 		color
+		isOpen
 	}
 }
 
@@ -105,16 +101,9 @@ mutation UpdatePub($pub: PubsUpdateInput!, $oldPubId: String!) {
 		capacity
 		queueStatus
 		isActive
-		themeId
-	}
-}
-
-mutation UpdateTheme($theme: ThemesUpdateInput!, $oldThemeId: String!) {
-	updateThemes(set: $theme, where: { themeId: { eq: $oldThemeId } }) {
-		id
-		themeId
 		displayName
 		logo
 		color
+		isOpen
 	}
 }

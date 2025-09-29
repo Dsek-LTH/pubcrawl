@@ -79,6 +79,29 @@ export const actions: Actions = {
 		});
 		return { pubId: pubKeyAndIdResult.pubId };
 	},
+	setOpen: async ({ request, cookies }) => {
+		const pubKeyAndIdResult = await getPubKeyAndId(cookies);
+		if (!pubKeyAndIdResult) return unauthorized();
+		const { pubId } = pubKeyAndIdResult;
+
+		const formData = Object.fromEntries(await request.formData());
+
+		const result = pubSchema.pick({ isOpen: true }).safeParse(formData);
+
+		if (!result.success) {
+			const { fieldErrors } = result.error.flatten();
+
+			return fail(400, {
+				errors: fieldErrors,
+				values: result.data
+			});
+		}
+
+		await UpdatePub({
+			variables: { oldPubId: pubId, pub: { isOpen: result.data.isOpen } }
+		});
+		return { pubId: pubKeyAndIdResult.pubId };
+	},
 	updatePub: async ({ request, cookies }) => {
 		const pubKeyAndIdResult = await getPubKeyAndId(cookies);
 		if (!pubKeyAndIdResult) return unauthorized();

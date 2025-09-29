@@ -1,19 +1,17 @@
 <script lang="ts">
 	import { source } from 'sveltekit-sse';
-	import type { PubsItem, ThemesItem } from '$lib/graphql/types';
+	import type { PubsItem } from '$lib/graphql/types';
 	import type { Readable } from 'svelte/store';
 	import { API_ROUTES, EVENTS } from '$lib/api';
 	import PubItem from '$lib/components/PubItem.svelte';
 
 	const pubs: Readable<PubsItem[]> = source(API_ROUTES.EVENTS).select(EVENTS.pubsUpdated).json();
-	const themes: Readable<ThemesItem[]> = source(API_ROUTES.EVENTS)
-		.select(EVENTS.themesUpdated)
-		.json();
 
 	let activePubs = $derived(
 		($pubs || [])
 			.filter(({ isActive }) => isActive)
 			.sort((a, b) => a.occupancy / a.capacity - b.occupancy / b.capacity)
+			.sort((a, b) => (a.isOpen === b.isOpen ? 0 : a.isOpen ? -1 : 1))
 	);
 </script>
 
@@ -21,8 +19,8 @@
 	<title>Pubcrawl</title>
 </svelte:head>
 
-{#if $themes?.length + $pubs?.length > 0}
+{#if $pubs?.length > 0}
 	{#each activePubs as pub (pub.pubId)}
-		<PubItem {pub} {themes} />
+		<PubItem {pub} />
 	{/each}
 {/if}

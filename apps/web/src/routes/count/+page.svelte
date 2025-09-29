@@ -4,7 +4,7 @@
 	import { type PageProps } from './$types';
 
 	import { API_ROUTES, EVENTS } from '$lib/api';
-	import type { PubsItem, ThemesItem } from '$lib/graphql/types';
+	import type { PubsItem } from '$lib/graphql/types';
 	import type { Readable } from 'svelte/store';
 	import toast, { Toaster } from 'svelte-french-toast';
 	import { twMerge } from 'tailwind-merge';
@@ -12,15 +12,9 @@
 	let { data, form }: PageProps = $props();
 
 	const pubs: Readable<PubsItem[]> = source(API_ROUTES.EVENTS).select(EVENTS.pubsUpdated).json();
-	const themes: Readable<ThemesItem[]> = source(API_ROUTES.EVENTS)
-		.select(EVENTS.themesUpdated)
-		.json();
 
 	let pub: PubsItem | undefined = $derived(
 		($pubs || []).find(({ pubId }) => pubId === data?.pubId)
-	);
-	let theme: ThemesItem | undefined = $derived(
-		($themes || []).find(({ themeId }) => themeId === pub?.themeId)
 	);
 	$effect(() => {
 		if (form) {
@@ -31,7 +25,8 @@
 	let incrementElement: HTMLButtonElement | undefined = $state();
 	let decrementElement: HTMLButtonElement | undefined = $state();
 
-	let submitStatus: HTMLButtonElement;
+	let submitQueueStatus: HTMLButtonElement;
+	let submitOpenStatus: HTMLButtonElement;
 	let inputStatus: HTMLInputElement | undefined = $state();
 
 	function onKeyDown(key: { key: string }) {
@@ -44,14 +39,14 @@
 		}
 	}
 
-	let themeColor = $derived(theme?.color ?? '#999');
+	let pubColor = $derived(pub?.color ?? '#999');
 	let queueStatus = $derived(pub?.queueStatus);
 	const statusNames = ['Short', 'Medium', 'Long'];
 	const statusClasses = ['bg-success', 'bg-warning', 'bg-error'];
 
 	$effect(() => {
 		if (pub?.queueStatus != queueStatus) {
-			submitStatus.click();
+			submitQueueStatus.click();
 		}
 	});
 </script>
@@ -61,13 +56,13 @@
 </svelte:head>
 <svelte:window on:keydown={onKeyDown} />
 <Toaster />
-<div class="card bg-base-300 border-t-6 sm:h-128" style="border-color:{themeColor};">
+<div class="card bg-base-300 border-t-6 sm:h-128" style="border-color:{pubColor};">
 	<div class="card-body">
 		<form method="POST" use:enhance>
-			{#if theme}
+			{#if pub}
 				<div class="flex flex-row justify-between">
 					<h1 class="card-title">
-						<span class="text-xl font-bold">{theme.displayName}</span>
+						<span class="text-xl font-bold">{pub.displayName}</span>
 						<span class="text-sm">(id: {data?.pubId})</span>
 					</h1>
 
@@ -140,48 +135,82 @@
 					</div>
 				{/if}
 			</form>
-			<form
-				method="POST"
-				action="?/setQueueStatus"
-				use:enhance={() => {
-					return async ({ result }) => {
-						if (result.type == 'success') {
-							toast.success('Queue Status updated');
-						}
-					};
-				}}
-			>
-				{#snippet tab(n: number)}
-					<input
-						type="button"
-						value={statusNames[n]}
-						class={twMerge('tab text-base-content! btn', queueStatus == n ? statusClasses[n] : '')}
-						onclick={() => {
-							inputStatus!.value = '' + n;
-							submitStatus.click();
-						}}
-					/>
-				{/snippet}
-				<div class="join join-vertical">
-					<span class="text-md join-item m-2 font-bold">Queue Status</span>
-					<div class="tabs tabs-box join-item">
-						{#each [0, 1, 2] as n (n)}
-							{@render tab(n)}
-						{/each}
-					</div>
+			<div class="flex w-full flex-col gap-6 sm:flex-row sm:justify-center">
+				<form
+					method="POST"
+					action="?/setQueueStatus"
+					use:enhance={() => {
+						return async ({ result }) => {
+							if (result.type == 'success') {
+								toast.success('Queue Status updated');
+							}
+						};
+					}}
+				>
+					{#snippet tab(n: number)}
+						<input
+							type="button"
+							value={statusNames[n]}
+							class={twMerge(
+								'tab text-base-content! btn',
+								queueStatus == n ? statusClasses[n] : ''
+							)}
+							onclick={() => {
+								inputStatus!.value = '' + n;
+								submitQueueStatus.click();
+							}}
+						/>
+					{/snippet}
+					<div class="join join-vertical">
+						<span class="text-md join-item m-2 font-bold">Queue Status</span>
+						<div class="tabs tabs-box join-item">
+							{#each [0, 1, 2] as n (n)}
+								{@render tab(n)}
+							{/each}
+						</div>
 
-					<input
-						hidden
-						type="number"
-						name="queueStatus"
-						bind:this={inputStatus}
-						value={queueStatus}
-					/>
-					<button hidden formaction="?/setQueueStatus" bind:this={submitStatus} type="submit"
+						<input
+							hidden
+							type="number"
+							name="queueStatus"
+							bind:this={inputStatus}
+							value={queueStatus}
+						/>
+						<button hidden formaction="?/setQueueStatus" bind:this={submitQueueStatus} type="submit"
+							>button</button
+						>
+					</div>
+				</form>
+				<form
+					method="POST"
+					action="?/setOpen"
+					use:enhance={() => {
+						return async ({ result }) => {
+							if (result.type == 'success') {
+								toast.success(`Pub is now ${pub?.isOpen ? 'open' : 'closed'}!`);
+							}
+						};
+					}}
+				>
+					<div class="flex flex-col">
+						<span class="text-md m-2 font-bold">Pub Open</span>
+						<div class="flex justify-center">
+							<input
+								type="checkbox"
+								class="checkbox checkbox-{pub?.isOpen ? 'success' : 'error'}"
+								name="isOpen"
+								checked={pub?.isOpen}
+								onchange={() => {
+									submitOpenStatus.click();
+								}}
+							/>
+						</div>
+					</div>
+					<button hidden formaction="?/setOpen" bind:this={submitOpenStatus} type="submit"
 						>button</button
 					>
-				</div>
-			</form>
+				</form>
+			</div>
 		</div>
 	</div>
 </div>
