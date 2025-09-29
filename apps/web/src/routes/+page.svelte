@@ -11,6 +11,7 @@
 		($pubs || [])
 			.filter(({ isActive }) => isActive)
 			.sort((a, b) => a.occupancy / a.capacity - b.occupancy / b.capacity)
+			.sort((a, b) => (a.isOpen === b.isOpen ? 0 : a.isOpen ? -1 : 1))
 	);
 </script>
 
