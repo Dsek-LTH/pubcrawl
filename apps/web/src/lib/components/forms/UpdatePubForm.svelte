@@ -45,14 +45,17 @@
 	function cancelDelete() {
 		showConfirmModal = false;
 	}
+
+	let form: HTMLFormElement;
 </script>
 
 <div class="card card-sm bg-base-300 border-l-6" style="border-color:{pub.color};">
 	<div class="card-body items-center md:flex-row">
 		<form
-			class="flex w-full flex-col justify-between gap-0 md:flex-row md:gap-1"
+			class="flex w-full flex-col justify-between gap-3 md:flex-row md:gap-1"
 			method="POST"
 			action={updateAction}
+			bind:this={form}
 			use:enhance={() => {
 				return async ({ update, result }) => {
 					update({ reset: false });
@@ -63,9 +66,9 @@
 			}}
 		>
 			<!-- Id & Display Name -->
-			<div class="flex w-full flex-col">
+			<div class="flex w-full flex-col gap-3">
 				<div class="input w-full">
-					<span class="label">Id:</span>
+					<span class="own-label">Id</span>
 					<input type="hidden" name="oldPubId" value={pubId} />
 					<input type="text" class="card-title" name="pubId" value={pubId} />
 					<!--{#if form?.errors?.pubId}
@@ -73,28 +76,28 @@
 					{/if}-->
 				</div>
 				<div class="input w-full">
-					<span class="label">Display Name:</span>
+					<span class="own-label">Display Name</span>
 					<input name="displayName" value={pub.displayName} />
 				</div>
 			</div>
 
 			<!-- Occupancy & Capacity -->
 			<div class="flex w-full flex-col">
-				<div class="flex flex-col">
+				<div class="flex flex-col gap-3">
 					<div class="input w-full">
-						<span class="label">Occupancy:</span>
+						<span class="own-label">Occupancy</span>
 						<input type="text" name="occupancy" value={pub.occupancy} />
 					</div>
 					<div class="input w-full">
-						<span class="label">Capacity:</span>
+						<span class="own-label">Capacity</span>
 						<input type="text" name="capacity" value={pub.capacity} />
 					</div>
 				</div>
 			</div>
 
 			<!-- Logo & Color -->
-			<div class="flex w-full flex-col">
-				<div>
+			<div class="flex w-full flex-col gap-3">
+				<div class="">
 					<input
 						class="file-input w-full"
 						type="file"
@@ -104,8 +107,8 @@
 					<input type="hidden" name="logo" value={logo} />
 				</div>
 
-				<div class="input w-full">
-					<span class="label">Color:</span>
+				<div class="input w-full gap-3">
+					<span class="own-label">Color</span>
 					<input type="color" name="color" value={pub.color} />
 				</div>
 			</div>
@@ -116,42 +119,40 @@
 			{/if}
 
 			<!-- Active & Pub Key -->
-			<div class="flex w-full flex-col">
-				<div class="input">
-					<span class="label">Active:</span>
-					<input
-						class="checkbox"
-						type="checkbox"
-						name="isActive"
-						value={pub.isActive}
-						checked={pub.isActive}
-					/>
-				</div>
-				<div class="input">
-					<span class="label">Count Key:</span>
+			<div class="flex w-full flex-col gap-3">
+				<div class="input w-full">
+					<span class="own-label">Count Key</span>
 					<input type="hidden" name="oldPubKey" value={pubKey} />
 					<input type="text" name="pubKey" value={pubKey} />
 				</div>
-			</div>
-
-			<!-- Queue Status & Buttons -->
-			<div class="flex w-full flex-col">
-				<div class="input">
-					<span class="label">Queue:</span>
-					<select name="queueStatus" class="select min-w-6">
+				<div class="select w-full">
+					<span class="own-label">Queue</span>
+					<select name="queueStatus" class="min-w-6">
 						<option selected={pub.queueStatus == 0} value="0">Short</option>
 						<option selected={pub.queueStatus == 1} value="1">Medium</option>
 						<option selected={pub.queueStatus == 2} value="2">Long</option>
 					</select>
 				</div>
-				<div class="flex w-full flex-col items-center justify-center gap-2 self-center sm:flex-row">
-					<button class="btn btn-secondary self-center not-md:w-full" type="submit">Save</button>
-					<button
-						type="button"
-						class="btn btn-error self-center not-md:w-full"
-						onclick={confirmDelete}>Delete</button
-					>
-				</div>
+			</div>
+
+			<!-- Queue Status & Buttons -->
+			<div class="flex w-full flex-col gap-3 xl:px-7">
+				<button class="btn btn-secondary w-full self-center" type="submit">Save</button>
+				<button type="button" class="btn btn-error w-full self-center" onclick={confirmDelete}
+					>Delete</button
+				>
+			</div>
+			<div class="divider md:divider-horizontal my-0 md:my-1"></div>
+			<div class="flex flex-col items-center justify-center text-center xl:px-3">
+				<span class="text-base-content/70 p-1 text-base font-medium">Active</span>
+				<input
+					class="checkbox checkbox-lg checkbox-neutral"
+					type="checkbox"
+					name="isActive"
+					value={pub.isActive}
+					checked={pub.isActive}
+					onchange={() => form.requestSubmit()}
+				/>
 			</div>
 		</form>
 
