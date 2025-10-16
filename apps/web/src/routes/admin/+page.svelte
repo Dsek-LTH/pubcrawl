@@ -4,14 +4,12 @@
 	import { type PageProps } from './$types';
 
 	import CreatePubForm from '$lib/components/forms/CreatePubForm.svelte';
-	import CreateThemeForm from '$lib/components/forms/CreateThemeForm.svelte';
 
 	import UpdatePubForm from '$lib/components/forms/UpdatePubForm.svelte';
-	import UpdateThemeForm from '$lib/components/forms/UpdateThemeForm.svelte';
 
 	import { API_ROUTES, EVENTS } from '$lib/api';
 	import { type Readable } from 'svelte/store';
-	import type { PubKeysSubscriptionSubscription, PubsItem, ThemesItem } from '$lib/graphql/types';
+	import type { PubKeysSubscriptionSubscription, PubsItem } from '$lib/graphql/types';
 	import toast, { Toaster } from 'svelte-french-toast';
 
 	let { form }: PageProps = $props();
@@ -22,11 +20,7 @@
 		.select(EVENTS.pubKeysUpdated)
 		.json();
 	const pubs: Readable<PubsItem[]> = source(API_ROUTES.EVENTS).select(EVENTS.pubsUpdated).json();
-	const themes: Readable<ThemesItem[]> = source(API_ROUTES.EVENTS)
-		.select(EVENTS.themesUpdated)
-		.json();
 
-	let themeIds = $derived(($themes || []).map(({ themeId }) => themeId));
 	let pubIdKeys = $derived(
 		($pubKeys || []).map(({ pubId, pubKey }) => [pubId, pubKey] as [string, string])
 	);
@@ -65,9 +59,9 @@
 		>
 			<button class="btn btn-secondary my-2">Randomize Pub Keys</button>
 		</form>
-		<CreatePubForm createAction="?/createPub" {themeIds}></CreatePubForm>
+		<CreatePubForm createAction="?/createPub"></CreatePubForm>
 		{#key pairs}
-			{#if $pubs && $themes}
+			{#if $pubs}
 				<div class="mt-4 flex flex-col gap-2">
 					{#each $pubs as pub (pub.pubId)}
 						<UpdatePubForm
@@ -76,8 +70,6 @@
 							pubId={pub.pubId}
 							pubKey={pairs.get(pub.pubId) ?? ''}
 							{pub}
-							themes={$themes}
-							{themeIds}
 						></UpdatePubForm>
 						<br />
 					{/each}
@@ -86,26 +78,6 @@
 		{/key}
 	</div>
 
-	<input type="radio" name="my_tabs_6" class="tab" aria-label="Themes" />
-	<div class="tab-content bg-base-100 border-base-300 p-6">
-		<p>This is where themes are created. Themes determine the name, color and logo of the pubs.</p>
-		<br />
-		<CreateThemeForm createAction="?/createTheme"></CreateThemeForm>
-
-		{#if $themes}
-			<div class="mt-4 flex flex-col gap-2">
-				{#each $themes as theme (theme.themeId)}
-					<UpdateThemeForm
-						updateAction="?/updateTheme"
-						deleteAction="?/deleteTheme"
-						themeId={theme.themeId}
-						{theme}
-					></UpdateThemeForm>
-					<br />
-				{/each}
-			</div>
-		{/if}
-	</div>
 	<form method="POST" class="ml-auto self-center" action="?/logout" use:enhance>
 		<button class="btn btn-info">Logout</button>
 	</form>

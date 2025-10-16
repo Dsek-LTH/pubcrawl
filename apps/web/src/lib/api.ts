@@ -6,6 +6,5 @@ export const API_ROUTES = {
 
 export const EVENTS = {
 	pubKeysUpdated: 'pubKeysUpdated',
-	pubsUpdated: 'pubUpdated',
-	themesUpdated: 'themeUpdated'
+	pubsUpdated: 'pubUpdated'
 };

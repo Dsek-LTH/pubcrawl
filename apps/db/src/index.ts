@@ -40,7 +40,6 @@ const pubsub = new RedisPubSub({
   },
 });
 const PUBS_UPDATED = "PUBS_UPDATED";
-const THEMES_UPDATED = "THEMES_UPDATED";
 
 const { entities } = buildSchema(db);
 const originalMutations = entities.mutations;
@@ -59,17 +58,10 @@ for (const [key, resolver] of Object.entries(originalMutations)) {
 
       // TODO: Might want to do this in a smarter/more sophisticated way?
       const touchesPubs = key.toLowerCase().includes("pub");
-      const touchesThemes = key.toLowerCase().includes("theme");
-      const deletes = key.toLowerCase().includes("delete");
 
-      if (touchesPubs || (touchesThemes && deletes)) {
+      if (touchesPubs) {
         await pubsub.publish(PUBS_UPDATED, {
           pubsSubscription: await db.query.pubs.findMany(),
-        });
-      }
-      if (touchesThemes) {
-        await pubsub.publish(THEMES_UPDATED, {
-          themesSubscription: await db.query.themes.findMany(),
         });
       }
 
@@ -87,13 +79,6 @@ const schema = new GraphQLSchema({
         subscribe: () => pubsub.asyncIterator([PUBS_UPDATED]),
         resolve: async (payload) => {
           return payload.pubsSubscription;
-        },
-      },
-      themesSubscription: {
-        type: new GraphQLList(new GraphQLNonNull(entities.types.ThemesItem)),
-        subscribe: () => pubsub.asyncIterator([THEMES_UPDATED]),
-        resolve: async (payload) => {
-          return payload.themesSubscription;
         },
       },
     },
